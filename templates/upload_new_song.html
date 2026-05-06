@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}新規譜面投稿{% endblock %}
+
+{% block content %}
+<div class="container-spare" style="max-width: 600px; margin-top: 50px;">
+    <h2 class="title-main">POST NEW CHART</h2>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div style="color: #00ff00; margin-bottom: 20px;">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="header-box-gradient" style="padding: 30px; border: 1px solid #444;">
+        <form method="POST" enctype="multipart/form-data">
+            <div style="margin-bottom: 15px;">
+                <label>YouTube音源URL:</label>
+                <input type="url" name="youtube_url" placeholder="https://www.youtube.com/watch?v=..." required style="width: 100%; padding: 8px; margin-top: 5px;">
+            </div>
+
+            <div style="margin-bottom: 15px; display: flex; gap: 20px;">
+                <div>
+                    <label>難易度 (★):</label>
+                    <input type="text" name="star" value="15" placeholder="15 や ?" style="width: 80px; padding: 5px;">
+                </div>
+                <div>
+                    <label>表記 (E/N/H...):</label>
+                    <input type="text" name="difficulty" value="H" style="width: 40px; padding: 5px;">
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <label>譜面ファイル (.json):</label>
+                <p style="font-size: 0.8rem; color: #888; margin: 0;">※JSON内の "title" が曲名として登録されます</p>
+                <input type="file" name="chart_file" accept=".json" required style="margin-top: 5px;">
+            </div>
+
+            <button type="submit" class="btn-spare active" style="width: 100%; cursor: pointer;">
+                譜面を投稿する
+            </button>
+        </form>
+    </div>
+
+    <p style="margin-top: 20px;">
+        <a href="{{ url_for('song_index') }}" class="back-link">← 戻る</a>
+    </p>
+</div>
+{% endblock %}

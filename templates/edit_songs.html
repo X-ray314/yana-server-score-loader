@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}楽曲データ管理ツール{% endblock %}
+
+{% block content %}
+<div class="container-spare" style="max-width: 1400px;">
+    <div class="admin-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 class="title-main" style="margin: 0;">MASTER DATA EDITOR <span style="font-size: 0.8rem; color: #888;">(Admin: {{ current_user.username }})</span></h2>
+        <div class="admin-stats" style="background: #222; padding: 10px 20px; border-radius: 8px; border: 1px solid #333;">
+            合計楽曲数: <strong>{{ songs|length }}</strong> 曲
+        </div>
+    </div>
+
+    <div class="table-wrapper" style="overflow-x: auto; background: #1a1a1a; border-radius: 8px; border: 1px solid #333;">
+        <table class="song-table" style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+            <thead>
+                <tr style="background: #252525; border-bottom: 2px solid #444; color: #00d4ff;">
+                    <th style="padding: 12px;">ID</th>
+                    <th>曲名</th>
+                    <th style="width: 60px;">難易度</th>
+                    <th style="width: 80px;">STAR</th>
+                    <th>製作者</th>
+                    <th>YouTube URL</th>
+                    <th>譜面ファイル</th>
+                    <th style="text-align: center; width: 150px;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for song in songs %}
+                <tr style="border-bottom: 1px solid #333; transition: background 0.2s;" onmouseover="this.style.background='#222'" onmouseout="this.style.background='transparent'">
+                    <form method="POST" style="display: contents;">
+                        <input type="hidden" name="update_id" value="{{ song.song_id }}">
+                        
+                        <td style="padding: 10px; color: #666; font-family: monospace;">{{ song.song_id }}</td>
+                        
+                        <td>
+                            <input type="text" name="name_{{ song.song_id }}" value="{{ song.name }}" class="edit-input">
+                        </td>
+                        
+                        <td>
+                            <input type="text" name="diff_{{ song.song_id }}" value="{{ song.difficulty }}" class="edit-input center" placeholder="H">
+                        </td>
+                        
+                        <td>
+                            <input type="text" name="star_{{ song.song_id }}" value="{{ song.star }}" class="edit-input center" style="color: #ffcc00; font-weight: bold;">
+                        </td>
+
+                        <td>
+                            <input type="text" name="creator_{{ song.song_id }}" value="{{ song.get('creator', '') }}" class="edit-input" placeholder="製作者名">
+                        </td>
+                        
+                        <td>
+                            <div style="display: flex; gap: 5px; align-items: center;">
+                                <input type="text" name="yt_{{ song.song_id }}" value="{{ song.youtube_url }}" class="edit-input">
+                                {% if song.youtube_url %}
+                                <a href="{{ song.youtube_url }}" target="_blank" title="再生確認" style="text-decoration: none; font-size: 1.2rem;">📺</a>
+                                {% endif %}
+                            </div>
+                        </td>
+                        
+                        <td>
+                            <input type="text" name="file_{{ song.song_id }}" value="{{ song.chart_file }}" class="edit-input" style="font-size: 0.75rem;">
+                        </td>
+                        
+                        <td style="padding: 10px; text-align: center;">
+                            <div style="display: flex; gap: 5px; justify-content: center;">
+                                <button type="submit" class="btn-action save" title="この曲だけ保存">保存</button>
+                                <button type="submit" name="delete_id" value="{{ song.song_id }}" class="btn-action delete" 
+                                        onclick="return confirm('曲「{{ song.name }}」を削除しますか？');">削除</button>
+                            </div>
+                        </td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .edit-input {
+        width: 100%;
+        background: #111;
+        color: #eee;
+        border: 1px solid #444;
+        padding: 6px 8px;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    .edit-input:focus {
+        border-color: #00d4ff;
+        background: #000;
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 212, 255, 0.3);
+    }
+    .edit-input.center {
+        text-align: center;
+    }
+    .btn-action {
+        padding: 5px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.75rem;
+        border: 1px solid transparent;
+        font-weight: bold;
+    }
+    .btn-action.save {
+        background: #004d40;
+        color: #80cbc4;
+        border-color: #00796b;
+    }
+    .btn-action.save:hover {
+        background: #00695c;
+        color: #fff;
+    }
+    .btn-action.delete {
+        background: #3e0000;
+        color: #ff9999;
+        border-color: #7f0000;
+    }
+    .btn-action.delete:hover {
+        background: #660000;
+        color: #fff;
+    }
+    .song-table th {
+        padding: 12px 8px;
+        text-align: left;
+    }
+</style>
+{% endblock %}

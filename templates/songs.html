@@ -1,0 +1,397 @@
+{% extends "base.html" %}
+
+{% block title %}LEVEL {{ level }}{% endblock %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Orbitron:wght@900&family=Exo+2:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+<div class="container-spare">
+    <div class="header-section">
+        <h2 class="title-main">LEVEL {{ level }} LIST</h2>
+        <p class="user-info">User: <strong>{{ current_user.username }}</strong></p>
+        <p><a href="{{ url_for('song_index') }}" class="back-link">← 難易度選択に戻る</a></p>
+    </div>
+    
+
+    <div class="search-section" style="margin-bottom: 30px; text-align: center;">
+        <input type="text" id="songSearch" placeholder="曲名で検索..." 
+               style="width: 100%; max-width: 600px; padding: 15px 25px; background: rgba(0, 0, 0, 0.6); border: 1px solid #00d4ff; border-radius: 50px; color: #fff; font-family: 'Exo 2'; font-size: 1rem; outline: none; box-shadow: 0 0 15px rgba(0, 212, 255, 0.2); transition: 0.3s;">
+    </div>
+
+    <form action="{{ url_for('add_score_bulk') }}" method="POST" id="scoreForm">
+        <input type="hidden" name="current_level" value="{{ level }}">
+
+        <div style="text-align: right; margin-bottom: 20px;">
+            <button type="submit" class="btn-spare active" style="font-size: 1.1rem; padding: 12px 40px; cursor: pointer;">
+                変更をまとめて保存する
+            </button>
+        </div>
+
+        <div class="sort-container">
+            <a href="{{ url_for('song_list', level=level, sort='star') }}" class="btn-spare {{ 'active' if current_sort == 'star' }}">
+                デフォルト順 {% if current_sort == 'star' %}▼{% endif %}
+            </a>
+            <a href="{{ url_for('song_list', level=level, sort='rate') }}" class="btn-spare {{ 'active' if current_sort == 'rate' }}">
+                レート順 {% if current_sort == 'rate' %}▼{% endif %}
+            </a>
+            <a href="{{ url_for('song_list', level=level, sort='score') }}" class="btn-spare {{ 'active' if current_sort == 'score' }}">
+                スコア順 {% if current_sort == 'score' %}▼{% endif %}
+            </a>
+        </div>
+
+        <table class="song-table" id="songTable">
+            <thead>
+                <tr>
+                    <th>LEVEL</th>
+                    <th style="text-align: left;">SONG NAME / INFO</th>
+                    <th>RATE</th>
+                    <th>BEST SCORE</th>
+                    <th>UPDATE / ASSETS / ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for song in songs %}
+                {# ここで行の開始。IDを付与して検索からの移動に対応させます #}
+                <tr id="song-{{ song.song_id }}" class="{{ 'row-locked' if song.is_locked }}">
+                    
+                    <td class="star-cell">{{ song.star }}</td>
+                    
+                    <td class="name-cell" style="text-align: left;">
+                        <div class="name-container" style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                {% if song.is_locked %}
+                                    <span class="song-title-locked">{{ song.name }}</span>
+                                    {% if song.difficulty %}
+                                        <span class="difficulty-badge badge-locked">{{ song.difficulty }}</span>
+                                    {% endif %}
+                                {% else %}
+                                    <a href="{{ url_for('song_ranking', song_id=song.song_id) }}" 
+   class="song-title-link" 
+   onclick="openRanking(event, '{{ song.song_id }}')"
+   target="_blank" rel="noopener noreferrer">
+    {{ song.name }}
+</a>
+                                    {% if song.difficulty %}
+                                        <span class="difficulty-badge badge-{{ song.difficulty }}">{{ song.difficulty }}</span>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            
+                            <div class="song-sub-info" style="font-size: 0.75rem; display: flex; gap: 15px; margin-top: 2px; font-family: 'Exo 2';">
+                                {% if song.creator %}
+                                    <span class="creator-label" style="color: #888;">Creator: <span class="creator-name" style="color: #00d4ff;">{{ song.creator }}</span></span>
+                                {% endif %}
+                                
+                                {% if song.top_user and not song.is_locked %}
+                                    <span class="top-player-label" style="color: #ffcc00;">
+                                        Top: 
+                                        <span class="top-player-name">
+                                            {# ログインユーザーのスコアがTopスコアと一致しているか判定 #}
+                                            {% if song.score == song.top_score and song.score > 0 %}
+                                                <span style="color: #ff66cc; font-weight: 800;">👑 {{ current_user.username }} (You)</span>
+                                            {% else %}
+                                                👑 {{ song.top_user }}
+                                            {% endif %}
+                                        </span> 
+                                        <span style="font-size: 0.7rem; color: #aaa;">({{ "{:,}".format(song.top_score) }})</span>
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </td>
+            
+                    <td><span class="rate-gradient">{{ song.tmp_rate if not song.is_locked else '???' }}</span></td>
+            
+                    <td class="score-cell">
+                        {% if song.is_locked %}
+                            <span class="lock-condition-text">{{ song.lock_msg }}</span>
+                        {% elif song.score > 0 %}
+                            {% set s = song.score %}
+                            {% if s >= 1000000 %}<span class="score-rainbow-static">{{ "{:,}".format(s) }}</span>
+                            {% elif s >= 990000 %}<span class="score-gold">{{ "{:,}".format(s) }}</span>
+                            {% elif s >= 950000 %}<span class="score-silver">{{ "{:,}".format(s) }}</span>
+                            {% else %}{{ "{:,}".format(s) }}{% endif %}
+                        {% else %}
+                            <span class="no-data">--</span>
+                        {% endif %}
+                    </td>
+            
+                    <td style="min-width: 250px;">
+                        <div class="action-container" style="display: flex; align-items: center; justify-content: flex-end; gap: 12px;">
+                            {% if song.is_locked %}
+                                <div class="lock-notice">LOCKED</div>
+                            {% else %}
+                                <div class="update-form">
+                                    <input type="number" name="scores[{{ song.song_id }}]" 
+                                           placeholder="Score" min="1" max="1000000"
+                                           value="{{ song.score if song.score > 0 else '' }}"
+                                           style="width: 100px; text-align: center; padding: 8px;">
+                                </div>
+                
+                                <div class="asset-buttons" style="display: flex; gap: 5px;">
+    {% if song.youtube_url %}
+    <a href="{{ song.youtube_url }}" target="_blank" class="btn-asset btn-yt ce-target" title="YouTube音源を開く">🎵</a>
+    {% endif %}
+    {% if song.chart_file %}
+    <a href="{{ url_for('static', filename='charts/' + song.chart_file) }}" download class="btn-asset btn-dl" title="譜面をダウンロード">📝</a>
+    {% endif %}
+    {# ↓ URLコピーボタン（ここを追加） #}
+    {% if not song.is_locked %}
+    <button type="button"
+            class="btn-asset btn-copy-url"
+            title="譜面URLをコピー"
+            onclick="copySongUrl('{{ song.song_id }}', this)">🔗</button>
+    {% endif %}
+</div>
+                
+                                {% if song.score > 0 %}
+                                <button type="submit" name="delete_song" value="{{ song.song_id }}" class="btn-delete"
+                                        onclick="return confirm('{{ song.name }} のスコアを削除しますか？');"
+                                        style="padding: 5px 10px;">削除</button>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+</div>
+
+<script>
+document.getElementById('songSearch').addEventListener('input', function(e) {
+    const term = e.target.value.toLowerCase();
+    const rows = document.querySelectorAll('#songTable tbody tr');
+    
+    rows.forEach(row => {
+        // 曲名の取得（リンクがある場合とロックされている場合の両方に対応）
+        const titleEl = row.querySelector('.song-title-link') || row.querySelector('.song-title-locked');
+        const songName = titleEl ? titleEl.textContent.toLowerCase() : "";
+        
+        // 製作者名の取得
+        const creatorEl = row.querySelector('.creator-name');
+        const creatorName = creatorEl ? creatorEl.textContent.toLowerCase() : "";
+        
+        if (songName.includes(term) || creatorName.includes(term)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
+
+// 検索中にEnterキーでフォームが送信されないように制御
+document.getElementById('songSearch').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+    }
+});
+</script>
+
+<style>
+    /* 追加：スムーズスクロール設定 */
+    html {
+        scroll-behavior: smooth;
+    }
+    tr {
+    /* 150px ほど余裕を持たせると、画面の中央寄りに止まるようになります */
+        scroll-margin-top: 370px; 
+    }
+    /* 追加：飛んできたターゲット（曲）を光らせるエフェクト */
+    tr:target {
+        background: rgba(0, 212, 255, 0.2) !important;
+        outline: 2px solid #00d4ff;
+        transition: background 2s, outline 2s;
+    }
+    /* 以前のスタイルをすべて継承しつつ、微調整 */
+    .container-spare { max-width: 1200px; margin: 20px auto; padding: 40px; background: rgba(10, 10, 10, 0.95); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; font-family: 'Exo 2', sans-serif; color: #fff; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+    .header-section { text-align: center; margin-bottom: 30px; }
+    .title-main { font-weight: 900; font-size: 2.8rem; font-family: 'Orbitron', sans-serif; text-shadow: 0 0 15px rgba(0, 212, 255, 0.4); margin-bottom: 5px; }
+    .user-info { color: #888; font-size: 0.9rem; margin-bottom: 10px; }
+    .back-link { text-decoration: none; color: #00d4ff; font-weight: bold; font-size: 0.9rem; }
+    .back-link:hover { text-decoration: underline; }
+
+    #songSearch:focus {
+        border-color: #ff66cc !important;
+        box-shadow: 0 0 20px rgba(255, 102, 204, 0.3) !important;
+    }
+
+    .rate-gradient { background: linear-gradient(to bottom, #fff 30%, #00d4ff 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-family: 'Russo One', sans-serif; font-size: 1.2rem; }
+    .sort-container { text-align: center; margin-bottom: 30px; }
+    .btn-spare { display: inline-block; padding: 10px 25px; margin: 5px; border-radius: 8px; text-decoration: none; font-weight: bold; color: #00d4ff; border: 1px solid #00d4ff; background: transparent; transition: 0.3s; font-size: 0.9rem; }
+    .btn-spare.active { background: #00d4ff; color: #000; box-shadow: 0 0 20px rgba(0, 212, 255, 0.4); }
+    
+    .song-table { width: 100%; border-collapse: collapse; }
+    .song-table th { padding: 15px; color: #666; font-size: 0.75rem; border-bottom: 1px solid rgba(0, 212, 255, 0.2); letter-spacing: 1px; text-transform: uppercase; }
+    .song-table td { padding: 18px 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); text-align: center; vertical-align: middle; }
+    
+    .name-container { display: flex; align-items: center; gap: 10px; }
+    .song-title-link { text-decoration: none; color: #fff; font-weight: 600; font-size: 1.15rem; transition: 0.2s; line-height: 1.2; }
+    .song-title-link:hover { color: #00d4ff; text-shadow: 0 0 8px rgba(0, 212, 255, 0.5); }
+    .difficulty-badge { padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 900; font-family: 'Orbitron', sans-serif; }
+    .badge-E { background: #00ff88; color: #000; }
+    .badge-N { background: #ffcc00; color: #000; }
+    .badge-H { background: #ff4d4d; color: #fff; }
+
+    .star-cell { color: #ff66cc; font-weight: 800; font-family: 'Orbitron', sans-serif; font-size: 1.1rem; }
+    .score-cell { font-family: 'Russo One', sans-serif; font-size: 1.4rem; min-width: 140px; }
+    
+    .action-container { display: flex; align-items: center; justify-content: center; gap: 12px; }
+    .asset-buttons { display: flex; gap: 5px; }
+    .btn-asset { text-decoration: none; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 6px; transition: 0.2s; font-size: 1.1rem; }
+    .btn-asset:hover { transform: translateY(-2px); border-color: #00d4ff; background: rgba(0, 212, 255, 0.1); }
+    .btn-yt:hover { color: #ff0000; border-color: #ff0000; }
+    
+    .update-form input { background: rgba(0, 0, 0, 0.4); color: #fff; border: 1px solid rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 6px; width: 100px; text-align: center; font-family: 'Russo One', sans-serif; font-size: 1rem; }
+    .update-form input:focus { border-color: #00d4ff; outline: none; box-shadow: 0 0 10px rgba(0, 212, 255, 0.2); }
+    
+    .btn-delete { background: transparent; border: 1px solid #ff4d4d; color: #ff4d4d; padding: 5px 12px; border-radius: 6px; cursor: pointer; transition: 0.2s; font-size: 0.8rem; }
+    .btn-delete:hover { background: #ff4d4d; color: #fff; }
+
+    .score-silver { color: #e0e0e0 !important; text-shadow: 0 0 10px rgba(255, 255, 255, 0.4); }
+    .score-gold { color: #ffd700 !important; text-shadow: 0 0 12px rgba(255, 215, 0, 0.5); }
+    .score-rainbow-static { background: linear-gradient(135deg, #79e9ff, #d07eff, #ff66cc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
+
+    /* ロック用スタイル（維持） */
+    .row-locked { background-color: rgba(0, 0, 0, 0.45) !important; opacity: 0.8; }
+    .song-title-locked { color: #555; font-weight: 600; font-size: 1.1rem; font-style: italic; }
+    .lock-condition-text { font-size: 0.8rem; color: #ff4444; font-weight: 800; background: rgba(255, 68, 68, 0.1); padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(255, 68, 68, 0.2); }
+    .lock-notice { background: #1a1a1a; color: #444; padding: 8px 18px; border-radius: 6px; font-family: 'Orbitron', sans-serif; font-size: 0.75rem; border: 1px solid #222; }
+    .badge-locked { background: #333 !important; color: #666 !important; opacity: 0.6; }
+    /* URLコピーボタン */
+    .btn-copy-url { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; font-size: 1.1rem; }
+    .btn-copy-url:hover { border-color: #00d4ff; background: rgba(0,212,255,0.1); transform: translateY(-2px); }
+    .btn-copy-url.copied { border-color: #00ff88; color: #00ff88; }
+</style>
+<div id="rankingModal" class="modal-overlay" onclick="closeModal()">
+    <div class="modal-content-container" onclick="event.stopPropagation()">
+        <span onclick="closeModal()" class="modal-close-btn">&times;</span>
+        <div id="modalBody">
+            </div>
+    </div>
+</div>
+
+<style>
+    /* モーダル背景のオーバーレイ */
+    .modal-overlay {
+        display: none; 
+        position: fixed; 
+        top: 0; left: 0; 
+        width: 100%; height: 100%; 
+        background: rgba(0, 0, 0, 0.25); 
+        backdrop-filter: blur(8px); /* 背景をぼかすと高級感が出ます */
+        z-index: 10000; 
+        justify-content: center; 
+        align-items: center;
+    }
+
+    /* モーダルの中身 */
+    .modal-content-container {
+        background: rgba(20, 20, 20, 0.98); /* 深いダークグレー */
+        width: 90%; 
+        max-width: 650px; 
+        max-height: 85vh; 
+        padding: 30px; 
+        border-radius: 20px; 
+        position: relative; 
+        overflow-y: auto;
+        border: 2px solid #00d4ff; /* ネオンブルーの枠線 */
+        box-shadow: 0 0 30px rgba(0, 212, 255, 0.3); /* 青い光を漏らす */
+    }
+
+    /* 閉じるボタン */
+    .modal-close-btn {
+        position: absolute; 
+        top: 15px; right: 25px; 
+        font-size: 35px; 
+        cursor: pointer; 
+        color: #888;
+        transition: 0.3s;
+    }
+    .modal-close-btn:hover {
+        color: #ff66cc; /* ホバーでピンクに光る */
+        transform: rotate(90deg);
+    }
+
+    /* モーダル内のスクロールバーを細くする */
+    .modal-content-container::-webkit-scrollbar {
+        width: 8px;
+    }
+    .modal-content-container::-webkit-scrollbar-thumb {
+        background: #00d4ff;
+        border-radius: 10px;
+    }
+    .modal-content-container::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+    }
+</style>
+
+<script>
+function openRanking(e, songId) {
+    e.preventDefault(); // ページ移動を防止
+    const modal = document.getElementById('rankingModal');
+    const body = document.getElementById('modalBody');
+    
+    modal.style.display = 'flex';
+    body.innerHTML = '<p style="text-align:center; padding:20px; color:#333;">読み込み中...</p>';
+
+    fetch(`/song/${songId}`)
+        .then(response => response.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            // ranking.html の .container-spare 部分だけを抜き出して表示
+            const content = doc.querySelector('.container-spare');
+            if (content) {
+                // 「戻る」リンクは不要なので削除（または非表示）
+                const backLink = content.querySelector('.back-link');
+                if (backLink) backLink.style.display = 'none';
+                body.innerHTML = '';
+                body.appendChild(content);
+                // openRanking関数内の body.appendChild(content); の後に追加
+if (content) {
+    // ranking.html側の白背景やマージンを打ち消す
+    content.style.background = "transparent"; 
+    content.style.margin = "0";
+    content.style.padding = "0";
+    content.style.boxShadow = "none";
+    
+    // 文字色を白系に調整
+    const titleMain = content.querySelector('.title-main');
+    if (titleMain) {
+        titleMain.style.color = "#fff";
+        titleMain.style.textShadow = "0 0 10px rgba(0, 212, 255, 0.8)";
+    }
+    
+    // テーブル内の文字が見えにくい場合、ここでも文字色を調整できます
+    const tdElements = content.querySelectorAll('.player-name, .rank-cell');
+    tdElements.forEach(td => td.style.color = "#ddd");
+}
+            }
+        })
+        .catch(err => {
+            body.innerHTML = '<p style="color:red;">読み込みに失敗しました</p>';
+        });
+}
+
+function closeModal() {
+    document.getElementById('rankingModal').style.display = 'none';
+}
+function copySongUrl(songId, btn) {
+    const basePath = window.location.pathname; // 例: /songs/6
+    const url = `https://yana-server-score-loader.com${basePath}#song-${songId}`;
+    navigator.clipboard.writeText(url).then(() => {
+        btn.textContent = '✅';
+        btn.classList.add('copied');
+        setTimeout(() => {
+            btn.textContent = '🔗';
+            btn.classList.remove('copied');
+        }, 1500);
+    }).catch(() => {
+        // clipboard API が使えない環境へのフォールバック
+        prompt('URLをコピーしてください:', url);
+    });
+}
+</script>
+{% endblock %}

@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+
+{% block title %}Total Rating Ranking{% endblock %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700;800&family=Russo+One&display=swap" rel="stylesheet">
+
+<div class="container-spare-ultra-wide">
+    <div class="header-section">
+        <h1 class="song-title-display">Total Rating Ranking</h1>
+    </div>
+
+    <table class="song-table">
+        <thead>
+            <tr>
+                <th style="width: 10%;">RANK</th>
+                <th style="text-align: left; width: 60%;">PLAYER</th>
+                <th style="width: 30%;">TOTAL RATING</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in ranking if entry.total_rate | float > 0 %}
+            {% set r = entry.total_rate | float %}
+            {% set t_color = "#888888" %}
+            {% set r_name = "BEGINNER" %}
+
+            {% if r >= 775 %}{% set t_color = "#4a0018" %}{% set r_name = "OVERLORD" %}
+            {% elif r >= 750 %}{% set t_color = "#990033" %}{% set r_name = "EMPEROR" %}
+            {% elif r >= 725 %}{% set t_color = "#ff0000" %}{% set r_name = "LEGEND" %}
+            {% elif r >= 700 %}{% set t_color = "#ff6600" %}{% set r_name = "MASTER" %}
+            {% elif r >= 675 %}{% set t_color = "#ff9900" %}{% set r_name = "ELITE" %}
+            {% elif r >= 650 %}{% set t_color = "#ffff00" %}{% set r_name = "DIAMOND" %}
+            {% elif r >= 625 %}{% set t_color = "#99ff00" %}{% set r_name = "PLATINUM" %}
+            {% elif r >= 600 %}{% set t_color = "#00ff00" %}{% set r_name = "GOLD" %}
+            {% elif r >= 550 %}{% set t_color = "#00cc99" %}{% set r_name = "SILVER" %}
+            {% elif r >= 500 %}{% set t_color = "#00ccff" %}{% set r_name = "BRONZE" %}
+            {% elif r >= 450 %}{% set t_color = "#0066ff" %}{% set r_name = "IRON" %}
+            {% elif r >= 400 %}{% set t_color = "#6600ff" %}{% set r_name = "AMATEUR" %}
+            {% elif r >= 350 %}{% set t_color = "#ff00ff" %}{% set r_name = "NOVICE" %}
+            {% elif r >= 300 %}{% set t_color = "#ff66cc" %}{% set r_name = "ROOKIE" %}
+            {% endif %}
+
+            {% set is_divine = (entry.username == "yanaaaaaaa") %}
+
+            <tr class="ranking-row {% if current_user.is_authenticated and entry.username == current_user.username %}is-me{% endif %} {% if is_divine %}divine-row{% endif %}" 
+                onclick="location.href='/user/{{ entry.username }}'">
+                <td class="rank-cell rank-{{ loop.index }}">
+                    #{{ loop.index }}
+                </td>
+                <td class="player-name">
+                    <div class="name-stack">
+                        {% if is_divine %}
+                        <span class="u-name divine-u-name" data-text="{{ entry.username }}">{{ entry.username }}</span>
+                        <span class="u-rank divine-u-rank">SERVER</span>
+                        {% else %}
+                        <span class="u-name">{{ entry.username }}</span>
+                        <span class="u-rank" style="color: {{ t_color }};">{{ r_name }}</span>
+                        {% endif %}
+                    </div>
+                </td>
+                <td class="score-cell {% if is_divine %}divine-score{% endif %}" {% if not is_divine %}style="color: {{ t_color }};"{% endif %}>
+                    {{ "%.2f"|format(r) }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="footer-nav">
+        <a href="{{ url_for('index') }}" class="back-link-btn">← ホームに戻る</a>
+    </div>
+</div>
+
+<style>
+    /* =====================================================
+       yanaaaaaaaa 専用 金ピカスタイル
+       ===================================================== */
+
+    /* 行全体：黒背景 + 金ボーダー */
+    .divine-row {
+        background: linear-gradient(90deg, rgba(212,175,55,0.12) 0%, rgba(255,215,0,0.04) 100%) !important;
+        border-left: 5px solid #d4af37 !important;
+    }
+    .divine-row:hover {
+        background: linear-gradient(90deg, rgba(212,175,55,0.22) 0%, rgba(255,215,0,0.08) 100%) !important;
+    }
+
+    /* プレイヤー名：金グラデ＋シマー */
+    .divine-u-name {
+        background: linear-gradient(90deg, #b8860b, #ffd700, #fffacd, #d4af37, #ffd700, #b8860b);
+        background-size: 250% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: goldShimmer 2.5s linear infinite;
+        filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8));
+        position: relative;
+    }
+    @keyframes goldShimmer {
+        0%   { background-position: 0% center; }
+        100% { background-position: 250% center; }
+    }
+
+    /* 名前の後ろにぼわっと広がる金の光彩 */
+    .divine-u-name::after {
+        content: attr(data-text);
+        position: absolute;
+        left: 0; top: 0;
+        background: linear-gradient(90deg, #ffd700, #fffacd, #ffd700);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: blur(8px) brightness(1.5);
+        opacity: 0.6;
+        animation: glowPulse 2s ease-in-out infinite;
+        pointer-events: none;
+    }
+    @keyframes glowPulse {
+        0%,100% { opacity: 0.4; filter: blur(8px) brightness(1.3); }
+        50%     { opacity: 0.9; filter: blur(12px) brightness(2); }
+    }
+
+    /* ランク称号 */
+    .divine-u-rank {
+        font-size: 0.8rem;
+        font-weight: 900;
+        letter-spacing: 2px;
+        margin-top: -4px;
+        background: linear-gradient(90deg, #d4af37, #fff8dc, #d4af37);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: goldShimmer 2s linear infinite;
+    }
+
+    /* レート数字 */
+    .divine-score {
+        background: linear-gradient(180deg, #ffd700 0%, #d4af37 60%, #b8860b 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.9));
+        animation: scorePulse 2.5s ease-in-out infinite;
+    }
+    @keyframes scorePulse {
+        0%,100% { filter: drop-shadow(0 0 6px rgba(255,215,0,0.7)); }
+        50%     { filter: drop-shadow(0 0 20px rgba(255,215,0,1)) drop-shadow(0 0 40px rgba(212,175,55,0.5)); }
+    }
+
+    /* =====================================================
+       既存スタイル
+       ===================================================== */
+    .container-spare-ultra-wide {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 30px 40px;
+        background: #ffffff;
+        font-family: 'Exo 2', sans-serif;
+        border-radius: 8px;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+    }
+
+    .header-section { text-align: center; margin-bottom: 20px; }
+    
+    .song-title-display {
+        font-size: 2.8rem;
+        font-weight: 800;
+        letter-spacing: -1px;
+        background: linear-gradient(135deg, #00d4ff 0%, #0055ff 50%, #9c27b0 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        display: inline-block;
+        margin: 0;
+    }
+
+    .song-table { width: 100%; border-collapse: collapse; }
+    
+    .song-table th { 
+        padding: 10px 20px; 
+        color: #bbb; 
+        font-size: 0.8rem; 
+        border-bottom: 2px solid #f0f0f0; 
+        text-transform: uppercase;
+    }
+
+    .song-table td { 
+        padding: 8px 20px; 
+        border-bottom: 1px solid #f8f8f8; 
+        text-align: center; 
+        line-height: 1.2;
+    }
+
+    .rank-cell { font-weight: 800; color: #888; font-size: 1.2rem; }
+    .rank-1 { color: #d4af37 !important; font-size: 1.8rem; }
+    .rank-2 { color: #aaa9ad !important; font-size: 1.5rem; }
+    .rank-3 { color: #b08d57 !important; font-size: 1.3rem; }
+
+    .player-name { text-align: left !important; }
+    .name-stack { display: flex; flex-direction: column; gap: 0; }
+    
+    .u-name { 
+        font-weight: 800; 
+        color: #222; 
+        font-size: 1.8rem; 
+        margin: 0;
+    }
+    .u-rank { 
+        font-size: 0.8rem; 
+        font-weight: 900; 
+        letter-spacing: 2px; 
+        margin-top: -4px;
+    }
+
+    .score-cell { 
+        font-weight: 800; 
+        font-size: 2.5rem; 
+        font-family: 'Russo One', sans-serif; 
+    }
+
+    .is-me { 
+        background-color: #fcf6ff; 
+        border-left: 10px solid #9c27b0; 
+    }
+    .is-me .u-name { color: #9c27b0; }
+
+    .ranking-row { cursor: pointer; }
+    .ranking-row:hover { background-color: #f9fbff; }
+
+    .footer-nav {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+    }
+
+    .back-link-btn { 
+        text-decoration: none; 
+        color: #fff; 
+        background: #333; 
+        font-weight: bold; 
+        font-size: 1rem;
+        display: inline-block;
+        padding: 10px 30px;
+        border-radius: 4px;
+    }
+</style>
+{% endblock %}

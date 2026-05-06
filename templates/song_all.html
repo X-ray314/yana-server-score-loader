@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block title %}ALL SONGS - Page {{ page }}{% endblock %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Orbitron:wght@900&family=Exo+2:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+<div class="container-spare">
+    <div class="header-section">
+        <h2 class="title-main">ALL SONGS</h2>
+        <p class="user-info">全楽曲リスト（新着順） — <strong>{{ page }}</strong> / {{ total_pages }} ページ</p>
+        <div style="margin-top: 10px;">
+            <a href="{{ url_for('song_index') }}" class="back-link">← 難易度選択に戻る</a>
+        </div>
+    </div>
+
+    <div class="search-section" style="margin-bottom: 30px; text-align: center;">
+        <input type="text" id="songSearch" placeholder="表示中の50件から曲名・製作者で検索..." 
+               style="width: 100%; max-width: 600px; padding: 15px 25px; background: rgba(0, 0, 0, 0.6); border: 1px solid #ff66cc; border-radius: 50px; color: #fff; font-family: 'Exo 2'; font-size: 1rem; outline: none; box-shadow: 0 0 15px rgba(255, 102, 204, 0.2); transition: 0.3s;">
+    </div>
+
+    <div class="pagination-container">
+        {% if has_prev %}
+        <a href="{{ url_for('song_all_list', page=page-1) }}" class="page-nav-btn">PREV</a>
+        {% else %}
+        <span class="page-nav-btn disabled">PREV</span>
+        {% endif %}
+
+        <div class="page-numbers">
+            {% for p in range(1, total_pages + 1) %}
+                {% if p == page %}
+                <span class="page-num active">{{ p }}</span>
+                {% elif p <= 3 or p > total_pages - 2 or (p >= page - 1 and p <= page + 1) %}
+                <a href="{{ url_for('song_all_list', page=p) }}" class="page-num">{{ p }}</a>
+                {% elif p == 4 or p == total_pages - 2 %}
+                <span style="color: #444;">...</span>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        {% if has_next %}
+        <a href="{{ url_for('song_all_list', page=page+1) }}" class="page-nav-btn">NEXT</a>
+        {% else %}
+        <span class="page-nav-btn disabled">NEXT</span>
+        {% endif %}
+    </div>
+
+    <table class="song-table" id="songTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>LEVEL</th>
+                <th style="text-align: left;">SONG NAME / INFO</th>
+                <th>BEST SCORE</th>
+                <th>ACTION</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for song in songs %}
+            <tr id="song-{{ song.song_id }}">
+                <td class="id-cell">#{{ song.song_id.replace('song_', '') }}</td>
+                
+                <td class="star-cell">{{ song.star }}</td>
+                
+                <td class="name-cell" style="text-align: left;">
+                    <div class="name-container" style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <a href="{{ url_for('song_ranking', song_id=song.song_id) }}" class="song-title-link">
+                                {{ song.name }}
+                            </a>
+                            {% if song.difficulty %}
+                            <span class="difficulty-badge badge-{{ song.difficulty }}">{{ song.difficulty }}</span>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="song-sub-info" style="font-size: 0.75rem; display: flex; gap: 15px; margin-top: 2px; font-family: 'Exo 2';">
+                            <span style="color: #888;">Maker: <span class="creator-name" style="color: #00d4ff;">{{ song.creator }}</span></span>
+                            <span style="color: #ffcc00;">Top: 👑 {{ song.top_user if song.top_user else '---' }} <span style="font-size: 0.7rem; color: #aaa;">({{ "{:,}".format(song.top_score) if song.top_score > 0 else '0' }})</span></span>
+                        </div>
+                    </div>
+                </td>
+
+                <td class="score-cell">
+                    {% if song.score > 0 %}
+                        {% set s = song.score %}
+                        {% if s >= 1000000 %}<span class="score-rainbow-static">{{ "{:,}".format(s) }}</span>
+                        {% elif s >= 990000 %}<span class="score-gold">{{ "{:,}".format(s) }}</span>
+                        {% elif s >= 950000 %}<span class="score-silver">{{ "{:,}".format(s) }}</span>
+                        {% else %}<span style="color: #fff;">{{ "{:,}".format(s) }}</span>{% endif %}
+                    {% else %}
+                        <span class="no-data">--</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    <div class="action-container" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <a href="{{ url_for('song_ranking', song_id=song.song_id) }}" class="btn-asset" title="ランキングを表示">🏆</a>
+                        {% if song.youtube_url %}
+                        <a href="{{ song.youtube_url }}" target="_blank" class="btn-asset btn-yt" title="YouTubeを開く">🎵</a>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="pagination-container" style="margin-top: 40px;">
+        {% if has_prev %}
+        <a href="{{ url_for('song_all_list', page=page-1) }}" class="page-nav-btn">PREV</a>
+        {% endif %}
+        <span class="page-current">PAGE {{ page }} / {{ total_pages }}</span>
+        {% if has_next %}
+        <a href="{{ url_for('song_all_list', page=page+1) }}" class="page-nav-btn">NEXT</a>
+        {% endif %}
+    </div>
+</div>
+
+
+
+<script>
+// フロントエンド検索ロジック
+document.getElementById('songSearch').addEventListener('input', function(e) {
+    const term = e.target.value.toLowerCase();
+    const rows = document.querySelectorAll('#songTable tbody tr');
+    
+    rows.forEach(row => {
+        const titleEl = row.querySelector('.song-title-link');
+        const songName = titleEl ? titleEl.textContent.toLowerCase() : "";
+        const creatorEl = row.querySelector('.creator-name');
+        const creatorName = creatorEl ? creatorEl.textContent.toLowerCase() : "";
+        
+        if (songName.includes(term) || creatorName.includes(term)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
+</script>
+
+<style>
+    /* 共通コンテナ */
+    .container-spare { max-width: 1200px; margin: 20px auto; padding: 40px; background: rgba(10, 10, 10, 0.95); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; font-family: 'Exo 2', sans-serif; color: #fff; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+    .header-section { text-align: center; margin-bottom: 30px; }
+    .title-main { font-weight: 900; font-size: 2.8rem; font-family: 'Orbitron', sans-serif; text-shadow: 0 0 15px rgba(0, 212, 255, 0.4); margin-bottom: 5px; }
+    .back-link { text-decoration: none; color: #00d4ff; font-weight: bold; font-size: 0.9rem; transition: 0.3s; }
+    .back-link:hover { color: #ff66cc; text-shadow: 0 0 10px #ff66cc; }
+
+    /* ページネーションUI */
+    .pagination-container { display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 20px; }
+    .page-nav-btn { padding: 10px 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid #444; color: #fff; text-decoration: none; border-radius: 5px; font-family: 'Orbitron'; font-size: 0.8rem; transition: 0.3s; }
+    .page-nav-btn:hover:not(.disabled) { border-color: #00d4ff; background: rgba(0, 212, 255, 0.1); color: #00d4ff; }
+    .page-nav-btn.disabled { opacity: 0.3; cursor: not-allowed; }
+    .page-numbers { display: flex; gap: 8px; }
+    .page-num { text-decoration: none; color: #888; padding: 5px 12px; border-radius: 4px; transition: 0.3s; }
+    .page-num.active { color: #ff66cc; font-weight: bold; border-bottom: 2px solid #ff66cc; }
+    .page-num:hover:not(.active) { color: #fff; background: rgba(255, 255, 255, 0.1); }
+    .page-current { font-family: 'Orbitron'; font-size: 0.9rem; color: #666; }
+
+    /* テーブルスタイル */
+    .song-table { width: 100%; border-collapse: collapse; }
+    .song-table th { padding: 15px; color: #666; font-size: 0.75rem; border-bottom: 1px solid rgba(0, 212, 255, 0.2); letter-spacing: 1px; text-transform: uppercase; }
+    .song-table td { padding: 18px 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); text-align: center; }
+    
+    .id-cell { font-family: 'Orbitron'; color: #444; font-size: 0.8rem; }
+    .star-cell { color: #ff66cc; font-weight: 800; font-family: 'Orbitron', sans-serif; font-size: 1.1rem; }
+    .song-title-link { text-decoration: none; color: #fff; font-weight: 600; font-size: 1.15rem; transition: 0.2s; }
+    .song-title-link:hover { color: #00d4ff; text-shadow: 0 0 8px rgba(0, 212, 255, 0.5); }
+    
+    .difficulty-badge { padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 900; font-family: 'Orbitron'; }
+    .badge-E { background: #00ff88; color: #000; }
+    .badge-N { background: #ffcc00; color: #000; }
+    .badge-H { background: #ff4d4d; color: #fff; }
+
+    .score-cell { font-family: 'Russo One', sans-serif; font-size: 1.4rem; }
+    .score-silver { color: #e0e0e0 !important; text-shadow: 0 0 10px rgba(255, 255, 255, 0.4); }
+    .score-gold { color: #ffd700 !important; text-shadow: 0 0 12px rgba(255, 215, 0, 0.5); }
+    .score-rainbow-static { background: linear-gradient(135deg, #79e9ff, #d07eff, #ff66cc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
+    .no-data { color: #333; }
+
+    .btn-asset { text-decoration: none; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 8px; transition: 0.3s; font-size: 1.2rem; }
+    .btn-asset:hover { transform: translateY(-3px); border-color: #00d4ff; background: rgba(0, 212, 255, 0.1); }
+</style>
+{% endblock %}

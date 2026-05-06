@@ -1,0 +1,509 @@
+{% extends "base.html" %}
+
+{% block title %}統計ダッシュボード{% endblock %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Exo+2:wght@400;600;800&family=Russo+One&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; }
+
+.stats-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 10px 80px;
+    width: 100%;
+}
+
+.stats-header {
+    text-align: center;
+    margin-bottom: 48px;
+    padding-top: 10px;
+}
+.stats-header h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 4px;
+    text-shadow: 0 0 30px rgba(0,212,255,0.5);
+    margin-bottom: 8px;
+}
+.stats-header p {
+    color: #555;
+    font-size: 0.8rem;
+    font-family: 'Exo 2', sans-serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.section-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    color: #00d4ff;
+    text-transform: uppercase;
+    margin: 48px 0 14px;
+    padding-left: 12px;
+    border-left: 2px solid #00d4ff;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+}
+.summary-card {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(0,212,255,0.15);
+    border-radius: 12px;
+    padding: 18px 12px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+}
+.summary-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+    opacity: 0.4;
+}
+.summary-card:hover { border-color: rgba(0,212,255,0.4); }
+.s-label { font-family:'Exo 2',sans-serif; font-size:0.65rem; color:#555; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:8px; }
+.s-value { font-family:'Russo One',sans-serif; font-size:2rem; color:#fff; line-height:1; }
+.s-unit  { font-family:'Exo 2',sans-serif; font-size:0.65rem; color:#444; margin-top:4px; letter-spacing:1px; }
+
+.card {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 12px;
+}
+.card-title {
+    font-family:'Exo 2',sans-serif;
+    font-size:0.7rem;
+    font-weight:800;
+    color:#555;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    margin-bottom:16px;
+}
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+/* 切り替えボタン */
+.toggle-btns { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+.toggle-btn {
+    font-family:'Exo 2',sans-serif; font-size:0.72rem; font-weight:800;
+    letter-spacing:1px; padding:5px 14px; border-radius:6px;
+    border:1px solid rgba(255,255,255,0.15); background:transparent;
+    color:#666; cursor:pointer; transition:0.2s;
+}
+.toggle-btn.active { border-color:#00d4ff; color:#00d4ff; background:rgba(0,212,255,0.08); }
+.toggle-btn:hover:not(.active) { border-color:rgba(255,255,255,0.3); color:#aaa; }
+
+/* 難易度 */
+.diff-layout { display:flex; align-items:center; gap:20px; }
+.diff-legend { flex:1; display:flex; flex-direction:column; gap:10px; }
+.diff-row { display:flex; align-items:center; gap:8px; }
+.diff-dot { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
+.diff-lbl { font-family:'Orbitron',sans-serif; font-size:0.75rem; font-weight:700; flex:1; }
+.diff-val { font-family:'Russo One',sans-serif; font-size:0.85rem; color:#aaa; }
+.diff-pct { font-size:0.6rem; color:#444; min-width:30px; text-align:right; }
+
+/* スコア帯 */
+.tier-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+.tier-card { border-radius:10px; padding:12px 8px; text-align:center; }
+.tier-label { font-family:'Orbitron',sans-serif; font-size:0.5rem; letter-spacing:1px; font-weight:700; margin-bottom:5px; }
+.tier-count { font-family:'Russo One',sans-serif; font-size:1.5rem; line-height:1; }
+.tier-pct   { font-family:'Exo 2',sans-serif; font-size:0.6rem; margin-top:3px; opacity:0.7; }
+
+/* 横バー */
+.hbar-list { display:flex; flex-direction:column; gap:7px; }
+.hbar-row  { display:flex; align-items:center; gap:8px; min-width:0; }
+.hbar-rank { font-family:'Orbitron',sans-serif; font-size:0.6rem; color:#444; min-width:20px; text-align:right; flex-shrink:0; }
+.hbar-lbl  {
+    font-family:'Exo 2',sans-serif; font-size:0.78rem; color:#888;
+    width:110px; min-width:0; flex-shrink:0;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:right;
+}
+.hbar-track { flex:1; min-width:0; background:rgba(255,255,255,0.05); border-radius:3px; height:16px; overflow:hidden; }
+.hbar-fill  { height:100%; border-radius:3px; transition:width 0.8s ease; }
+.hbar-val   { font-family:'Russo One',sans-serif; font-size:0.72rem; color:#666; min-width:46px; text-align:right; flex-shrink:0; }
+
+/* テーブル */
+.stats-table { width:100%; border-collapse:collapse; font-family:'Exo 2',sans-serif; font-size:0.82rem; }
+.stats-table th {
+    color:#444; font-weight:800; letter-spacing:1.5px; font-size:0.65rem;
+    text-transform:uppercase; padding:8px 10px;
+    border-bottom:1px solid rgba(255,255,255,0.06); text-align:left; white-space:nowrap;
+}
+.stats-table td {
+    padding:9px 10px; border-bottom:1px solid rgba(255,255,255,0.04);
+    color:#ccc; vertical-align:middle;
+}
+.stats-table tr:hover td { background:rgba(0,212,255,0.03); }
+.rank-num { font-family:'Orbitron',sans-serif; font-size:0.65rem; color:#444; text-align:center; }
+.rank-1   { color:#ffd700 !important; }
+.rank-2   { color:#c0c0c0 !important; }
+.rank-3   { color:#cd7f32 !important; }
+.rate-val      { font-family:'Russo One',sans-serif; font-size:0.95rem; color:#00d4ff; }
+.avg-rank-val  { font-family:'Russo One',sans-serif; font-size:0.95rem; color:#ff66cc; }
+.score-val-cell{ font-family:'Russo One',sans-serif; font-size:0.85rem; color:#888; }
+.badge { display:inline-block; padding:1px 7px; border-radius:4px; font-size:0.65rem; font-weight:900; font-family:'Orbitron',sans-serif; }
+.badge-E { background:#00ff88; color:#000; }
+.badge-N { background:#ffd700; color:#000; }
+.badge-H { background:#ff4d4d; color:#fff; }
+.song-name-cell { max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.user-name-cell { max-width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600; color:#fff; }
+
+.canvas-wrap { position:relative; width:100%; }
+
+@media (max-width:680px) {
+    .grid-2 { grid-template-columns:1fr; }
+    .stats-header h1 { font-size:1.4rem; }
+    .tier-grid { grid-template-columns:repeat(2,1fr) !important; }
+    .hbar-lbl { width:80px; }
+}
+</style>
+
+<div class="stats-wrap">
+
+    <div class="stats-header">
+        <h1>STATISTICS</h1>
+        <p>やな鯖 スコアローダー — データ統計</p>
+    </div>
+
+    <!-- Overview -->
+    <div class="section-label">Overview</div>
+    <div class="summary-grid">
+        <div class="summary-card">
+            <div class="s-label">総譜面数</div>
+            <div class="s-value">{{ stats.total_songs }}</div>
+            <div class="s-unit">songs</div>
+        </div>
+        <div class="summary-card">
+            <div class="s-label">スコア登録総数</div>
+            <div class="s-value">{{ stats.total_scores }}</div>
+            <div class="s-unit">records</div>
+        </div>
+        <div class="summary-card">
+            <div class="s-label">参加ユーザー</div>
+            <div class="s-value">{{ stats.unique_users }}</div>
+            <div class="s-unit">users</div>
+        </div>
+        <div class="summary-card">
+            <div class="s-label">クリエイター数</div>
+            <div class="s-value">{{ stats.unique_creators }}</div>
+            <div class="s-unit">creators</div>
+        </div>
+        <div class="summary-card">
+            <div class="s-label">平均登録数/譜面</div>
+            <div class="s-value">{{ stats.avg_score_rate }}</div>
+            <div class="s-unit">scores per song</div>
+        </div>
+    </div>
+
+    <!-- Level Distribution -->
+    <div class="section-label">Level Distribution</div>
+    <div class="card">
+        <div class="card-title">レベル別 — 譜面数 / スコア登録数</div>
+        <div class="toggle-btns">
+            <button class="toggle-btn active" id="btn-both"   onclick="setLevelMode('both')">両方</button>
+            <button class="toggle-btn"        id="btn-songs"  onclick="setLevelMode('songs')">譜面数のみ</button>
+            <button class="toggle-btn"        id="btn-scores" onclick="setLevelMode('scores')">スコア登録数のみ</button>
+        </div>
+        <div style="display:flex;gap:16px;margin-bottom:10px;font-size:11px;color:#555;">
+            <span style="display:flex;align-items:center;gap:5px;" id="leg-songs">
+                <span style="width:10px;height:10px;border-radius:2px;background:#00d4ff;display:inline-block;"></span>譜面数
+            </span>
+            <span style="display:flex;align-items:center;gap:5px;" id="leg-scores">
+                <span style="width:10px;height:10px;border-radius:2px;background:#00ff88;display:inline-block;"></span>スコア登録数
+            </span>
+        </div>
+        <div class="canvas-wrap" style="height:230px;">
+            <canvas id="levelChart" role="img" aria-label="レベル別の譜面数とスコア登録数">レベル別の譜面数とスコア登録数を示す棒グラフ。</canvas>
+        </div>
+    </div>
+
+    <!-- Difficulty + Tier -->
+    <div class="section-label">Difficulty &amp; Score Tier</div>
+    <div class="grid-2">
+        <div class="card">
+            <div class="card-title">難易度別構成</div>
+            <div class="diff-layout">
+                <div class="canvas-wrap" style="height:140px;width:140px;flex-shrink:0;">
+                    <canvas id="diffChart" role="img" aria-label="難易度別の譜面数の円グラフ">難易度別の譜面数。</canvas>
+                </div>
+                <div class="diff-legend" id="diffLegend"></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">スコア帯別分布</div>
+            <div class="tier-grid" id="tierGrid"></div>
+        </div>
+    </div>
+
+    <!-- Rate Distribution -->
+    <div class="section-label">Rate Distribution</div>
+    <div class="card">
+        <div class="card-title">レート帯別 登録スコア件数</div>
+        <div class="canvas-wrap" style="height:200px;">
+            <canvas id="rateChart" role="img" aria-label="レート帯別の登録スコア件数">レート帯別の登録スコア件数。</canvas>
+        </div>
+    </div>
+
+    <!-- 単曲レート TOP30 -->
+    <div class="section-label">Top Single-Song Rates</div>
+    <div class="card">
+        <div class="card-title">単曲レート TOP 30（全ユーザー）</div>
+        <div style="overflow-x:auto;">
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th style="text-align:center;width:36px;">#</th>
+                        <th>ユーザー</th>
+                        <th>曲名</th>
+                        <th>Lv</th>
+                        <th>難易度</th>
+                        <th style="text-align:right;">スコア</th>
+                        <th style="text-align:right;">レート</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in stats.top_rates_30 %}
+                    <tr>
+                        <td class="rank-num {% if loop.index <= 3 %}rank-{{ loop.index }}{% endif %}">{{ loop.index }}</td>
+                        <td><div class="user-name-cell" title="{{ item.username }}">{{ item.username }}</div></td>
+                        <td><div class="song-name-cell" title="{{ item.song_name }}">{{ item.song_name }}</div></td>
+                        <td style="color:#ff66cc;font-family:'Orbitron',sans-serif;font-size:0.75rem;white-space:nowrap;">{{ item.star }}</td>
+                        <td><span class="badge badge-{{ item.difficulty }}">{{ item.difficulty }}</span></td>
+                        <td class="score-val-cell" style="text-align:right;">{{ "{:,}".format(item.score) }}</td>
+                        <td class="rate-val" style="text-align:right;">{{ item.rate }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 譜面別スコア登録数ランキング -->
+    <div class="section-label">Most Registered Songs</div>
+    <div class="card">
+        <div class="card-title">スコア登録数が多い譜面 TOP 20</div>
+        <div style="overflow-x:auto;">
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th style="text-align:center;width:36px;">#</th>
+                        <th>曲名</th>
+                        <th>Lv</th>
+                        <th>難易度</th>
+                        <th style="text-align:right;">登録数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in stats.song_ranking_top20 %}
+                    <tr>
+                        <td class="rank-num {% if loop.index <= 3 %}rank-{{ loop.index }}{% endif %}">{{ loop.index }}</td>
+                        <td><div class="song-name-cell" title="{{ item.name }}">{{ item.name }}</div></td>
+                        <td style="color:#ff66cc;font-family:'Orbitron',sans-serif;font-size:0.75rem;white-space:nowrap;">{{ item.star }}</td>
+                        <td><span class="badge badge-{{ item.difficulty }}">{{ item.difficulty }}</span></td>
+                        <td style="text-align:right;font-family:'Russo One',sans-serif;color:#00d4ff;">{{ item.count }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- クリエイター & ユーザー -->
+    <div class="section-label">Creator &amp; User Activity</div>
+    <div class="grid-2">
+        <div class="card">
+            <div class="card-title">クリエイター別 譜面数 TOP 10</div>
+            <div class="hbar-list" id="creatorBars"></div>
+        </div>
+        <div class="card">
+            <div class="card-title">ユーザー別 スコア登録数 TOP 10</div>
+            <div class="hbar-list" id="userBars"></div>
+        </div>
+    </div>
+
+    <!-- 理論値ランキング -->
+    <div class="section-label">Perfect Score Ranking</div>
+    <div class="card">
+        <div class="card-title">理論値（1,000,000点）取得数ランキング</div>
+        <div class="hbar-list" id="perfectBars"></div>
+    </div>
+
+    <!-- 平均順位ランキング -->
+    <div class="section-label">Average Rank Ranking</div>
+    <div class="card">
+        <div class="card-title">ユーザー別 平均順位（5曲以上登録者対象）</div>
+        <div style="overflow-x:auto;">
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th style="text-align:center;width:36px;">#</th>
+                        <th>ユーザー</th>
+                        <th style="text-align:right;">平均順位</th>
+                        <th style="text-align:right;">登録曲数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in stats.avg_rank_top10 %}
+                    <tr>
+                        <td class="rank-num {% if loop.index <= 3 %}rank-{{ loop.index }}{% endif %}">{{ loop.index }}</td>
+                        <td><div class="user-name-cell" title="{{ item.username }}">{{ item.username }}</div></td>
+                        <td class="avg-rank-val" style="text-align:right;">{{ item.avg_rank }}位</td>
+                        <td style="text-align:right;color:#555;font-family:'Exo 2',sans-serif;font-size:0.8rem;">{{ item.count }}曲</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const stats = {{ stats | tojson }};
+Chart.defaults.color = '#555';
+Chart.defaults.font.family = "'Exo 2', sans-serif";
+
+// ---- レベル別グラフ ----
+const levelKeys    = Object.keys(stats.level_songs).map(Number).sort((a,b)=>a-b);
+const lvSongsData  = levelKeys.map(l => stats.level_songs[l]  || 0);
+const lvScoresData = levelKeys.map(l => stats.level_scores[l] || 0);
+
+const levelChart = new Chart(document.getElementById('levelChart'), {
+    type: 'bar',
+    data: {
+        labels: levelKeys.map(l => `★${l}`),
+        datasets: [
+            { label:'譜面数',       data:lvSongsData,  backgroundColor:'rgba(0,212,255,0.75)', borderRadius:4 },
+            { label:'スコア登録数', data:lvScoresData, backgroundColor:'rgba(0,255,136,0.65)', borderRadius:4 },
+        ]
+    },
+    options: {
+        responsive:true, maintainAspectRatio:false,
+        plugins: { legend:{ display:false } },
+        scales: {
+            x: { ticks:{ color:'#555', font:{size:10}, autoSkip:false }, grid:{ color:'rgba(255,255,255,0.04)' } },
+            y: { ticks:{ color:'#555', font:{size:10} },                 grid:{ color:'rgba(255,255,255,0.04)' } }
+        }
+    }
+});
+
+function setLevelMode(mode) {
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('btn-' + mode).classList.add('active');
+    const ds = levelChart.data.datasets;
+    const showSongs  = mode !== 'scores';
+    const showScores = mode !== 'songs';
+    ds[0].hidden = !showSongs;
+    ds[1].hidden = !showScores;
+    document.getElementById('leg-songs').style.opacity  = showSongs  ? '1' : '0.3';
+    document.getElementById('leg-scores').style.opacity = showScores ? '1' : '0.3';
+    levelChart.update();
+}
+
+// ---- 難易度ドーナツ ----
+const DIFF_COLORS = { E:'#00ff88', N:'#ffd700', H:'#ff4d4d' };
+const diffLabels  = Object.keys(stats.diff_count);
+const diffVals    = diffLabels.map(k => stats.diff_count[k]);
+const diffTotal   = diffVals.reduce((a,b)=>a+b,0);
+
+const diffLegend = document.getElementById('diffLegend');
+diffLabels.forEach((l,i) => {
+    const pct = diffTotal ? Math.round(diffVals[i]/diffTotal*100) : 0;
+    diffLegend.innerHTML += `
+        <div class="diff-row">
+            <div class="diff-dot" style="background:${DIFF_COLORS[l]||'#888'};"></div>
+            <span class="diff-lbl" style="color:${DIFF_COLORS[l]||'#888'};">${l}</span>
+            <span class="diff-val">${diffVals[i]}曲</span>
+            <span class="diff-pct">${pct}%</span>
+        </div>`;
+});
+new Chart(document.getElementById('diffChart'), {
+    type:'doughnut',
+    data:{ labels:diffLabels, datasets:[{ data:diffVals, backgroundColor:diffLabels.map(l=>DIFF_COLORS[l]||'#888'), borderWidth:0 }] },
+    options:{ responsive:true, maintainAspectRatio:false, cutout:'65%', plugins:{ legend:{ display:false } } }
+});
+
+// ---- スコア帯タイル ----
+const tierGrid = document.getElementById('tierGrid');
+const totalSc  = stats.total_scores || 1;
+[
+    { label:'理論値', key:'mm',     color:'#00ff88', bg:'rgba(0,255,136,0.1)',    border:'#00ff8833' },
+    { label:'990k',       key:'gold',   color:'#ffd700', bg:'rgba(255,215,0,0.1)',    border:'#ffd70033' },
+    { label:'SS',     key:'silver', color:'#c0c0c0', bg:'rgba(192,192,192,0.1)', border:'#c0c0c033' },
+    { label:'OTHER',      key:'other',  color:'#555',    bg:'rgba(255,255,255,0.04)', border:'#ffffff11' },
+].forEach(t => {
+    const cnt = stats.tiers[t.key] || 0;
+    const pct = Math.round(cnt / totalSc * 100);
+    tierGrid.innerHTML += `
+        <div class="tier-card" style="background:${t.bg};border:1px solid ${t.border};">
+            <div class="tier-label" style="color:${t.color};">${t.label}</div>
+            <div class="tier-count" style="color:${t.color};">${cnt.toLocaleString()}</div>
+            <div class="tier-pct"  style="color:${t.color};">${pct}%</div>
+        </div>`;
+});
+
+// ---- レート分布 ----
+const rateKeys = Object.keys(stats.rate_distribution).map(Number).sort((a,b)=>a-b);
+new Chart(document.getElementById('rateChart'), {
+    type:'bar',
+    data:{
+        labels: rateKeys.map(k=>`${k}~`),
+        datasets:[{
+            label:'件数',
+            data: rateKeys.map(k=>stats.rate_distribution[k]||0),
+            backgroundColor: rateKeys.map((_,i)=>{
+                const p = i / Math.max(rateKeys.length-1,1);
+                return p < 0.33 ? 'rgba(0,212,255,0.7)' : p < 0.66 ? 'rgba(155,109,255,0.7)' : 'rgba(255,102,204,0.7)';
+            }),
+            borderRadius:4,
+        }]
+    },
+    options:{
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ display:false } },
+        scales:{
+            x:{ ticks:{ color:'#555', font:{size:10}, autoSkip:false, maxRotation:45 }, grid:{ color:'rgba(255,255,255,0.04)' } },
+            y:{ ticks:{ color:'#555', font:{size:10} }, grid:{ color:'rgba(255,255,255,0.04)' } }
+        }
+    }
+});
+
+// ---- 横バー共通ヘルパー ----
+function renderHbars(id, data, valIndex, suffix, color) {
+    const el  = document.getElementById(id);
+    const max = (data[0] && data[0][valIndex]) ? data[0][valIndex] : 1;
+    data.forEach((row, i) => {
+        const name = row[0];
+        const val  = row[valIndex];
+        const pct  = Math.round(val / max * 100);
+        el.innerHTML += `
+            <div class="hbar-row">
+                <span class="hbar-rank">${i+1}</span>
+                <span class="hbar-lbl" title="${name}">${name}</span>
+                <div class="hbar-track">
+                    <div class="hbar-fill" style="width:${pct}%;background:${color};"></div>
+                </div>
+                <span class="hbar-val">${val}${suffix}</span>
+            </div>`;
+    });
+}
+
+renderHbars('creatorBars', stats.creator_top10,    1, '曲', 'rgba(155,109,255,0.7)');
+renderHbars('userBars',    stats.user_top10,        1, '件', 'rgba(0,212,255,0.65)');
+renderHbars('perfectBars', stats.perfect_ranking,   1, '回', '#ffd700');
+</script>
+
+{% endblock %}

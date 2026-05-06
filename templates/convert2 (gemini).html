@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>osu!mania 4K → Sparebeat コンバーター</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #0a0c14;
+    --panel: #111320;
+    --border: #1e2340;
+    --accent: #e040fb;
+    --accent2: #00e5ff;
+    --accent3: #76ff03;
+    --text: #e0e4ff;
+    --muted: #5a6080;
+    --col1: #ff4081;
+    --col2: #ff9800;
+    --col3: #00e5ff;
+    --col4: #76ff03;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(30, 35, 64, 0.4) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(30, 35, 64, 0.4) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .logo {
+    font-size: 11px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 60%, var(--accent3) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+
+  .panel-title {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  .drop-zone {
+    border: 2px dashed var(--border);
+    border-radius: 4px;
+    padding: 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .drop-zone:hover, .drop-zone.drag-over {
+    border-color: var(--accent);
+    background: rgba(224, 64, 251, 0.05);
+  }
+
+  .drop-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+
+  .drop-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .drop-text {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .drop-sub {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .file-name {
+    margin-top: 14px;
+    padding: 8px 14px;
+    background: rgba(0,229,255,0.07);
+    border: 1px solid var(--accent2);
+    border-radius: 3px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    color: var(--accent2);
+    display: none;
+    text-align: left;
+    word-break: break-all;
+  }
+
+  .fields-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .field.full { grid-column: 1 / -1; }
+
+  label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  input[type="text"], input[type="number"] {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 9px 13px;
+    transition: border-color 0.2s;
+    outline: none;
+    width: 100%;
+  }
+
+  input[type="text"]:focus, input[type="number"]:focus {
+    border-color: var(--accent);
+  }
+
+  .hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .options-row {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .checkbox-group input[type="checkbox"] {
+    appearance: none;
+    width: 18px; height: 18px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: var(--bg);
+    cursor: pointer;
+    position: relative;
+    transition: border-color 0.2s;
+    flex-shrink: 0;
+  }
+
+  .checkbox-group input[type="checkbox"]:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .checkbox-group input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: -1px; left: 3px;
+    font-size: 12px;
+    color: white;
+  }
+
+  .checkbox-group span {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .convert-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    border: none;
+    border-radius: 4px;
+    color: #000;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    margin-top: 8px;
+  }
+
+  .convert-btn:hover:not(:disabled) { opacity: 0.9; }
+  .convert-btn:active:not(:disabled) { transform: scale(0.99); }
+  .convert-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* Log */
+  .log {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 14px 16px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    line-height: 1.8;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+  }
+
+  .log.show { display: block; }
+
+  .log .info  { color: var(--accent2); }
+  .log .ok    { color: var(--accent3); }
+  .log .warn  { color: #ffeb3b; }
+  .log .error { color: var(--col1); }
+
+  /* Result */
+  .result-panel { display: none; }
+  .result-panel.show { display: block; }
+
+  .result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .stats {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-val {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Share Tech Mono', monospace;
+    line-height: 1;
+  }
+
+  .stat-lbl {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .json-preview {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 16px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    line-height: 1.7;
+    max-height: 300px;
+    overflow: auto;
+    white-space: pre;
+    color: #8892b0;
+    tab-size: 2;
+  }
+
+  .json-preview .key   { color: var(--accent2); }
+  .json-preview .str   { color: var(--accent3); }
+  .json-preview .num   { color: #ff9800; }
+  .json-preview .bool  { color: var(--accent); }
+
+  .dl-btn {
+    padding: 12px 28px;
+    background: transparent;
+    border: 2px solid var(--accent3);
+    border-radius: 3px;
+    color: var(--accent3);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    margin-top: 16px;
+  }
+
+  .dl-btn:hover {
+    background: var(--accent3);
+    color: #000;
+  }
+
+  /* note legend */
+  .note-legend {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .legend-col {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+
+  .legend-col .key-label {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .legend-col:nth-child(1) .key-label { color: var(--col1); }
+  .legend-col:nth-child(2) .key-label { color: var(--col2); }
+  .legend-col:nth-child(3) .key-label { color: var(--col3); }
+  .legend-col:nth-child(4) .key-label { color: var(--col4); }
+
+  .legend-col .key-name {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+  }
+
+  .legend-col .note-chars {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    color: var(--text);
+    margin-top: 4px;
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 600px) {
+    h1 { font-size: 28px; }
+    .fields-grid { grid-template-columns: 1fr; }
+    .note-legend { grid-template-columns: repeat(2,1fr); }
+    .panel { padding: 20px 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="logo">Rhythm Game Utility</div>
+    <h1>OSU→SPAREBEAT</h1>
+    <div class="subtitle">osu!mania 4K → Sparebeat コンバーター</div>
+  </header>
+
+  <!-- ノーツ対応表 -->
+  <div class="panel" style="display: none;">
+    <div class="panel-title">ノーツ対応表</div>
+    <div class="note-legend">
+      <div class="legend-col">
+        <div class="key-label">D</div>
+        <div class="key-name">Col 1</div>
+        <div class="note-chars">通常:1 / 攻:5<br>LN始:a / LN終:e</div>
+      </div>
+      <div class="legend-col">
+        <div class="key-label">F</div>
+        <div class="key-name">Col 2</div>
+        <div class="note-chars">通常:2 / 攻:6<br>LN始:b / LN終:f</div>
+      </div>
+      <div class="legend-col">
+        <div class="key-label">J</div>
+        <div class="key-name">Col 3</div>
+        <div class="note-chars">通常:3 / 攻:7<br>LN始:c / LN終:g</div>
+      </div>
+      <div class="legend-col">
+        <div class="key-label">K</div>
+        <div class="key-name">Col 4</div>
+        <div class="note-chars">通常:4 / 攻:8<br>LN始:d / LN終:h</div>
+      </div>
+    </div>
+    <p class="hint" style="margin-top:12px">32分音符はBPM2倍化して16分として配置（Sparebeat仕様に準拠）</p>
+  </div>
+
+  <!-- ファイル読み込み -->
+  <div class="panel">
+    <div class="panel-title">Step 1 — .osu ファイルを選択</div>
+    <div class="drop-zone" id="dropZone">
+      <input type="file" id="fileInput" accept=".osu">
+      <span class="drop-icon">🎵</span>
+      <div class="drop-text">クリックまたはドラッグ＆ドロップ</div>
+      <div class="drop-sub">.osu ファイル (osu!mania 4K)</div>
+      <div class="file-name" id="fileName"></div>
+    </div>
+  </div>
+
+  <!-- メタデータ -->
+  <div class="panel">
+    <div class="panel-title">Step 2 — メタデータ (任意)</div>
+    <div class="fields-grid">
+      <div class="field">
+        <label>タイトル</label>
+        <input type="text" id="metaTitle" placeholder="自動入力">
+      </div>
+      <div class="field">
+        <label>アーティスト</label>
+        <input type="text" id="metaArtist" placeholder="自動入力">
+      </div>
+      <div class="field">
+        <label>難易度: Easy</label>
+        <input type="text" id="lvEasy" placeholder="-">
+      </div>
+      <div class="field">
+        <label>難易度: Normal</label>
+        <input type="text" id="lvNormal" placeholder="-">
+      </div>
+      <div class="field">
+        <label>難易度: Hard</label>
+        <input type="text" id="lvHard" placeholder="自動入力">
+      </div>
+      <div class="field">
+        <label>startTime(空の場合自動計算)</label>
+        <input type="number" id="startTime" placeholder="0" value="null">
+      </div>
+      <div class="field full">
+        <label>作者URL (任意)</label>
+        <input type="text" id="metaUrl" placeholder="https://...">
+      </div>
+    </div>
+  </div>
+
+  <!-- オプション -->
+  <div class="panel"  style="display: none;">
+    <div class="panel-title">Step 3 Let's Convert!</div>
+    <div class="options-row" style="display: none;">
+      <label class="checkbox-group">
+        <input type="checkbox" id="optAttack">
+        <span>アタックノーツを変換に含める</span>
+      </label>
+      <label class="checkbox-group">
+        <input type="checkbox" id="optBarLine">
+        <span>32分BPM倍化時に小節線を非表示</span>
+      </label>
+      <label class="checkbox-group">
+        <input type="checkbox" id="optHard" checked>
+        <span>Hard難易度に変換</span>
+      </label>
+    </div>
+    <p class="hint" style="margin-top:14px" style="display: none;">
+      <br>
+      
+    </p>
+  </div>
+
+  <!-- 変換 -->
+  <button class="convert-btn" id="convertBtn" disabled>CONVERT</button>
+
+  <div class="log" id="logBox"></div>
+
+  <!-- 結果 -->
+  <div class="panel result-panel" id="resultPanel" style="margin-top:24px;">
+    <div class="panel-title">Result</div>
+    <div class="result-header">
+      <div class="stats" id="statsRow"></div>
+    </div>
+    <div class="json-preview" id="jsonPreview"></div>
+    <button class="dl-btn" id="dlBtn">⬇ JSONをダウンロード</button>
+  </div>
+
+</div>
+
+<script>
+// =====================================================
+// osu!mania 4K → Sparebeat Converter (High-Resolution 192 Edition)
+// =====================================================
+
+const fileInput  = document.getElementById('fileInput');
+const dropZone   = document.getElementById('dropZone');
+const fileName   = document.getElementById('fileName');
+const convertBtn = document.getElementById('convertBtn');
+const logBox     = document.getElementById('logBox');
+const resultPanel= document.getElementById('resultPanel');
+const jsonPreview= document.getElementById('jsonPreview');
+const statsRow   = document.getElementById('statsRow');
+const dlBtn      = document.getElementById('dlBtn');
+
+let osuText = '';
+let resultJson = null;
+
+// ---- Drag & Drop ----
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('drag-over');
+  const f = e.dataTransfer.files[0];
+  if (f) handleFile(f);
+});
+fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
+
+function handleFile(f) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    osuText = e.target.result;
+    fileName.textContent = '📄 ' + f.name;
+    fileName.style.display = 'block';
+    convertBtn.disabled = false;
+    autoFillMeta();
+  };
+  reader.readAsText(f, 'utf-8');
+}
+
+function autoFillMeta() {
+  const title  = extractMeta('Title');
+  const artist = extractMeta('Artist');
+  const diff   = extractMeta('Version');
+  if (title  && !document.getElementById('metaTitle').value)  document.getElementById('metaTitle').value  = title;
+  if (artist && !document.getElementById('metaArtist').value) document.getElementById('metaArtist').value = artist;
+  if (diff   && !document.getElementById('lvHard').value)     document.getElementById('lvHard').value     = diff;
+}
+
+function extractMeta(key) {
+  const m = osuText.match(new RegExp('^' + key + '\\s*:\\s*(.+)$', 'm'));
+  return m ? m[1].trim() : '';
+}
+
+// ---- Convert Execution ----
+convertBtn.addEventListener('click', () => {
+  logBox.innerHTML = '';
+  logBox.classList.add('show');
+  resultPanel.classList.remove('show');
+  try {
+    resultJson = convert(osuText);
+    showResult(resultJson);
+  } catch(err) {
+    log('error', '変換エラー: ' + err.message);
+    console.error(err);
+  }
+});
+
+// ---- Download ----
+dlBtn.addEventListener('click', () => {
+  if (!resultJson) return;
+  const blob = new Blob([JSON.stringify(resultJson, null, '\t')], {type: 'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (resultJson.title || 'sparebeat').replace(/[^\w\-]/g, '_') + '.json';
+  a.click();
+});
+
+// =====================================================
+// Parsers
+// =====================================================
+function parseSections(text) {
+  const sections = {};
+  let current = null;
+  for (const rawLine of text.split('\n')) {
+    const line = rawLine.replace(/\r$/, '');
+    const m = line.match(/^\[(\w+)\]$/);
+    if (m) { current = m[1]; sections[current] = ''; continue; }
+    if (current) sections[current] += line + '\n';
+  }
+  return sections;
+}
+
+function parseTimingPoints(text) {
+  const pts = [];
+  for (const line of text.split('\n')) {
+    const l = line.trim();
+    if (!l || l.startsWith('//')) continue;
+    const p = l.split(',');
+    if (p.length < 7) continue;
+    const time       = parseFloat(p[0]);
+    const beatLength = parseFloat(p[1]);
+    const uninherited= parseInt(p[6]) === 1;
+    if (!uninherited || isNaN(time) || isNaN(beatLength) || beatLength <= 0) continue;
+    pts.push({ time, beatLength, bpm: 60000 / beatLength });
+  }
+  pts.sort((a, b) => a.time - b.time);
+  return pts;
+}
+
+function parseHitObjects(text) {
+  const objs = [];
+  for (const line of text.split('\n')) {
+    const l = line.trim();
+    if (!l || l.startsWith('//')) continue;
+    const p = l.split(',');
+    if (p.length < 5) continue;
+    const x    = parseInt(p[0]);
+    const time = parseInt(p[2]);
+    const type = parseInt(p[3]);
+    const col  = Math.min(3, Math.floor(x / 128)); 
+
+    if (type & 128) {
+      const endTime = parseInt((p[5] || '').split(':')[0]);
+      objs.push({ time, col, type: 'ln_start' });
+      if (!isNaN(endTime) && endTime > time) objs.push({ time: endTime, col, type: 'ln_end' });
+    } else {
+      objs.push({ time, col, type: 'note' });
+    }
+  }
+  objs.sort((a, b) => a.time - b.time);
+  return objs;
+}
+
+function getChar(col, type) {
+  if (type === 'note')     return ['1','2','3','4'][col];
+  if (type === 'ln_start') return ['a','b','c','d'][col];
+  if (type === 'ln_end')   return ['e','f','g','h'][col];
+  return '';
+}
+
+// =====================================================
+// Core Converter (192-resolution version)
+// =====================================================
+function convert(text) {
+  log('info', '--- 高解像度(192)コンバート開始 ---');
+
+  const sections     = parseSections(text);
+  const timingPoints = parseTimingPoints(sections['TimingPoints'] || '');
+  if (!timingPoints.length) throw new Error('[TimingPoints] が不正です');
+
+  const hitObjects = parseHitObjects(sections['HitObjects'] || '');
+  if (!hitObjects.length) throw new Error('ノーツが見つかりません');
+
+  // 1拍=48分割 (1小節=192分割)
+  const RESOLUTION = 48; 
+  const MEASURE_GRID = RESOLUTION * 4; // 192
+
+  const segments = [];
+  for (let i = 0; i < timingPoints.length; i++) {
+    const tp = timingPoints[i];
+    const unitGrid = tp.beatLength / RESOLUTION; 
+    let startGrid = 0;
+    if (i > 0) {
+      const prev = segments[i - 1];
+      startGrid = prev.startGrid + Math.round((tp.time - prev.startTime) / prev.unitGrid);
+    }
+    segments.push({ startTime: tp.time, startGrid, unitGrid, bpm: tp.bpm });
+  }
+
+  function msToGrid(ms) {
+    let seg = segments[0];
+    for (const s of segments) { if (ms >= s.startTime) seg = s; else break; }
+    return seg.startGrid + Math.round((ms - seg.startTime) / seg.unitGrid);
+  }
+
+  const gridMap = new Map();
+  for (const ev of hitObjects) {
+    const g = msToGrid(ev.time);
+    const c = getChar(ev.col, ev.type);
+    gridMap.set(g, (gridMap.get(g) || '') + c);
+  }
+
+  const allGrids = [...gridMap.keys()].sort((a, b) => a - b);
+  const lastGrid = allGrids[allGrids.length - 1];
+  const numMeasures = Math.ceil((lastGrid + 1) / MEASURE_GRID);
+
+  const useBarLineHide = document.getElementById('optBarLine').checked;
+  const map = [];
+  let prevBpm = null;
+
+  for (let m = 0; m < numMeasures; m++) {
+    const gStart = m * MEASURE_GRID;
+    const gEnd   = gStart + MEASURE_GRID;
+    const inMeasure = allGrids
+      .filter(g => g >= gStart && g < gEnd)
+      .map(g => ({ rel: g - gStart, chars: gridMap.get(g) }));
+
+    // 小節内での最適なスロット数（解像度）を判定
+    // 192分割のうち、全員を割り切れる最小の分母を探す
+    let step = 12; // デフォルト16分相当 (192 / 16)
+    let slots = 16;
+    let bpmMult = 1.0;
+
+    if (inMeasure.length > 0) {
+      const check = (div) => inMeasure.every(n => n.rel % (MEASURE_GRID / div) === 0);
+      
+      if (check(16))      { slots = 16; bpmMult = 1.0; }
+      else if (check(24)) { slots = 24; bpmMult = 1.5; }
+      else if (check(32)) { slots = 32; bpmMult = 2.0; }
+      else if (check(48)) { slots = 48; bpmMult = 3.0; }
+      else if (check(64)) { slots = 64; bpmMult = 4.0; }
+      else                { slots = 192; bpmMult = 12.0; } // 最終手段
+    }
+
+    // BPM設定
+    let baseBpm = segments[0].bpm;
+    for (const s of segments) { if (gStart >= s.startGrid) baseBpm = s.bpm; else break; }
+    const targetBpm = Math.round(baseBpm * bpmMult * 100) / 100;
+
+    if (targetBpm !== prevBpm) {
+      const bpmObj = { bpm: targetBpm };
+      // 1倍速以外、または復帰時は小節線を制御
+      if (useBarLineHide) bpmObj.barLine = (bpmMult === 1.0);
+      map.push(bpmObj);
+      prevBpm = targetBpm;
+    }
+
+    // 文字列生成
+    const line = Array(slots).fill('');
+    const stepSize = MEASURE_GRID / slots;
+    for (const { rel, chars } of inMeasure) {
+      line[Math.round(rel / stepSize)] = chars;
+    }
+    map.push(line.join(','));
+  }
+
+  // --- Metadata & Export ---
+  const firstBpm = Math.round(timingPoints[0].bpm);
+  const audioLeadIn = parseInt(extractMeta('AudioLeadIn')) || 0;
+  const manualStart = document.getElementById('startTime').value.trim();
+  const startT = manualStart !== '' ? parseInt(manualStart) : timingPoints[0].time - audioLeadIn;
+
+  const result = {
+    title: document.getElementById('metaTitle').value || extractMeta('Title'),
+    artist: document.getElementById('metaArtist').value || extractMeta('Artist'),
+    bpm: String(firstBpm),
+    startTime: startT,
+    level: { 
+      easy: document.getElementById('lvEasy').value || '-', 
+      normal: document.getElementById('lvNormal').value || '-', 
+      hard: document.getElementById('lvHard').value || extractMeta('Version') 
+    },
+    map: { easy: [], normal: [], hard: document.getElementById('optHard').checked ? map : [] }
+  };
+
+  log('ok', `変換完了: ${numMeasures} 小節 / 最大解像度対応済み`);
+  return result;
+}
+
+// =====================================================
+// UI Helpers
+// =====================================================
+function log(cls, msg) {
+  const div = document.createElement('div');
+  div.className = cls; div.textContent = msg;
+  logBox.appendChild(div);
+  logBox.scrollTop = logBox.scrollHeight;
+}
+
+function showResult(json) {
+  resultPanel.classList.add('show');
+  const mapData = json.map.hard.length ? json.map.hard : json.map.normal.length ? json.map.normal : json.map.easy;
+  const measures = mapData.filter(m => typeof m === 'string');
+  const bpmChanges = mapData.filter(m => typeof m === 'object');
+  let notes = 0;
+  measures.forEach(m => m.split(',').forEach(s => notes += s.length));
+
+  statsRow.innerHTML = `
+    <div class="stat"><div class="stat-val">${measures.length}</div><div class="stat-lbl">小節数</div></div>
+    <div class="stat"><div class="stat-val">${notes}</div><div class="stat-lbl">ノーツ数</div></div>
+    <div class="stat"><div class="stat-val">${bpmChanges.length}</div><div class="stat-lbl">BPM変化</div></div>
+  `;
+  jsonPreview.innerHTML = syntaxHighlight(JSON.stringify(json, null, '\t'));
+}
+
+function syntaxHighlight(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/("(\\u[\da-fA-F]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, m => {
+      let cls = 'num';
+      if (/^"/.test(m)) cls = /:$/.test(m) ? 'key' : 'str';
+      else if (/true|false/.test(m)) cls = 'bool';
+      return `<span class="${cls}">${m}</span>`;
+    });
+}
+</script>
+</body>
+</html>

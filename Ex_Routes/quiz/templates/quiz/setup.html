@@ -1,0 +1,68 @@
+{% extends "quiz/base.html" %}
+{% block title %}クイズを作成{% endblock %}
+
+{% block content %}
+<style>
+    .setup-wrap { max-width: 500px; margin: 0 auto; }
+    .setup-wrap h2 { font-size: 1.4rem; font-weight: 700; color: var(--text-main); margin: 0 0 24px; }
+    .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px; box-shadow: var(--shadow-sm); }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .btn-submit {
+        width: 100%; padding: 13px; background: var(--accent); color: white;
+        border: none; border-radius: 10px; font-size: 0.95rem; font-weight: 700;
+        cursor: pointer; margin-top: 8px; transition: 0.15s; font-family: inherit;
+    }
+    .btn-submit:hover { background: var(--accent-dk); transform: translateY(-1px); }
+    .btn-cancel {
+        display: block; text-align: center; margin-top: 14px;
+        color: var(--text-hint); text-decoration: none; font-size: 0.85rem; transition: color 0.15s;
+    }
+    .btn-cancel:hover { color: var(--text-sub); }
+</style>
+
+<div class="setup-wrap">
+    <h2>クイズを作成</h2>
+
+    <div class="form-card">
+        <form method="POST" enctype="multipart/form-data">
+
+            <div class="field">
+                <label>タイトル</label>
+                <input type="text" name="title" placeholder="クイズのタイトルを入力..." required>
+            </div>
+
+            <div class="field">
+                <label>説明</label>
+                <textarea name="description" placeholder="どんなクイズか説明しましょう（任意）"></textarea>
+            </div>
+
+            <div class="field-row">
+                <div class="field">
+                    <label>制限時間（秒）</label>
+                    <input type="number" name="time_limit" value="0" min="0">
+                    <p class="field-hint">0 で無制限</p>
+                </div>
+
+                <div class="field">
+                    <label>結果画面</label>
+                    <select name="show_answers">
+                        <option value="1">正解を表示する</option>
+                        <option value="0">スコアのみ表示</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>アイコン画像（任意）</label>
+                <input type="file" name="icon_image" accept="image/*"
+                       style="color: rgba(255,255,255,0.6); font-size:0.85rem;">
+            </div>
+
+            <button type="submit" class="btn-submit">作成して問題を追加する →</button>
+        </form>
+
+        <a href="{{ url_for('quiz.index') }}" class="btn-cancel">キャンセル</a>
+    </div>
+</div>
+
+{% endblock %}

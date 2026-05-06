@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <link rel="icon" href="/static/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/static/images/logo.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVOIDING - Undertale homage</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #000;
+            --fg: #fff;
+            --danger: #ff3b3b;
+            --heart: #ff2a2a;
+            --hp: #ffd21f;
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: "Press Start 2P", monospace;
+            image-rendering: pixelated;
+        }
+        .wrap {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .hud {
+            width: min(640px, 95vw);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+        .hp-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .hp-bar {
+            width: 220px;
+            height: 16px;
+            border: 2px solid var(--fg);
+            background: #1a1a1a;
+            position: relative;
+        }
+        .hp-fill {
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 100%;
+            background: var(--hp);
+        }
+        .hint {
+            width: min(640px, 95vw);
+            text-align: center;
+            font-size: 10px;
+            line-height: 1.7;
+            color: #d8d8d8;
+        }
+        .battle-box {
+            width: min(640px, 95vw);
+            aspect-ratio: 4 / 3;
+            border: 4px solid var(--fg);
+            background: #000;
+            position: relative;
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            background: #000;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            border: 2px solid var(--fg);
+            background: #000;
+            color: #fff;
+            font-family: inherit;
+            font-size: 10px;
+            padding: 10px 14px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: #fff;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="hud">
+            <div>SOUL: RED</div>
+            <div class="hp-row">
+                <span>HP</span>
+                <div class="hp-bar"><div id="hpFill" class="hp-fill"></div></div>
+                <span id="hpText">92 / 92</span>
+            </div>
+            <div>TIME <span id="timeText">0.00</span>s</div>
+        </div>
+
+        <div class="battle-box">
+            <canvas id="gameCanvas" width="640" height="480"></canvas>
+        </div>
+
+        <div class="hint">
+            ARROW / WASD で移動<br>
+            赤い予告線の後にビームが来ます。予兆を見て避けてください。
+        </div>
+
+        <div class="controls">
+            <button id="startBtn" class="btn">START</button>
+            <a href="/mini_game/" class="btn" style="text-decoration:none;">BACK</a>
+        </div>
+    </div>
+
+<script>
+(() => {
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const hpFill = document.getElementById("hpFill");
+    const hpText = document.getElementById("hpText");
+    const timeText = document.getElementById("timeText");
+    const startBtn = document.getElementById("startBtn");
+
+    const W = canvas.width;
+    const H = canvas.height;
+    const MAX_HP = 92;
+
+    const state = {
+        running: false,
+        ended: false,
+        startedAt: 0,
+        lastTs: 0,
+        hp: MAX_HP,
+        elapsed: 0,
+        keys: new Set(),
+        heart: { x: W / 2, y: H / 2, r: 8, speed: 220 },
+        bones: [],
+        warnings: [],
+        beams: [],
+        sched: {
+            nextBone: 0,
+            nextBeam: 0
+        },
+        submitted: false
+    };
+    let audioCtx = null;
+
+    function reset() {
+        state.running = false;
+        state.ended = false;
+        state.startedAt = 0;
+        state.lastTs = 0;
+        state.hp = MAX_HP;
+        state.elapsed = 0;
+        state.keys.clear();
+        state.heart.x = W / 2;
+        state.heart.y = H / 2;
+        state.bones = [];
+        state.warnings = [];
+        state.beams = [];
+        state.sched.nextBone = 0;
+        state.sched.nextBeam = 0;
+        state.submitted = false;
+        updateHud();
+    }
+
+    function updateHud() {
+        const pct = Math.max(0, state.hp / MAX_HP) * 100;
+        hpFill.style.width = pct + "%";
+        hpText.textContent = `${Math.max(0, Math.ceil(state.hp))} / ${MAX_HP}`;
+        timeText.textContent = state.elapsed.toFixed(2);
+    }
+
+    function clamp(v, min, max) {
+        return Math.max(min, Math.min(max, v));
+    }
+
+    function rand(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
+    function pick(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function ensureAudio() {
+        if (!audioCtx) {
+            const Ctx = window.AudioContext || window.webkitAudioContext;
+            if (Ctx) audioCtx = new Ctx();
+        }
+        if (audioCtx && audioCtx.state === "suspended") {
+            audioCtx.resume();
+        }
+    }
+
+    function playTone(freq, dur, type = "square", vol = 0.04) {
+        if (!audioCtx) return;
+        const t0 = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, t0);
+        gain.gain.setValueAtTime(vol, t0);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+        osc.connect(gain).connect(audioCtx.destination);
+        osc.start(t0);
+        osc.stop(t0 + dur);
+    }
+
+    function difficulty(t) {
+        // Time-proportional scaling with no early plateau.
+        const phase = t / 180; // around 180s becomes very hard
+        return {
+            boneInterval: Math.max(0.18, 0.95 - t * 0.0028),
+            beamInterval: Math.max(0.7, 2.4 - t * 0.006),
+            boneSpeed: 130 + t * 1.8 + phase * 60,
+            boneLen: Math.min(260, 72 + t * 0.9),
+            warningTime: Math.max(0.35, 1.0 - t * 0.0025),
+            beamLife: Math.min(0.75, 0.32 + t * 0.0016),
+            boneBurstMin: t < 60 ? 1 : (t < 120 ? 2 : 3),
+            boneBurstMax: t < 60 ? 2 : (t < 120 ? 3 : 5),
+            beamBurstMin: t < 90 ? 1 : (t < 180 ? 2 : 3),
+            beamBurstMax: t < 90 ? 3 : (t < 180 ? 4 : 5),
+            allowDiagonalBones: t > 50,
+            allowDiagonalBeams: t > 70
+        };
+    }
+
+    function spawnSingleBone(d) {
+        const thickness = 16;
+        const len = d.boneLen;
+        const speed = d.boneSpeed;
+
+        const dirs = d.allowDiagonalBones
+            ? ["top", "bottom", "left", "right", "tl", "tr", "bl", "br"]
+            : ["top", "bottom", "left", "right"];
+        const side = pick(dirs);
+        let b = { x: 0, y: 0, w: 0, h: 0, vx: 0, vy: 0 };
+
+        if (side === "top") {
+            const x = rand(30, W - 30 - thickness);
+            b = { x, y: -len, w: thickness, h: len, vx: 0, vy: speed };
+        } else if (side === "bottom") {
+            const x = rand(30, W - 30 - thickness);
+            b = { x, y: H, w: thickness, h: len, vx: 0, vy: -speed };
+        } else if (side === "left") {
+            const y = rand(30, H - 30 - thickness);
+            b = { x: -len, y, w: len, h: thickness, vx: speed, vy: 0 };
+        } else if (side === "right") {
+            const y = rand(30, H - 30 - thickness);
+            b = { x: W, y, w: len, h: thickness, vx: -speed, vy: 0 };
+        } else {
+            // Diagonal bones from corners with slight randomness.
+            const diagSpeed = speed * 0.84;
+            let vx = 0;
+            let vy = 0;
+            let cx = 0;
+            let cy = 0;
+            if (side === "tl") { cx = -len * 0.5; cy = -thickness * 0.5; vx = 1; vy = 1; }
+            if (side === "tr") { cx = W + len * 0.5; cy = -thickness * 0.5; vx = -1; vy = 1; }
+            if (side === "bl") { cx = -len * 0.5; cy = H + thickness * 0.5; vx = 1; vy = -1; }
+            if (side === "br") { cx = W + len * 0.5; cy = H + thickness * 0.5; vx = -1; vy = -1; }
+            const jx = rand(-0.28, 0.28);
+            const jy = rand(-0.28, 0.28);
+            const mag = Math.hypot(vx + jx, vy + jy) || 1;
+            vx = ((vx + jx) / mag) * diagSpeed;
+            vy = ((vy + jy) / mag) * diagSpeed;
+            b = {
+                orient: "diag",
+                cx,
+                cy,
+                length: len,
+                w: thickness,
+                vx,
+                vy,
+                angle: Math.atan2(vy, vx)
+            };
+        }
+        state.bones.push(b);
+    }
+
+    function spawnBone(t) {
+        const d = difficulty(t);
+        const burst = Math.floor(rand(d.boneBurstMin, d.boneBurstMax + 1));
+        for (let i = 0; i < burst; i++) spawnSingleBone(d);
+    }
+
+    function spawnBeamWarning(t) {
+        const d = difficulty(t);
+        const burstCount = Math.floor(rand(d.beamBurstMin, d.beamBurstMax + 1));
+
+        for (let i = 0; i < burstCount; i++) {
+            const orientPool = d.allowDiagonalBeams ? ["v", "h", "d1", "d2"] : ["v", "h"];
+            const orient = pick(orientPool);
+            const width = (orient === "v" || orient === "h") ? rand(34, 50) : rand(28, 42);
+            const beamLength = Math.hypot(W, H) * 1.9;
+
+            let x = 0;
+            let y = 0;
+            let cx = W / 2;
+            let cy = H / 2;
+            let angle = 0;
+            let srcX = 0;
+            let srcY = 0;
+            let srcR = 18;
+
+            if (orient === "v") {
+                x = rand(70, W - 70);
+                cx = x;
+                cy = H / 2;
+                angle = Math.PI / 2;
+            } else if (orient === "h") {
+                y = rand(70, H - 70);
+                cx = W / 2;
+                cy = y;
+                angle = 0;
+            } else {
+                angle = orient === "d1" ? Math.PI / 4 : -Math.PI / 4;
+                const nx = -Math.sin(angle);
+                const ny = Math.cos(angle);
+                const offset = rand(-H * 0.32, H * 0.32);
+                cx = W / 2 + nx * offset;
+                cy = H / 2 + ny * offset;
+            }
+            const ux = Math.cos(angle);
+            const uy = Math.sin(angle);
+            const sideSign = Math.random() < 0.5 ? -1 : 1;
+            srcX = cx + ux * beamLength * 0.58 * sideSign;
+            srcY = cy + uy * beamLength * 0.58 * sideSign;
+
+            state.warnings.push({
+                orient,
+                x,
+                y,
+                cx,
+                cy,
+                angle,
+                length: beamLength,
+                width,
+                ttl: d.warningTime,
+                maxTtl: d.warningTime,
+                beamLife: d.beamLife,
+                srcX,
+                srcY,
+                srcR
+            });
+        }
+        playTone(260, 0.09, "sawtooth", 0.03);
+    }
+
+    function activateBeam(w) {
+        playTone(130, 0.18, "square", 0.08);
+        playTone(95, 0.22, "sawtooth", 0.05);
+        if (w.orient === "v") {
+            state.beams.push({
+                orient: "v",
+                x: w.x - w.width / 2,
+                y: 0,
+                w: w.width,
+                h: H,
+                cx: w.cx,
+                cy: w.cy,
+                angle: w.angle,
+                length: w.length,
+                ttl: w.beamLife,
+                maxTtl: w.beamLife
+            });
+        } else if (w.orient === "h") {
+            state.beams.push({
+                orient: "h",
+                x: 0,
+                y: w.y - w.width / 2,
+                w: W,
+                h: w.width,
+                cx: w.cx,
+                cy: w.cy,
+                angle: w.angle,
+                length: w.length,
+                ttl: w.beamLife,
+                maxTtl: w.beamLife
+            });
+        } else {
+            state.beams.push({
+                orient: w.orient,
+                x: 0,
+                y: 0,
+                w: w.width,
+                h: w.width,
+                cx: w.cx,
+                cy: w.cy,
+                angle: w.angle,
+                length: w.length,
+                ttl: w.beamLife,
+                maxTtl: w.beamLife
+            });
+        }
+    }
+
+    function circleRectCollide(cx, cy, cr, rx, ry, rw, rh) {
+        const nx = clamp(cx, rx, rx + rw);
+        const ny = clamp(cy, ry, ry + rh);
+        const dx = cx - nx;
+        const dy = cy - ny;
+        return dx * dx + dy * dy <= cr * cr;
+    }
+
+    function circleBeamCollide(cx, cy, cr, beam) {
+        const ux = Math.cos(beam.angle);
+        const uy = Math.sin(beam.angle);
+        const nx = -uy;
+        const ny = ux;
+        const px = cx - beam.cx;
+        const py = cy - beam.cy;
+        const along = px * ux + py * uy;
+        const across = px * nx + py * ny;
+        return Math.abs(along) <= beam.length / 2 + cr && Math.abs(across) <= beam.w / 2 + cr;
+    }
+
+    function hurt(amount) {
+        state.hp -= amount;
+        if (amount > 0.2) {
+            playTone(420, 0.05, "square", 0.05);
+        }
+        if (state.hp <= 0) {
+            state.hp = 0;
+            gameOver();
+        }
+    }
+
+    function step(dt) {
+        if (!state.running || state.ended) return;
+
+        state.elapsed += dt;
+        const d = difficulty(state.elapsed);
+
+        const h = state.heart;
+        const sp = h.speed * dt;
+        if (state.keys.has("arrowup") || state.keys.has("w")) h.y -= sp;
+        if (state.keys.has("arrowdown") || state.keys.has("s")) h.y += sp;
+        if (state.keys.has("arrowleft") || state.keys.has("a")) h.x -= sp;
+        if (state.keys.has("arrowright") || state.keys.has("d")) h.x += sp;
+        h.x = clamp(h.x, 8, W - 8);
+        h.y = clamp(h.y, 8, H - 8);
+
+        state.sched.nextBone -= dt;
+        state.sched.nextBeam -= dt;
+        if (state.sched.nextBone <= 0) {
+            spawnBone(state.elapsed);
+            state.sched.nextBone = d.boneInterval;
+        }
+        if (state.sched.nextBeam <= 0) {
+            spawnBeamWarning(state.elapsed);
+            state.sched.nextBeam = d.beamInterval;
+        }
+
+        state.bones.forEach((b) => {
+            if (b.orient === "diag") {
+                b.cx += b.vx * dt;
+                b.cy += b.vy * dt;
+                b.angle = Math.atan2(b.vy, b.vx);
+            } else {
+                b.x += b.vx * dt;
+                b.y += b.vy * dt;
+            }
+            const hit = b.orient === "diag"
+                ? circleBeamCollide(h.x, h.y, h.r, b)
+                : circleRectCollide(h.x, h.y, h.r, b.x, b.y, b.w, b.h);
+            if (hit) {
+                hurt(20 * dt);
+            }
+        });
+        state.bones = state.bones.filter((b) => {
+            if (b.orient === "diag") {
+                const pad = b.length * 0.6 + 120;
+                return b.cx > -pad && b.cx < W + pad && b.cy > -pad && b.cy < H + pad;
+            }
+            return b.x + b.w > -120 && b.x < W + 120 && b.y + b.h > -120 && b.y < H + 120;
+        });
+
+        state.warnings.forEach((w) => {
+            w.ttl -= dt;
+            if (w.ttl <= 0) activateBeam(w);
+        });
+        state.warnings = state.warnings.filter((w) => w.ttl > 0);
+
+        state.beams.forEach((b) => {
+            b.ttl -= dt;
+            const hit = (b.orient === "v" || b.orient === "h")
+                ? circleRectCollide(h.x, h.y, h.r, b.x, b.y, b.w, b.h)
+                : circleBeamCollide(h.x, h.y, h.r, b);
+            if (hit) {
+                hurt(58 * dt);
+            }
+        });
+        state.beams = state.beams.filter((b) => b.ttl > 0);
+
+        updateHud();
+    }
+
+    function drawHeart(x, y) {
+        const s = 2;
+        // 7x7 pixel heart (more square, less vertically stretched)
+        const px = [
+            [0,1,1,0,1,1,0],
+            [1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1],
+            [0,1,1,1,1,1,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,1,0,0,0]
+        ];
+        const startX = Math.round(x - (7 * s) / 2);
+        const startY = Math.round(y - (6 * s) / 2);
+        ctx.fillStyle = "#ff2a2a";
+        for (let r = 0; r < px.length; r++) {
+            for (let c = 0; c < px[r].length; c++) {
+                if (px[r][c]) ctx.fillRect(startX + c * s, startY + r * s, s, s);
+            }
+        }
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+
+        ctx.strokeStyle = "#fff";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(1, 1, W - 2, H - 2);
+
+        ctx.fillStyle = "#fff";
+        state.bones.forEach((b) => {
+            if (b.orient === "diag") {
+                ctx.save();
+                ctx.translate(b.cx, b.cy);
+                ctx.rotate(b.angle);
+                ctx.fillRect(-b.length / 2, -b.w / 2, b.length, b.w);
+                ctx.restore();
+            } else {
+                ctx.fillRect(b.x, b.y, b.w, b.h);
+            }
+        });
+
+        state.warnings.forEach((w) => {
+            const p = 1 - w.ttl / w.maxTtl;
+            const alpha = 0.22 + 0.45 * (0.5 + 0.5 * Math.sin(p * 20));
+            ctx.fillStyle = `rgba(255, 35, 35, ${alpha.toFixed(3)})`;
+            if (w.orient === "v") {
+                ctx.fillRect(w.x - w.width / 2, 0, w.width, H);
+            } else if (w.orient === "h") {
+                ctx.fillRect(0, w.y - w.width / 2, W, w.width);
+            } else {
+                ctx.save();
+                ctx.translate(w.cx, w.cy);
+                ctx.rotate(w.angle);
+                ctx.fillRect(-w.length / 2, -w.width / 2, w.length, w.width);
+                ctx.restore();
+            }
+
+            // Blaster "mouth" indicator at spawn side
+            ctx.strokeStyle = "rgba(255,255,255,0.9)";
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(w.srcX, w.srcY, w.srcR, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.fillStyle = `rgba(255,35,35,${(0.35 + 0.45 * p).toFixed(3)})`;
+            ctx.beginPath();
+            ctx.arc(w.srcX, w.srcY, w.srcR * 0.55, 0, Math.PI * 2);
+            ctx.fill();
+        });
+
+        state.beams.forEach((b) => {
+            const alpha = 0.88 * (b.ttl / b.maxTtl);
+            ctx.fillStyle = `rgba(255,255,255,${alpha.toFixed(3)})`;
+            if (b.orient === "v" || b.orient === "h") {
+                ctx.fillRect(b.x, b.y, b.w, b.h);
+            } else {
+                ctx.save();
+                ctx.translate(b.cx, b.cy);
+                ctx.rotate(b.angle);
+                ctx.fillRect(-b.length / 2, -b.w / 2, b.length, b.w);
+                ctx.fillStyle = `rgba(255,255,255,${(alpha * 0.55).toFixed(3)})`;
+                ctx.fillRect(-b.length / 2, -b.w / 4, b.length, b.w / 2);
+                ctx.restore();
+            }
+        });
+
+        drawHeart(state.heart.x, state.heart.y);
+
+        if (!state.running && !state.ended) {
+            ctx.fillStyle = "#fff";
+            ctx.font = "16px 'Press Start 2P'";
+            ctx.textAlign = "center";
+            ctx.fillText("PRESS START", W / 2, H / 2);
+        }
+        if (state.ended) {
+            ctx.fillStyle = "#fff";
+            ctx.font = "18px 'Press Start 2P'";
+            ctx.textAlign = "center";
+            ctx.fillText("YOU DIED", W / 2, H / 2 - 10);
+            ctx.font = "12px 'Press Start 2P'";
+            ctx.fillText(`SURVIVED ${state.elapsed.toFixed(2)}s`, W / 2, H / 2 + 18);
+        }
+    }
+
+    function submitScoreIfNeeded() {
+        if (state.submitted) return;
+        state.submitted = true;
+        fetch("/mini_game/api/submit_score", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                game_name: "avoiding",
+                score: Number(state.elapsed.toFixed(3))
+            })
+        }).finally(() => {
+            setTimeout(() => {
+                window.location.href = "/mini_game/ranking/avoiding";
+            }, 1200);
+        });
+    }
+
+    function gameOver() {
+        state.running = false;
+        state.ended = true;
+        submitScoreIfNeeded();
+    }
+
+    function loop(ts) {
+        if (!state.lastTs) state.lastTs = ts;
+        const dt = Math.min(0.033, (ts - state.lastTs) / 1000);
+        state.lastTs = ts;
+
+        step(dt);
+        draw();
+        requestAnimationFrame(loop);
+    }
+
+    document.addEventListener("keydown", (e) => {
+        state.keys.add(e.key.toLowerCase());
+    });
+    document.addEventListener("keyup", (e) => {
+        state.keys.delete(e.key.toLowerCase());
+    });
+
+    startBtn.addEventListener("click", () => {
+        ensureAudio();
+        reset();
+        state.running = true;
+        state.startedAt = performance.now();
+        startBtn.textContent = "RESTART";
+        playTone(520, 0.08, "square", 0.05);
+    });
+
+    reset();
+    requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

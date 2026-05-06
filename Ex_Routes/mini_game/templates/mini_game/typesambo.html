@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <link rel="icon" href="/static/images/favicon.ico">
+<link rel="apple-touch-icon" href="/static/images/logo.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>さんぼタイピング</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background: #f0f2f5; margin: 0; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .target-word { font-size: 3rem; font-weight: bold; color: #4a90e2; margin: 20px 0; letter-spacing: 5px; }
+        .input-area { width: 80%; font-size: 1.5rem; padding: 10px; border: 2px solid #ddd; border-radius: 8px; text-align: center; outline: none; }
+        .input-area:focus { border-color: #4a90e2; }
+        .stats { display: flex; justify-content: space-around; margin: 20px 0; font-size: 1.2rem; font-weight: bold; }
+        .timer { color: #ff4757; }
+        .score { color: #2ed573; }
+        .btn { padding: 10px 25px; font-size: 1rem; background: #4a90e2; color: white; border: none; border-radius: 20px; cursor: pointer; }
+        #start-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; border-radius: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="container" style="position: relative;">
+    <div id="start-screen">
+        <h2>「さんぼ」タイピング</h2>
+        <p>10秒間で「さんぼ」と何回入力できるか！</p>
+        <button class="btn" onclick="startGame()">スタート</button>
+    </div>
+
+    <h1>Typing Test</h1>
+    <div class="stats">
+        <div class="timer">残り時間: <span id="timer">10.0</span>s</div>
+        <div class="score">スコア: <span id="score">0</span></div>
+    </div>
+
+    <div class="target-word">さんぼ</div>
+    <input type="text" id="input-field" class="input-area" placeholder="ここに入力" autocomplete="off">
+    
+    <div style="margin-top: 30px;"><a href="/mini_game/">戻る</a></div>
+</div>
+
+<script>
+    const target = "さんぼ";
+    let score = 0;
+    let timeLeft = 10.0;
+    let isPlaying = false;
+    let timerId = null;
+
+    const inputField = document.getElementById('input-field');
+    const timerDisplay = document.getElementById('timer');
+    const scoreDisplay = document.getElementById('score');
+    const startScreen = document.getElementById('start-screen');
+
+    function startGame() {
+        score = 0;
+        timeLeft = 10.0;
+        isPlaying = true;
+        startScreen.style.display = 'none';
+        inputField.value = "";
+        inputField.focus();
+        scoreDisplay.innerText = score;
+        timerDisplay.innerText = timeLeft.toFixed(1);
+
+        timerId = setInterval(() => {
+            timeLeft -= 0.1;
+            if (timeLeft <= 0) {
+                timeLeft = 0;
+                endGame();
+            }
+            timerDisplay.innerText = timeLeft.toFixed(1);
+        }, 100);
+    }
+
+    // IME確定後に発火するcompositionendで判定（日本語入力対応）
+    inputField.addEventListener('compositionend', (e) => {
+        if (e.data === target) {
+            processSuccess();
+        }
+    });
+
+    // ペースト禁止
+    let isPasting = false;
+    inputField.addEventListener('paste', () => { isPasting = true; setTimeout(() => { isPasting = false; inputField.value = ""; }, 0); });
+
+    // 直接入力（ローマ字など）の場合のチェック
+    inputField.addEventListener('input', (e) => {
+        if (!e.isComposing && !isPasting && inputField.value === target) {
+            processSuccess();
+        }
+    });
+
+    function processSuccess() {
+        if (!isPlaying) return;
+        score++;
+        scoreDisplay.innerText = score;
+        inputField.value = "";
+    }
+
+    function endGame() {
+        isPlaying = false;
+        clearInterval(timerId);
+        inputField.disabled = true;
+        alert("終了！スコア: " + score);
+        submitScore(score);
+    }
+
+    function submitScore(finalScore) {
+        fetch('/mini_game/api/submit_score', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                game_name: 'typesambo',
+                score: finalScore
+            })
+        }).then(() => {
+            location.href = '/mini_game/ranking/typesambo';
+        });
+    }
+</script>
+</body>
+</html>

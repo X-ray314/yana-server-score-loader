@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <link rel="icon" href="/static/images/favicon.ico">
+<link rel="apple-touch-icon" href="/static/images/logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+    <title>Aim Trainer</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background: #f8f9fa; margin: 0; overflow: hidden; }
+        #game-info { padding: 20px; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: relative; z-index: 10; }
+        #game-canvas {
+            background: #eee; border: 2px solid #ddd; cursor: crosshair;
+            display: block; margin: 20px auto; position: relative;
+            width: 800px; height: 500px; overflow: hidden; border-radius: 8px;
+        }
+        .target {
+            position: absolute; width: 40px; height: 40px; background: #ff4757;
+            border-radius: 50%; border: 4px solid #ff6b81; cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .target:active { transform: scale(0.8); }
+        .stat { font-size: 20px; font-weight: bold; margin: 0 20px; }
+        #start-screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.9); display: flex;
+            flex-direction: column; align-items: center; justify-content: center; z-index: 20;
+        }
+        .btn { padding: 10px 30px; font-size: 1.2rem; background: #007bff; color: white; border: none; border-radius: 30px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div id="game-info">
+    <span class="stat">Time: <span id="timer">30</span>s</span>
+    <span class="stat">Score: <span id="score">0</span></span>
+    <a href="/mini_game/">戻る</a>
+</div>
+
+<div id="game-canvas">
+    <div id="start-screen">
+        <h2>的当て 30秒チャレンジ</h2>
+        <p>出現する赤い的をクリックして壊せ！</p>
+        <button class="btn" onclick="startGame()">START</button>
+    </div>
+</div>
+
+<script>
+    let score = 0;
+    let timeLeft = 30;
+    let gameActive = false;
+    const canvas = document.getElementById('game-canvas');
+
+    function startGame() {
+        score = 0;
+        timeLeft = 30;
+        gameActive = true;
+        document.getElementById('start-screen').style.display = 'none';
+        document.getElementById('score').innerText = score;
+        document.getElementById('timer').innerText = timeLeft;
+        
+        spawnTarget();
+        const timerId = setInterval(() => {
+            timeLeft--;
+            document.getElementById('timer').innerText = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(timerId);
+                endGame();
+            }
+        }, 1000);
+    }
+
+    function spawnTarget() {
+        if (!gameActive) return;
+
+        const oldTarget = document.querySelector('.target');
+        if (oldTarget) oldTarget.remove();
+
+        const target = document.createElement('div');
+        target.className = 'target';
+        
+        const x = Math.random() * (canvas.clientWidth - 40);
+        const y = Math.random() * (canvas.clientHeight - 40);
+        
+        target.style.left = x + 'px';
+        target.style.top = y + 'px';
+
+        // 'onclick' よりも反応が速い 'onmousedown' を推奨
+        target.onmousedown = (e) => {
+            e.preventDefault(); // ブラウザのドラッグ動作などを防止
+            e.stopPropagation(); // 背景のクリックイベントを発火させない
+            
+            score++;
+            document.getElementById('score').innerText = score;
+            spawnTarget(); // テンポ良く次の的へ
+        };
+
+        canvas.appendChild(target);
+    }
+
+    function endGame() {
+        gameActive = false;
+        const targets = document.querySelectorAll('.target');
+        targets.forEach(t => t.remove());
+        
+        alert('終了！スコア: ' + score);
+        submitScore(score);
+    }
+
+    function submitScore(finalScore) {
+        fetch('/mini_game/api/submit_score', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                game_name: 'aim',
+                score: finalScore
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            location.href = '/mini_game/ranking/aim';
+        });
+    }
+</script>
+</body>
+</html>

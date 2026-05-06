@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ハノイの塔 - Mini Game</title>
+    <style>
+        :root { --primary: #4a90e2; --bg: #f8f9fa; }
+        body { font-family: sans-serif; background: var(--bg); display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .stats { display: flex; gap: 20px; margin-bottom: 20px; font-weight: bold; }
+        
+        /* ゲームボード全体のコンテナ */
+        .game-container { 
+            display: flex; 
+            justify-content: space-around; 
+            width: 600px; 
+            height: 280px; 
+            background: #e0e0e0; 
+            border-radius: 10px; 
+            padding: 20px; 
+            align-items: flex-end; 
+        }
+
+        /* 杭のベース（ドロップ判定領域） */
+        .peg-container {
+            width: 180px;
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            cursor: pointer;
+            border-bottom: 8px solid #5d4037;
+            border-radius: 0 0 4px 4px;
+        }
+
+        /* ゴールの杭を強調 */
+        #peg-container-2 {
+            border: 2px dashed #aaa;
+            border-bottom: 8px solid #5d4037;
+        }
+
+        /* 杭の垂直棒（見た目のみ） */
+        .peg-stick {
+            position: absolute;
+            bottom: 0;
+            width: 12px;
+            height: 200px;
+            background: #8d6e63;
+            border-radius: 6px 6px 0 0;
+            z-index: 1;
+        }
+
+        /* 円盤のスタイル */
+        .disk { 
+            height: 25px; 
+            border-radius: 15px; 
+            margin-bottom: 0; 
+            color: white; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 12px; 
+            font-weight: bold; 
+            cursor: grab; 
+            transition: transform 0.1s; 
+            z-index: 2; /* 棒より手前に表示 */
+            position: relative;
+        }
+        .disk:active { cursor: grabbing; }
+
+        /* 円盤の色とサイズ */
+        .d1 { width: 50px; background: #f44336; } 
+        .d2 { width: 75px; background: #e91e63; }
+        .d3 { width: 100px; background: #9c27b0; } 
+        .d4 { width: 125px; background: #673ab7; }
+        .d5 { width: 150px; background: #3f51b5; } 
+        .d6 { width: 175px; background: #2196f3; }
+        .d7 { width: 200px; background: #00bcd4; }
+
+        .controls { margin-top: 30px; text-align: center; }
+        .btn { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+        .goal-label { position: absolute; top: -30px; font-size: 0.8rem; color: #666; width: 100%; text-align: center; }
+    </style>
+</head>
+<body>
+
+<h1>ハノイの塔</h1>
+<p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">全ての円盤を一番右の杭に移動させてください。</p>
+
+<div class="stats">
+    <div>手数: <span id="move-count">0</span></div>
+    <div>タイム: <span id="timer">0.00</span>s</div>
+</div>
+<a href="/mini_game/" class="back">← 戻る</a>
+<div class="game-container" id="board">
+    <div class="peg-container" id="peg-container-0" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <div class="peg-stick"></div>
+    </div>
+    <div class="peg-container" id="peg-container-1" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <div class="peg-stick"></div>
+    </div>
+    <div class="peg-container" id="peg-container-2" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <div class="goal-label">GOAL</div>
+        <div class="peg-stick"></div>
+    </div>
+</div>
+
+<div class="controls">
+    枚数: <span id="disk-val">3</span>
+    <input type="range" id="disk-slider" min="3" max="7" value="3" oninput="changeDisks(this.value)">
+    <br><br>
+    <button class="btn" onclick="initGame()">リセット / 開始</button>
+</div>
+
+<script>
+    let disks = 3, moves = 0, startTime = null, timerInterval = null, isCleared = false;
+
+    function changeDisks(v) { 
+        disks = parseInt(v); 
+        document.getElementById('disk-val').innerText = v; 
+        initGame(); 
+    }
+
+    function initGame() {
+        moves = 0; isCleared = false; startTime = null; clearInterval(timerInterval);
+        document.getElementById('move-count').innerText = "0";
+        document.getElementById('timer').innerText = "0.00";
+        
+        // 杭コンテナの中身（棒以外）をクリア
+        for (let i = 0; i < 3; i++) {
+            const pc = document.getElementById(`peg-container-${i}`);
+            const disksInPeg = pc.querySelectorAll('.disk');
+            disksInPeg.forEach(d => d.remove());
+        }
+        
+        // 初期状態の杭に円盤を配置
+        const startPeg = document.getElementById('peg-container-0');
+        for (let i = disks; i >= 1; i--) {
+            const disk = document.createElement('div');
+            disk.className = `disk d${i}`;
+            disk.id = `disk${i}`;
+            disk.draggable = true;
+            disk.innerText = i;
+            disk.ondragstart = drag;
+            startPeg.appendChild(disk);
+        }
+    }
+
+    function allowDrop(ev) { ev.preventDefault(); }
+
+    function drag(ev) {
+        if (isCleared) return;
+        const parentPeg = ev.target.parentNode;
+        // その杭の最後の子要素（一番上）かチェック
+        const allDisksInPeg = parentPeg.querySelectorAll('.disk');
+        if (allDisksInPeg[allDisksInPeg.length - 1] !== ev.target) {
+            ev.preventDefault();
+            return;
+        }
+        ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        const diskId = ev.dataTransfer.getData("text");
+        const disk = document.getElementById(diskId);
+        const targetPeg = ev.currentTarget;
+        
+        const targetDisks = targetPeg.querySelectorAll('.disk');
+        const topDisk = targetDisks.length > 0 ? targetDisks[targetDisks.length - 1] : null;
+
+        // ルール判定: 空の杭、またはターゲットの一番上の円盤より小さい場合のみ置ける
+        if (!topDisk || parseInt(disk.innerText) < parseInt(topDisk.innerText)) {
+            if (!startTime) startTimer();
+            targetPeg.appendChild(disk);
+            moves++;
+            document.getElementById('move-count').innerText = moves;
+            checkWin();
+        }
+    }
+
+    function startTimer() {
+        startTime = Date.now();
+        timerInterval = setInterval(() => {
+            document.getElementById('timer').innerText = ((Date.now() - startTime) / 1000).toFixed(2);
+        }, 10);
+    }
+
+    function checkWin() {
+        const goalPeg = document.getElementById('peg-container-2');
+        const disksInGoal = goalPeg.querySelectorAll('.disk');
+        if (disksInGoal.length === disks) {
+            isCleared = true; 
+            clearInterval(timerInterval);
+            const finalTime = parseFloat(document.getElementById('timer').innerText);
+            
+            // 少し遅らせて完了通知（円盤が移動しきった後）
+            setTimeout(() => {
+                alert(`クリア！\n手数: ${moves}\nタイム: ${finalTime}s`);
+                submitScore(`hanoi_${disks}_time`, finalTime);
+                submitScore(`hanoi_${disks}_moves`, moves);
+            }, 100);
+        }
+    }
+
+    async function submitScore(name, val) {
+        try {
+            await fetch('/mini_game/api/submit_score', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ game_name: name, score: val })
+            });
+        } catch (e) { console.error("Score submit error:", e); }
+    }
+
+    initGame();
+</script>
+</body>
+</html>

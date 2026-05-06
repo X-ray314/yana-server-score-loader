@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <link rel="icon" href="/static/images/favicon.ico">
+<link rel="apple-touch-icon" href="/static/images/logo.png">
+    <meta charset="UTF-8">
+    <title>反射神経テスト</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; margin: 0; background: #f8f9fa; }
+        #game-screen {
+            width: 100vw; height: 80vh; display: flex;
+            flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; user-select: none; transition: background 0.1s;
+        }
+        /* 待機中：赤、準備完了：緑、フライング：青 */
+        .waiting { background: #ff4757; color: white; }
+        .ready { background: #2ed573; color: white; }
+        .idle { background: #ffffff; color: #333; }
+        .foul { background: #ffa502; color: white; }
+
+        .instruction { font-size: 1.5rem; font-weight: bold; }
+        .result-text { font-size: 2rem; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div id="game-screen" class="idle">
+    <div id="message" class="instruction">画面をクリックしてスタート</div>
+    <div id="result" class="result-text"></div>
+</div>
+<div style="margin-top: 20px;"><a href="/mini_game/">戻る</a></div>
+
+<script>
+    let state = 'IDLE'; // IDLE, WAITING, READY, RESULT
+    let startTime;
+    let timeoutId;
+
+    const screen = document.getElementById('game-screen');
+    const msg = document.getElementById('message');
+    const res = document.getElementById('result');
+
+    screen.onmousedown = () => {
+        if (state === 'IDLE' || state === 'RESULT') {
+            startWaiting();
+        } else if (state === 'WAITING') {
+            handleFoul();
+        } else if (state === 'READY') {
+            handleSuccess();
+        }
+    };
+
+    function startWaiting() {
+        state = 'WAITING';
+        screen.className = 'waiting';
+        msg.innerText = '緑になったらクリック！';
+        res.innerText = '';
+        
+        // 2秒〜5秒の間でランダムに待機
+        const delay = Math.random() * 3000 + 2000;
+        timeoutId = setTimeout(() => {
+            state = 'READY';
+            screen.className = 'ready';
+            msg.innerText = '今だ！！';
+            startTime = Date.now();
+        }, delay);
+    }
+
+    function handleFoul() {
+        clearTimeout(timeoutId);
+        state = 'RESULT';
+        screen.className = 'foul';
+        msg.innerText = 'フライング！';
+        res.innerText = '早すぎます。';
+    }
+
+    function handleSuccess() {
+        state = 'RESULT';
+        const reactionTime = (Date.now() - startTime) / 1000;
+        screen.className = 'idle';
+        msg.innerText = 'ナイス！';
+        res.innerText = reactionTime.toFixed(3) + ' s';
+        
+        submitScore(reactionTime);
+    }
+
+    function submitScore(score) {
+        fetch('/mini_game/api/submit_score', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                game_name: 'reaction',
+                score: score
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log('Score saved');
+        });
+    }
+</script>
+</body>
+</html>

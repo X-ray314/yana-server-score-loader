@@ -1,0 +1,242 @@
+{% if recent_song_master_updates %}
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<section class="master-updates-wrap" aria-label="マスタ変更・新規譜面のお知らせ">
+    <div class="master-updates-crt">
+        <div class="master-updates-header">
+            <span class="master-updates-pixel">NOTICE</span>
+            <h3 class="master-updates-title">最近の更新情報</h3>
+            <span class="master-updates-sub">定数変更・新規譜面投稿など（直近10件）</span>
+        </div>
+        <ul class="master-updates-list">
+            {% for entry in recent_song_master_updates %}
+            <li class="master-updates-item">
+                <div class="master-updates-meta">
+                    <time class="master-updates-time" datetime="{{ entry.at }}">
+                        {{ entry.at[:19]|replace('T', ' ') }} UTC
+                    </time>
+                    {% if entry.action == 'delete' %}
+                    <span class="master-updates-badge master-updates-badge-del">DELETE</span>
+                    {% elif entry.action == 'create' %}
+                    <span class="master-updates-badge master-updates-badge-new">NEW</span>
+                    {% else %}
+                    <span class="master-updates-badge master-updates-badge-upd">UPDATE</span>
+                    {% endif %}
+                </div>
+                <div class="master-updates-song">
+                    <span class="master-updates-id">{{ entry.song_id }}</span>
+                    {% if entry.action == 'delete' %}
+                    <span class="master-updates-name">「{{ entry.song_name }}」をマスタから削除</span>
+                    {% elif entry.action == 'create' %}
+                    {% if entry.link_level %}
+                    <a class="master-updates-name master-updates-link" href="{{ url_for('song_list', level=entry.link_level) }}#song-{{ entry.song_id }}">「{{ entry.song_name }}」</a>
+                    {% else %}
+                    <span class="master-updates-name">「{{ entry.song_name }}」</span>
+                    {% endif %}
+                    <span class="master-updates-new-note">新規譜面を追加</span>
+                    {% else %}
+                    {% if entry.link_level %}
+                    <a class="master-updates-name master-updates-link" href="{{ url_for('song_list', level=entry.link_level) }}#song-{{ entry.song_id }}">「{{ entry.song_name }}」</a>
+                    {% else %}
+                    <span class="master-updates-name">「{{ entry.song_name }}」</span>
+                    {% endif %}
+                    {% endif %}
+                </div>
+                {% if entry.changes and entry.action in ('update', 'create') %}
+                <ul class="master-updates-changes">
+                    {% for ch in entry.changes %}
+                    <li>
+                        <span class="master-updates-label">{{ ch.label }}</span>
+                        <span class="master-updates-val master-updates-before">{{ ch.before }}</span>
+                        <span class="master-updates-arrow">→</span>
+                        <span class="master-updates-val master-updates-after">{{ ch.after }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+
+<style>
+.master-updates-wrap {
+    margin: 0 0 28px;
+    font-family: 'Share Tech Mono', 'Consolas', monospace;
+}
+.master-updates-crt {
+    position: relative;
+    padding: 18px 20px 20px;
+    background:
+        repeating-linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.12) 0px,
+            rgba(0, 0, 0, 0.12) 1px,
+            transparent 1px,
+            transparent 2px
+        ),
+        linear-gradient(145deg, rgba(0, 40, 50, 0.55) 0%, rgba(20, 0, 35, 0.5) 100%);
+    border: 2px solid rgba(0, 212, 255, 0.55);
+    box-shadow:
+        0 0 0 1px rgba(255, 0, 255, 0.25),
+        inset 0 0 40px rgba(0, 212, 255, 0.08),
+        0 12px 32px rgba(0, 0, 0, 0.45);
+    border-radius: 4px;
+    overflow: hidden;
+}
+.master-updates-crt::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+        transparent 0%,
+        rgba(0, 212, 255, 0.03) 50%,
+        transparent 100%
+    );
+    animation: master-updates-scan 6s linear infinite;
+}
+@keyframes master-updates-scan {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+}
+.master-updates-header {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed rgba(0, 212, 255, 0.35);
+}
+.master-updates-pixel {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.55rem;
+    color: #ff66cc;
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 8px rgba(255, 102, 204, 0.6);
+    display: inline-block;
+    margin-bottom: 8px;
+}
+.master-updates-title {
+    margin: 0 0 6px;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: #e8ffff;
+    text-shadow: 0 0 12px rgba(0, 212, 255, 0.45);
+}
+.master-updates-sub {
+    font-size: 0.72rem;
+    color: rgba(180, 255, 255, 0.65);
+    letter-spacing: 0.04em;
+}
+.master-updates-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    z-index: 1;
+}
+.master-updates-item {
+    padding: 12px 0;
+    border-bottom: 1px dotted rgba(255, 255, 255, 0.12);
+}
+.master-updates-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+.master-updates-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+.master-updates-time {
+    font-size: 0.75rem;
+    color: #7fdfff;
+    opacity: 0.9;
+}
+.master-updates-badge {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.45rem;
+    padding: 4px 8px;
+    border-radius: 2px;
+    letter-spacing: 0.06em;
+}
+.master-updates-badge-upd {
+    color: #0a1a1a;
+    background: linear-gradient(90deg, #00d4ff, #00ffcc);
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.5);
+}
+.master-updates-badge-del {
+    color: #fff;
+    background: linear-gradient(90deg, #aa0044, #ff3366);
+    box-shadow: 0 0 12px rgba(255, 51, 102, 0.45);
+}
+.master-updates-badge-new {
+    color: #0a1a12;
+    background: linear-gradient(90deg, #66ff99, #00ddaa);
+    box-shadow: 0 0 12px rgba(0, 255, 170, 0.45);
+}
+.master-updates-new-note {
+    margin-left: 8px;
+    font-size: 0.78rem;
+    color: rgba(180, 255, 220, 0.85);
+    font-weight: 600;
+}
+.master-updates-song {
+    font-size: 0.88rem;
+    line-height: 1.45;
+    color: #f0f0f0;
+}
+.master-updates-id {
+    color: #888;
+    font-size: 0.78rem;
+    margin-right: 8px;
+}
+.master-updates-name {
+    color: #fff;
+    font-weight: 700;
+}
+.master-updates-link {
+    color: #00d4ff;
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(0, 212, 255, 0.45);
+}
+.master-updates-link:hover {
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.7);
+    border-bottom-color: #00d4ff;
+}
+.master-updates-changes {
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 8px 10px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    border-radius: 2px;
+    font-size: 0.78rem;
+}
+.master-updates-changes li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+.master-updates-changes li:last-child { margin-bottom: 0; }
+.master-updates-label {
+    color: #ff99dd;
+    min-width: 6.5em;
+}
+.master-updates-val { word-break: break-all; }
+.master-updates-before { color: #ff8888; }
+.master-updates-after { color: #88ffaa; }
+.master-updates-arrow { color: rgba(255, 255, 255, 0.45); }
+@media (max-width: 600px) {
+    .master-updates-changes li { flex-direction: column; align-items: flex-start; }
+    .master-updates-label { min-width: unset; }
+}
+</style>
+{% endif %}

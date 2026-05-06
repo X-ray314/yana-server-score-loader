@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <link rel="icon" href="/static/images/favicon.ico">
+<link rel="apple-touch-icon" href="/static/images/logo.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数字記憶チャレンジ</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background: #f0f2f5; margin: 0; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .display-num { font-size: 4rem; font-weight: bold; color: #4a90e2; }
+        .instruction { font-size: 1.5rem; margin-bottom: 20px; color: #555; }
+        .input-area { font-size: 2rem; width: 150px; padding: 10px; border: 3px solid #4a90e2; border-radius: 10px; text-align: center; outline: none; }
+        .timer-bar { width: 100%; height: 10px; background: #eee; margin-top: 20px; border-radius: 5px; overflow: hidden; }
+        #progress { width: 100%; height: 100%; background: #ff4757; transition: width 0.1s linear; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="start-screen">
+        <h1>数字記憶チャレンジ</h1>
+        <p>出てくる数字を順番に覚えよう！</p>
+        <p>11個目からは特殊な順番で聞かれるぞ...</p>
+        <button onclick="startGame()" style="padding:10px 30px; font-size:1.2rem; cursor:pointer;">スタート</button>
+    </div>
+
+    <div id="game-area" class="hidden">
+        <div id="msg" class="instruction">覚えて！</div>
+        <div id="number-display" class="display-num">---</div>
+        <input type="number" id="input-field" class="input-area hidden" placeholder="???">
+        <div class="timer-bar"><div id="progress"></div></div>
+        <p id="sub-msg" style="margin-top:20px; color:#888;"></p>
+    </div>
+</div>
+
+<script>
+    let numbers = [];
+    let currentStep = 1; // 現在何個目の数字を追加するフェーズか
+    let inputIndex = 0;  // 回答中の何番目か
+    let answerOrder = []; // 入力する順番のインデックス
+    let isShowing = true;
+    let timerId = null;
+
+    const msg = document.getElementById('msg');
+    const numDisp = document.getElementById('number-display');
+    const inputField = document.getElementById('input-field');
+    const progress = document.getElementById('progress');
+    const subMsg = document.getElementById('sub-msg');
+
+    function startGame() {
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('game-area').classList.remove('hidden');
+        nextRound();
+    }
+
+    function nextRound() {
+        // 新しい数字を追加 (100-999)
+        const newNum = Math.floor(Math.random() * 900) + 100;
+        numbers.push(newNum);
+        
+        showNewNumber();
+    }
+
+    // 新しい数字を見せる (2秒)
+    function showNewNumber() {
+        isShowing = true;
+        inputField.classList.add('hidden');
+        numDisp.classList.remove('hidden');
+        
+        msg.innerText = `${numbers.length}個目の数字を覚えて！`;
+        numDisp.innerText = numbers[numbers.length - 1];
+        subMsg.innerText = "";
+        
+        startTimer(2000, startAnswering);
+    }
+
+    // 回答フェーズ開始
+    function startAnswering() {
+        isShowing = false;
+        inputIndex = 0;
+        
+        // 11個目以上なら順番をシャッフル、10個目までは[0, 1, 2...]
+        answerOrder = Array.from({length: numbers.length}, (_, i) => i);
+        if (numbers.length >= 11) {
+            // フィッシャー–イェーツのシャッフル
+            for (let i = answerOrder.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [answerOrder[i], answerOrder[j]] = [answerOrder[j], answerOrder[i]];
+            }
+        }
+        
+        askNextInput();
+    }
+
+    function askNextInput() {
+        if (inputIndex >= numbers.length) {
+            nextRound(); // 全問正解なら次へ
+            return;
+        }
+
+        const targetIdx = answerOrder[inputIndex];
+        msg.innerText = `${targetIdx + 1}番目の数字は？`;
+        numDisp.classList.add('hidden');
+        inputField.classList.remove('hidden');
+        inputField.value = "";
+        inputField.focus();
+        
+        if (numbers.length >= 11) {
+            subMsg.innerText = "難問フェーズ：入力時間は5秒です！";
+            startTimer(5000, () => gameOver());
+        } else {
+            subMsg.innerText = "入力時間は3秒です！";
+            startTimer(3000, () => gameOver());
+        }
+    }
+
+    // 入力監視
+    inputField.oninput = (e) => {
+        const valStr = inputField.value;
+        const targetIdx = answerOrder[inputIndex];
+        const correctValue = numbers[targetIdx].toString(); // 正解を文字列に
+        
+        // 1. まず3桁入力されたかチェック
+        if (valStr.length === 3) {
+            // 2. 正解と一致しているかチェック
+            if (valStr === correctValue) {
+                // 一致していれば正解！
+                clearInterval(timerId);
+                inputField.style.borderColor = "#2ed573"; // 緑色に
+                
+                setTimeout(() => {
+                    inputField.style.borderColor = "#4a90e2";
+                    inputIndex++;
+                    askNextInput();
+                }, 500); 
+            } 
+            // 3桁で一致していない場合は、ここでは何もしない（打ち直しを許容）
+            // ※ ただし、時間切れになれば gameOver になります
+        }
+    };
+
+    function startTimer(ms, onEnd) {
+        clearInterval(timerId);
+        let start = Date.now();
+        timerId = setInterval(() => {
+            let elapsed = Date.now() - start;
+            let p = 100 - (elapsed / ms * 100);
+            progress.style.width = p + "%";
+            if (elapsed >= ms) {
+                clearInterval(timerId);
+                onEnd();
+            }
+        }, 20);
+    }
+
+    function gameOver() {
+        clearInterval(timerId);
+        const finalScore = numbers.length - 1;
+        alert(`ゲームオーバー！ スコア: ${finalScore}`);
+        
+        fetch('/mini_game/api/submit_score', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ game_name: 'memory', score: finalScore })
+        }).then(() => {
+            location.href = '/mini_game/ranking/memory';
+        });
+    }
+</script>
+</body>
+</html>

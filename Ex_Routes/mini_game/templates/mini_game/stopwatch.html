@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <link rel="icon" href="/static/images/favicon.ico">
+<link rel="apple-touch-icon" href="/static/images/logo.png">
+    <meta charset="UTF-8">
+    <title>10秒ピッタリチャレンジ</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; }
+        #display { font-size: 80px; margin: 20px; font-family: monospace; }
+        #stop-btn {
+            padding: 15px 40px; font-size: 24px; cursor: pointer;
+            background: #2ed573; color: white; border: none; border-radius: 5px;
+        }
+        #stop-btn:disabled { background: #ccc; }
+        .hint { color: #666; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <h1>⏱ 10秒ピッタリチャレンジ</h1>
+    <p class="hint">5秒を過ぎると数字が見えなくなるぞ！感覚を信じろ！</p>
+    
+    <div id="display">0.00</div>
+    <button id="stop-btn">START</button>
+    <br><br>
+    <div id="result"></div>
+    <br>
+    <a href="/mini_game/">戻る</a>
+
+    <script>
+        let startTime;
+        let timerId;
+        let running = false;
+        const btn = document.getElementById('stop-btn');
+        const display = document.getElementById('display');
+
+        btn.onclick = () => {
+            if (!running) {
+                // スタート
+                running = true;
+                btn.innerText = "STOP!";
+                startTime = Date.now();
+                timerId = setInterval(update, 10);
+            } else {
+                // ストップ
+                running = false;
+                btn.disabled = true;
+                clearInterval(timerId);
+                
+                // 誤差を正確に取るため Date.now() の差分を直接使う
+                const elapsedMs = Date.now() - startTime;
+                const finishTimeSeconds = elapsedMs / 1000;
+                
+                // 表示を3桁にする (例: 10.001)
+                display.innerText = finishTimeSeconds.toFixed(3);
+                
+                const diff = Math.abs(10 - finishTimeSeconds);
+                document.getElementById('result').innerText = `誤差: ${diff.toFixed(3)}秒 / 記録: ${finishTimeSeconds.toFixed(3)}s`;
+                
+                // スコアとして「秒数」を送信
+                submitScore(finishTimeSeconds);
+            }
+        };
+
+        function update() {
+            const elapsed = (Date.now() - startTime) / 1000;
+            if (elapsed > 5.0) {
+                display.innerText = "??.???"; // 桁数を合わせておく
+            } else {
+                display.innerText = elapsed.toFixed(3);
+            }
+        }
+
+        function submitScore(resultTime) {
+            fetch('/mini_game/api/submit_score', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    game_name: 'stopwatch',
+                    score: resultTime // ここで引数の resultTime を使う
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert('スコア送信完了！');
+                location.href = '/mini_game/ranking/stopwatch';
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                alert('送信に失敗しました');
+            });
+        }
+    </script>
+</body>
+</html>

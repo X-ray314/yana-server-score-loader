@@ -1,0 +1,342 @@
+{% extends "base.html" %}
+
+{% block title %}ABOUT{% endblock %}
+
+{% block content %}
+<style>
+    .about-hero {
+        text-align: center;
+        padding: 60px 20px 40px;
+        width: 100%;
+    }
+
+    .about-hero h1 {
+        font-size: 3rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+        margin: 0 0 12px;
+        background: linear-gradient(90deg, #00d4ff, #ffffff, #ff00ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: none;
+    }
+
+    .about-hero .subtitle {
+        color: rgba(255,255,255,0.55);
+        font-size: 1rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-bottom: 40px;
+    }
+
+    .divider {
+        width: 80px;
+        height: 2px;
+        background: linear-gradient(90deg, #00d4ff, #ff00ff);
+        margin: 0 auto 50px;
+        border-radius: 2px;
+    }
+
+    /* カードグリッド */
+    .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        width: 100%;
+        margin-bottom: 40px;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 28px 24px;
+        backdrop-filter: blur(8px);
+        transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(0, 212, 255, 0.4);
+        box-shadow: 0 8px 30px rgba(0, 212, 255, 0.12);
+    }
+
+    .card-icon {
+        font-size: 2rem;
+        margin-bottom: 14px;
+    }
+
+    .card h3 {
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: #00d4ff;
+        margin: 0 0 10px;
+        letter-spacing: 0.5px;
+    }
+
+    .card p {
+        font-size: 0.9rem;
+        color: rgba(255,255,255,0.65);
+        line-height: 1.7;
+        margin: 0;
+    }
+
+    /* レートシステム説明 */
+    .rate-section {
+        width: 100%;
+        background: rgba(0, 212, 255, 0.04);
+        border: 1px solid rgba(0, 212, 255, 0.2);
+        border-radius: 16px;
+        padding: 32px;
+        margin-bottom: 40px;
+    }
+
+    .rate-section h2 {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: #00d4ff;
+        margin: 0 0 20px;
+        letter-spacing: 1px;
+    }
+
+    .rate-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.88rem;
+    }
+
+    .rate-table th {
+        color: rgba(255,255,255,0.5);
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-align: left;
+        padding: 8px 12px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+    }
+
+    .rate-table td {
+        padding: 10px 12px;
+        color: rgba(255,255,255,0.8);
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .rate-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 20px;
+        font-size: 0.78rem;
+        font-weight: 700;
+    }
+
+    .badge-blue  { background: rgba(0,212,255,0.15); color: #00d4ff; border: 1px solid rgba(0,212,255,0.3); }
+    .badge-pink  { background: rgba(255,0,255,0.15); color: #ff66ff; border: 1px solid rgba(255,0,255,0.3); }
+    .badge-green { background: rgba(0,255,150,0.12); color: #00ff96; border: 1px solid rgba(0,255,150,0.3); }
+
+    /* 使い方フロー */
+    .flow-section {
+        width: 100%;
+        margin-bottom: 40px;
+    }
+
+    .flow-section h2 {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: white;
+        margin: 0 0 24px;
+        letter-spacing: 1px;
+        text-align: center;
+    }
+
+    .flow-steps {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .flow-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 18px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        padding: 18px 22px;
+        transition: border-color 0.2s;
+    }
+
+    .flow-step:hover {
+        border-color: rgba(0, 212, 255, 0.25);
+    }
+
+    .step-num {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: #00d4ff;
+        min-width: 32px;
+        line-height: 1;
+        padding-top: 2px;
+    }
+
+    .step-content h4 {
+        margin: 0 0 5px;
+        font-size: 0.95rem;
+        font-weight: 800;
+        color: white;
+    }
+
+    .step-content p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: rgba(255,255,255,0.55);
+        line-height: 1.6;
+    }
+
+    /* クレジット */
+    .credit-section {
+        width: 100%;
+        text-align: center;
+        padding: 30px 20px;
+        border-top: 1px solid rgba(255,255,255,0.08);
+        margin-top: 10px;
+    }
+
+    .credit-section p {
+        color: rgba(255,255,255,0.35);
+        font-size: 0.85rem;
+        margin: 4px 0;
+        letter-spacing: 0.5px;
+    }
+
+    .credit-section span {
+        color: #00d4ff;
+    }
+</style>
+
+<div class="about-hero">
+    <h1>ABOUT</h1>
+    <p class="subtitle">Sparebeat Score Loader</p>
+    <div class="divider"></div>
+</div>
+
+<!-- 機能カード -->
+<div class="cards-grid">
+    <div class="card">
+        <div class="card-icon">🎵</div>
+        <h3>スコア登録</h3>
+        <p>Sparebeatでプレイしたスコアをここに登録できます。難易度ごとに曲一覧が表示され、入力欄にスコアを入力するだけで簡単に記録できます。</p>
+    </div>
+    <div class="card">
+        <div class="card-icon">📊</div>
+        <h3>レートシステム</h3>
+        <p>スコアと譜面の難易度（★レベル）をもとにレートを自動計算します。上位20曲のレート合計が総合レートとして表示されます。</p>
+    </div>
+    <div class="card">
+        <div class="card-icon">🏆</div>
+        <h3>ランキング</h3>
+        <p>各楽曲の1位スコアを持つプレイヤーが一目でわかります。また総合レートランキングで他のプレイヤーとの実力比較ができます。</p>
+    </div>
+    <div class="card">
+        <div class="card-icon">📁</div>
+        <h3>譜面ダウンロード</h3>
+        <p>各楽曲ページから譜面JSONファイルをダウンロードできます。SparebeatのシミュレーターページにJSONと音源ファイルを読み込めばプレイできます。</p>
+    </div>
+    <div class="card">
+        <div class="card-icon">🎬</div>
+        <h3>音源について</h3>
+        <p>著作権の関係上、音源ファイルは配布していません。YouTubeなどの外部URLを各楽曲ページに掲載していますので、そちらをご利用ください。</p>
+    </div>
+    <div class="card">
+        <div class="card-icon">✏️</div>
+        <h3>譜面投稿</h3>
+        <p>許可されたユーザーは創作譜面を投稿できます。SparebeatのMap-Editorなどで制作した譜面ファイルをアップロードするだけで登録完了です。</p>
+    </div>
+</div>
+
+<!-- レートシステム詳細 -->
+<div class="rate-section">
+    <h2>⚡ レート計算について</h2>
+    <table class="rate-table">
+        <thead>
+            <tr>
+                <th>スコア帯</th>
+                <th>説明</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1,000,000</td>
+                <td>理論値、レートの値は995kの時と変わらず</td>
+            </tr>
+            <tr>
+                <td>995,000 〜</td>
+                <td>ほぼ完璧なプレイ,最大レートを獲得</td>
+            </tr>
+            <tr>
+                <td>990,000 〜</td>
+                <td>高精度なプレイ</td>
+            </tr>
+            <tr>
+                <td>950,000 〜</td>
+                <td>クリア圏内</td>
+            </tr>
+            <tr>
+                <td>950,000 未満</td>
+                <td>レートへの加算なし</td>
+            </tr>
+        </tbody>
+    </table>
+    <p style="margin: 18px 0 0; font-size: 0.82rem; color: rgba(255,255,255,0.35); line-height: 1.7;">
+        ※ レートはスコアと★レベルの組み合わせから算出されます。総合レートはスコア登録済みの全楽曲のうち、レート上位20曲の合計値です。
+    </p>
+</div>
+
+<!-- 使い方フロー -->
+<div class="flow-section">
+    <h2>🚀 使い方</h2>
+    <div class="flow-steps">
+        <div class="flow-step">
+            <div class="step-num">01</div>
+            <div class="step-content">
+                <h4>アカウント登録・ログイン</h4>
+                <p>ページ上部の「ログイン」からアカウントを作成してログインしてください。</p>
+            </div>
+        </div>
+        <div class="flow-step">
+            <div class="step-num">02</div>
+            <div class="step-content">
+                <h4>楽曲一覧から譜面を探す</h4>
+                <p>「楽曲一覧」では★レベル別に譜面が表示されます。気になる譜面を見つけたら譜面ファイルをダウンロードしましょう。</p>
+            </div>
+        </div>
+        <div class="flow-step">
+            <div class="step-num">03</div>
+            <div class="step-content">
+                <h4>Sparebeatでプレイ</h4>
+                <p>Sparebeatのシミュレーターページで、ダウンロードした譜面JSONと楽曲ページに掲載のYouTube URLの音源をダウンロードして読み込んでプレイします。</p>
+            </div>
+        </div>
+        <div class="flow-step">
+            <div class="step-num">04</div>
+            <div class="step-content">
+                <h4>スコアを登録する</h4>
+                <p>プレイ後、楽曲一覧のスコア入力欄に結果を入力して登録。マイページでレートや順位を確認できます。</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- クレジット -->
+<div class="credit-section">
+    <p>制作・運営 <span>X-ray</span></p>
+    <p>音楽ゲーム <span>Sparebeat</span> のファンサイトです</p>
+    <p style="margin-top:12px;">掲載している譜面はすべて創作譜面です。音源の著作権は各権利者に帰属します。</p>
+</div>
+
+{% endblock %}

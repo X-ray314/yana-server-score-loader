@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スライドパズル - Mini Game</title>
+    <style>
+        :root {
+            --primary: #4a90e2;
+            --bg: #f8f9fa;
+            --tile-bg: #ffffff;
+            --empty-bg: #e9ecef;
+        }
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .header { text-align: center; margin-bottom: 20px; }
+        .stats {
+            display: flex; gap: 20px; margin-bottom: 20px;
+            font-weight: bold; color: #555;
+        }
+        /* パズルの外枠 */
+        #puzzle-board {
+            display: grid;
+            gap: 10px;
+            background: #dee2e6;
+            padding: 10px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        /* タイルのスタイル */
+        .tile {
+            width: 70px; height: 70px;
+            background: var(--tile-bg);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; font-weight: bold; color: var(--primary);
+            border-radius: 8px; cursor: pointer;
+            transition: transform 0.1s, background 0.2s;
+            user-select: none;
+        }
+        .tile:hover { background: #f0f7ff; }
+        .tile.empty {
+            background: var(--empty-bg);
+            cursor: default;
+        }
+        .tile.empty:hover { background: var(--empty-bg); }
+        /* コントロール */
+        .controls { margin-top: 30px; text-align: center; }
+        input[type="range"] { width: 200px; margin: 10px 0; }
+        .btn {
+            background: var(--primary); color: white; border: none;
+            padding: 10px 25px; border-radius: 25px; cursor: pointer;
+            font-weight: bold; transition: opacity 0.2s;
+        }
+        .btn:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>スライドパズル</h1>
+    <a href="/mini_game/" style="text-decoration: none; color: var(--primary);">← 戻る</a>
+</div>
+
+<div class="stats">
+    <div>手数: <span id="move-count">0</span></div>
+    <div>タイム: <span id="timer">0.00</span>s</div>
+</div>
+
+<div id="puzzle-board"></div>
+
+<div class="controls">
+    <div>サイズ: <span id="size-display">3x3</span></div>
+    <input type="range" id="size-slider" min="3" max="6" value="3">
+    <br>
+    <button class="btn" onclick="initGame()">リセット / 開始</button>
+</div>
+
+<script>
+    let size = 3;
+    let tiles = [];
+    let moves = 0;
+    let startTime = null;
+    let timerInterval = null;
+    let isCleared = false;
+
+    const board = document.getElementById('puzzle-board');
+    const sizeSlider = document.getElementById('size-slider');
+    const sizeDisplay = document.getElementById('size-display');
+
+    sizeSlider.oninput = function() {
+        size = parseInt(this.value);
+        sizeDisplay.innerText = `${size}x${size}`;
+        initGame();
+    };
+
+    function initGame() {
+        clearInterval(timerInterval);
+        moves = 0;
+        startTime = null;
+        isCleared = false;
+        document.getElementById('move-count').innerText = "0";
+        document.getElementById('timer').innerText = "0.00";
+        
+        // タイル配列生成 (0は空きスペース)
+        tiles = Array.from({length: size * size}, (_, i) => (i + 1) % (size * size));
+        shuffle();
+        render();
+    }
+
+    function shuffle() {
+        // 確実に解けるパズルを生成するため、空き場所をランダムに動かす方式
+        let emptyIdx = tiles.indexOf(0);
+        for(let i = 0; i < 200; i++) {
+            const neighbors = getNeighbors(emptyIdx);
+            const moveIdx = neighbors[Math.floor(Math.random() * neighbors.length)];
+            [tiles[emptyIdx], tiles[moveIdx]] = [tiles[moveIdx], tiles[emptyIdx]];
+            emptyIdx = moveIdx;
+        }
+    }
+
+    function getNeighbors(idx) {
+        const neighbors = [];
+        const r = Math.floor(idx / size);
+        const c = idx % size;
+        if (r > 0) neighbors.push(idx - size);
+        if (r < size - 1) neighbors.push(idx + size);
+        if (c > 0) neighbors.push(idx - 1);
+        if (c < size - 1) neighbors.push(idx + 1);
+        return neighbors;
+    }
+
+    function render() {
+        board.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+        board.innerHTML = '';
+        tiles.forEach((num, idx) => {
+            const div = document.createElement('div');
+            div.className = 'tile' + (num === 0 ? ' empty' : '');
+            div.innerText = num === 0 ? '' : num;
+            div.onclick = () => moveTile(idx);
+            board.appendChild(div);
+        });
+    }
+
+    function moveTile(idx) {
+        if (isCleared) return;
+        const emptyIdx = tiles.indexOf(0);
+        const neighbors = getNeighbors(emptyIdx);
+
+        if (neighbors.includes(idx)) {
+            if (!startTime) startTimer();
+            [tiles[emptyIdx], tiles[idx]] = [tiles[idx], tiles[emptyIdx]];
+            moves++;
+            document.getElementById('move-count').innerText = moves;
+            render();
+            checkWin();
+        }
+    }
+
+    function startTimer() {
+        startTime = Date.now();
+        timerInterval = setInterval(() => {
+            const elapsed = (Date.now() - startTime) / 1000;
+            document.getElementById('timer').innerText = elapsed.toFixed(2);
+        }, 10);
+    }
+
+    function checkWin() {
+        const winState = Array.from({length: size * size}, (_, i) => (i + 1) % (size * size));
+        if (JSON.stringify(tiles) === JSON.stringify(winState)) {
+            isCleared = true;
+            clearInterval(timerInterval);
+            const finalTime = parseFloat(document.getElementById('timer').innerText);
+            alert(`クリア！タイム: ${finalTime}秒 / 手数: ${moves}`);
+            submitScore(finalTime);
+        }
+    }
+
+    async function submitScore(time) {
+        // ゲーム名をサイズごとに動的に変更して送信 (ランキングを分けるため)
+        const gameName = `puzzle_${size}x${size}`;
+        
+        try {
+            const response = await fetch('/mini_game/api/submit_score', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    game_name: gameName,
+                    score: time // パズルの場合はタイムが少ない方が良いので、Python側の「reaction」と同じasc判定になる想定
+                })
+            });
+            const result = await response.json();
+            console.log(result.message);
+        } catch (e) {
+            console.error("Score submission failed", e);
+        }
+    }
+
+    initGame();
+</script>
+</body>
+</html>

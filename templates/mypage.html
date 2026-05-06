@@ -1,0 +1,771 @@
+{% extends "base.html" %}
+
+{% block title %}MY PAGE{% endblock %}
+
+{% block extra_style %}
+{% if user.username == "X-ray" %}
+body {
+    background-image: 
+        linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+        url('/static/css/images/background_xray.jpg') !important;
+}
+{% endif %}
+{% endblock %}
+
+{% block extra_script %}
+{% if user.username == "X-ray" %}
+<script>
+    window.setBg = function() {};
+    window.addEventListener('DOMContentLoaded', () => {
+        document.body.style.backgroundImage =
+            "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/static/css/images/background_xray.jpg')";
+    });
+</script>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{# --- レート色判定 --- #}
+{% set r = total_rate | float %}
+{% set theme_color = "#00d4ff" %}
+{% set rank_name = "BEGINNER" %}
+
+{% if r >= 800 %}{% set theme_color = "#1a0a1a" %}{% set rank_name = "PHANTOM" %}
+{% elif r >= 775 %}{% set theme_color = "#4a0018" %}{% set rank_name = "OVERLORD" %}
+{% elif r >= 750 %}{% set theme_color = "#990033" %}{% set rank_name = "EMPEROR" %}
+{% elif r >= 725 %}{% set theme_color = "#ff0000" %}{% set rank_name = "LEGEND" %}
+{% elif r >= 700 %}{% set theme_color = "#ff6600" %}{% set rank_name = "MASTER" %}
+{% elif r >= 675 %}{% set theme_color = "#ff9900" %}{% set rank_name = "ELITE" %}
+{% elif r >= 650 %}{% set theme_color = "#ffff00" %}{% set rank_name = "DIAMOND" %}
+{% elif r >= 625 %}{% set theme_color = "#99ff00" %}{% set rank_name = "PLATINUM" %}
+{% elif r >= 600 %}{% set theme_color = "#00ff00" %}{% set rank_name = "GOLD" %}
+{% elif r >= 550 %}{% set theme_color = "#00cc99" %}{% set rank_name = "SILVER" %}
+{% elif r >= 500 %}{% set theme_color = "#00ccff" %}{% set rank_name = "BRONZE" %}
+{% elif r >= 450 %}{% set theme_color = "#0066ff" %}{% set rank_name = "IRON" %}
+{% elif r >= 400 %}{% set theme_color = "#6600ff" %}{% set rank_name = "AMATEUR" %}
+{% elif r >= 350 %}{% set theme_color = "#ff00ff" %}{% set rank_name = "NOVICE" %}
+{% elif r >= 300 %}{% set theme_color = "#ff66cc" %}{% set rank_name = "ROOKIE" %}
+{% endif %}
+
+{# ===== yanaaaaaaaa 特殊フラグ ===== #}
+{% set is_divine = (user.username == "yanaaaaaaa") %}
+{% if is_divine %}
+    {% set theme_color = "#d4af37" %}
+    {% set rank_name = "SERVER" %}
+{% endif %}
+
+{# ===== X-ray 管理者フラグ ===== #}
+{% set is_admin = (user.username == "X-ray") %}
+{% if is_admin %}
+    {% set theme_color = "#00d4ff" %}
+    {% set rank_name = "ADMINISTRATOR" %}
+{% endif %}
+
+<div class="mypage-outer {% if is_divine %}divine-mode{% endif %}">
+
+{# ===== yanaaaaaaaa：神降臨エフェクト（パーティクル＆オーラ背景） ===== #}
+{% if is_divine %}
+<div id="divine-particles"></div>
+<div class="divine-aura-ring"></div>
+
+{# 隠しメッセージ：5秒後にフェードイン #}
+<div class="divine-secret-msg" id="divineMsg">
+    ✦ &nbsp;This server was built by you.&nbsp; ✦
+</div>
+{% endif %}
+
+    <div class="header-box-gradient {% if is_divine %}divine-header{% elif is_admin %}admin-header{% endif %}"
+         style="border-left: 10px solid {{ theme_color }};">
+        <div class="header-left-group">
+            <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+
+                {# ===== プレイヤー名 ===== #}
+                {% if is_divine %}
+                <h1 class="player-name divine-name" data-text="{{ user.username }}">{{ user.username }}</h1>
+                {% elif is_admin %}
+                <h1 class="player-name admin-name" data-text="{{ user.username }}">{{ user.username }}</h1>
+                {% else %}
+                <h1 class="player-name">{{ user.username }}</h1>
+                {% endif %}
+
+                <div class="role-badge-container" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    {% if is_divine %}
+                    <span class="role-badge divine-badge">やな鯖管理者</span>
+                    {% elif is_admin %}
+                    <span class="role-badge xray-badge">⚙管理者</span>
+                    <span class="role-badge xray-badge-sub">サイト制作者</span>
+                    {% endif %}
+                    {% for role in user_roles %}
+                    <span class="role-badge" style="
+                        background: {{ role.color }};
+                        color: {{ '#000' if role.color == '#ffd700' or role.color == '#c0c0c0' or role.color == '#b9f2ff' or role.color == '#e5e4e2' else '#fff' }};
+                        padding: 2px 10px;
+                        border-radius: 4px;
+                        font-size: 0.75rem;
+                        font-weight: 900;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+                        white-space: nowrap;
+                    ">
+                        {{ role.name }}
+                    </span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="player-sub-stats">
+                {% if is_divine %}
+                <p class="rank-title divine-rank-title">⚜ RANK: {{ rank_name }} ⚜</p>
+                {% elif is_admin %}
+                <p class="rank-title admin-rank-title">◈ RANK: {{ rank_name }} ◈</p>
+                {% else %}
+                <p class="rank-title" style="color: {{ theme_color }};">RANK: {{ rank_name }}</p>
+                {% endif %}
+                <div style="display: flex; gap: 20px;">
+                    <p class="song-count">TOTAL PLAYED: <span class="white-text">{{ total_count }}</span></p>
+                    <p class="song-count" style="color: #ffcc00;">
+                        TOP RECORDS: <span class="white-text">👑 {{ top_one_count }}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-rate">
+            <p class="rate-label">TOTAL RATING</p>
+            {% if is_divine %}
+            <p class="rate-number divine-rate">
+                {{ "%.2f"|format(total_rate) }}
+            </p>
+            {% elif is_admin %}
+            <p class="rate-number admin-rate">
+                {{ "%.2f"|format(total_rate) }}
+            </p>
+            {% else %}
+            <p class="rate-number" style="color: {{ theme_color }};">
+                {{ "%.2f"|format(total_rate) }}
+            </p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="best-list {% if is_divine %}divine-list{% elif is_admin %}admin-list{% endif %}">
+        <h2 class="list-title {% if is_divine %}divine-list-title{% elif is_admin %}admin-list-title{% endif %}">BEST 20 RECORDS</h2>
+        
+        {% for item in best_20 %}
+            {% set ir = item.rate * 20 %}
+            {% set ic = "#555555" %}
+            {% if ir >= 800 %}{% set ic = "#1a0a1a" %}
+            {% elif ir >= 775 %}{% set ic = "#4a0018" %}{% elif ir >= 750 %}{% set ic = "#990033" %}
+            {% elif ir >= 725 %}{% set ic = "#ff0000" %}{% elif ir >= 700 %}{% set ic = "#ff6600" %}
+            {% elif ir >= 675 %}{% set ic = "#ff9900" %}{% elif ir >= 650 %}{% set ic = "#ffff00" %}
+            {% elif ir >= 625 %}{% set ic = "#99ff00" %}{% elif ir >= 600 %}{% set ic = "#00ff00" %}
+            {% elif ir >= 550 %}{% set ic = "#00cc99" %}{% elif ir >= 500 %}{% set ic = "#00ccff" %}
+            {% elif ir >= 450 %}{% set ic = "#0066ff" %}{% elif ir >= 400 %}{% set ic = "#6600ff" %}
+            {% elif ir >= 350 %}{% set ic = "#ff00ff" %}{% elif ir >= 300 %}{% set ic = "#ff66cc" %}
+            {% endif %}
+
+            <div class="song-card {% if is_divine %}divine-card{% endif %}"
+            onclick="location.href='/songs/{{ item.level_num | urlencode }}#song-{{ item.song_id }}'">
+            
+            {# --- 修正箇所3：左端のランク数字 --- #}
+            {# admin-song-rank クラスを削除します #}
+            <div class="song-rank {% if is_divine %}divine-song-rank{% endif %}"
+                 style="{% if not is_divine %}background-color: {{ ic }};{% endif %}">#{{ loop.index }}</div>
+            
+            <div class="song-main">
+                <p class="song-name">{{ item.song_name }}</p>
+                <p class="song-score">{{ "{:,}".format(item.score) }} pts</p>
+            </div>
+            <div class="song-rate" style="color: {% if is_divine %}#d4af37{% else %}{{ ic }}{% endif %};">
+                {{ "%.2f"|format(item.rate) }}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+    {# --- 制作譜面セクション --- #}
+    {% if created_songs %}
+        <div class="created-list">
+            <h2 class="list-title" style="color: #a0d8ef; border-bottom: 2px solid rgba(160, 216, 239, 0.3);">CREATED CHARTS</h2>
+            
+            <div class="created-grid">
+                {% for song in created_songs %}
+                    <div class="song-card created-card" 
+                         onclick="location.href='/songs/{{ song.level_num | urlencode }}#song-{{ song.song_id }}'">
+                        <div class="song-rank">CHART</div>
+                        <div class="song-main">
+                            <p class="song-name">{{ song.name }}</p>
+                            <p class="song-score" style="color: #a0d8ef;">{{ song.star }}</p>
+                        </div>
+                        <div class="song-rate" style="color: #a0d8ef; font-size: 1.2rem; padding-right: 20px;">
+                            <span style="font-size: 0.7rem; color: #888;">TYPE:</span> {{ song.difficulty }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+</div>
+
+{# ===== yanaaaaaaaa 専用 JS ===== #}
+{% if is_divine %}
+<script>
+(function() {
+    /* --- パーティクル生成 --- */
+    const container = document.getElementById('divine-particles');
+    const SYMBOLS = ['✦','⚜','★','✧','◈','⬡','⚙'];
+    for (let i = 0; i < 40; i++) {
+        const p = document.createElement('span');
+        p.className = 'dp';
+        p.textContent = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+        p.style.cssText = `
+            left:${Math.random()*100}vw;
+            top:${Math.random()*100}vh;
+            font-size:${10 + Math.random()*18}px;
+            animation-duration:${6 + Math.random()*10}s;
+            animation-delay:${Math.random()*8}s;
+            opacity:0;
+        `;
+        container.appendChild(p);
+    }
+
+    /* --- 隠しメッセージ：5秒後にフェードイン、10秒後にフェードアウト --- */
+    const msg = document.getElementById('divineMsg');
+    setTimeout(() => msg.classList.add('visible'), 5000);
+    setTimeout(() => msg.classList.remove('visible'), 12000);
+
+    /* --- 名前クリックでグリッチバースト --- */
+    const name = document.querySelector('.divine-name');
+    if (name) {
+        name.addEventListener('click', () => {
+            name.classList.add('glitch-burst');
+            setTimeout(() => name.classList.remove('glitch-burst'), 600);
+        });
+    }
+})();
+</script>
+{% endif %}
+
+<style>
+/* =====================================================
+   yanaaaaaaaa 神モード専用スタイル
+   ===================================================== */
+
+/* パーティクルコンテナ */
+#divine-particles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+.dp {
+    position: absolute;
+    color: #d4af37;
+    text-shadow: 0 0 8px #ffd700, 0 0 20px #b8860b;
+    animation: floatUp linear infinite both;
+    user-select: none;
+}
+@keyframes floatUp {
+    0%   { transform: translateY(0) rotate(0deg);   opacity: 0; }
+    10%  { opacity: 0.6; }
+    90%  { opacity: 0.3; }
+    100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+}
+
+/* オーラリング */
+.divine-aura-ring {
+    position: fixed;
+    inset: -20px;
+    pointer-events: none;
+    z-index: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow:
+        inset 0 0 80px 10px rgba(212, 175, 55, 0.08),
+        inset 0 0 200px 40px rgba(184, 134, 11, 0.05);
+    animation: auraBreath 4s ease-in-out infinite;
+}
+@keyframes auraBreath {
+    0%, 100% { opacity: 0.6; }
+    50%       { opacity: 1; }
+}
+
+/* ヘッダー神版 */
+.divine-header {
+    background: linear-gradient(135deg,
+        rgba(212,175,55,0.25) 0%,
+        rgba(30,20,5,0.95) 40%,
+        rgba(10,5,0,0.98) 100%) !important;
+    border: 1px solid rgba(212, 175, 55, 0.5) !important;
+    box-shadow:
+        0 0 40px rgba(212, 175, 55, 0.2),
+        0 0 100px rgba(212, 175, 55, 0.08),
+        inset 0 1px 0 rgba(255,215,0,0.15) !important;
+    position: relative;
+    z-index: 1;
+}
+
+/* プレイヤー名：虹グラデ + グリッチ */
+.divine-name {
+    background: linear-gradient(90deg, #ffd700, #fffacd, #d4af37, #fff8dc, #ffd700);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: nameShimmer 3s linear infinite;
+    position: relative;
+    cursor: pointer;
+    text-shadow: none;
+    filter: drop-shadow(0 0 12px rgba(212,175,55,0.7));
+}
+@keyframes nameShimmer {
+    0%   { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+/* グリッチ擬似要素 */
+.divine-name::before,
+.divine-name::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0; left: 0;
+    background: linear-gradient(90deg, #ffd700, #fffacd, #d4af37);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0;
+}
+.divine-name::before { animation: glitch1 8s infinite; clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%); transform: translateX(-3px); }
+.divine-name::after  { animation: glitch2 8s infinite; clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); transform: translateX(3px); filter: hue-rotate(90deg); }
+@keyframes glitch1 {
+    0%,94%,100% { opacity: 0; }
+    95%,97%     { opacity: 0.8; transform: translateX(-4px) skewX(-2deg); }
+    96%,98%     { opacity: 0; transform: translateX(2px); }
+}
+@keyframes glitch2 {
+    0%,91%,100% { opacity: 0; }
+    92%,94%     { opacity: 0.7; transform: translateX(4px) skewX(2deg); }
+    93%,95%     { opacity: 0; transform: translateX(-2px); }
+}
+.divine-name.glitch-burst::before,
+.divine-name.glitch-burst::after { animation: none; opacity: 1; }
+
+/* ランク称号 */
+.divine-rank-title {
+    font-size: 1rem;
+    font-weight: 900;
+    margin: 0;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, #d4af37, #fff8dc, #d4af37);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: nameShimmer 2s linear infinite;
+    filter: drop-shadow(0 0 6px rgba(212,175,55,0.8));
+}
+
+/* レート数字 */
+.divine-rate {
+    font-size: 5.5rem;
+    font-weight: 900;
+    margin: 0;
+    line-height: 0.9;
+    font-family: 'Arial Black', sans-serif;
+    background: linear-gradient(180deg, #ffd700 0%, #d4af37 50%, #b8860b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 20px rgba(212,175,55,0.9));
+    animation: ratePulse 3s ease-in-out infinite;
+}
+@keyframes ratePulse {
+    0%,100% { filter: drop-shadow(0 0 15px rgba(212,175,55,0.7)); }
+    50%     { filter: drop-shadow(0 0 35px rgba(255,215,0,1)); }
+}
+
+/* 専用バッジ */
+.divine-badge {
+    background: linear-gradient(135deg, #1a1a1a, #2a2a2a) !important;
+    color: #d4af37 !important;
+    border: 1px solid #d4af37 !important;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 0 10px rgba(212,175,55,0.4), 0 2px 5px rgba(0,0,0,0.5);
+    white-space: nowrap;
+    animation: badgeGlow 2s ease-in-out infinite;
+}
+.divine-badge-admin {
+    background: linear-gradient(135deg, #2a1500, #1a0a00) !important;
+    color: #ffd700 !important;
+    border: 1px solid #ffd700 !important;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 0 15px rgba(255,215,0,0.5), 0 2px 5px rgba(0,0,0,0.5);
+    white-space: nowrap;
+    animation: badgeGlow 2s ease-in-out infinite 0.5s;
+}
+@keyframes badgeGlow {
+    0%,100% { box-shadow: 0 0 8px rgba(212,175,55,0.4); }
+    50%     { box-shadow: 0 0 20px rgba(255,215,0,0.9), 0 0 40px rgba(212,175,55,0.3); }
+}
+
+/* ベストリスト 神版 */
+.divine-list {
+    background: rgba(10, 8, 0, 0.8) !important;
+    border: 1px solid rgba(212, 175, 55, 0.4) !important;
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.1) !important;
+}
+.divine-list-title {
+    background: linear-gradient(90deg, #d4af37, #fff8dc, #d4af37);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    border-bottom: 2px solid rgba(212,175,55,0.6) !important;
+    animation: nameShimmer 3s linear infinite;
+}
+
+/* カード 神版 */
+.divine-card {
+    border: 1px solid rgba(212, 175, 55, 0.15) !important;
+}
+.divine-card:hover {
+    background: rgba(212, 175, 55, 0.08) !important;
+    border-color: rgba(212, 175, 55, 0.5) !important;
+    box-shadow: 0 0 20px rgba(212,175,55,0.2) !important;
+    transform: scale(1.01) !important;
+}
+.divine-song-rank {
+    background: linear-gradient(180deg, #2a1f00, #1a1200) !important;
+    color: #d4af37 !important;
+    border-right: 1px solid rgba(212,175,55,0.3);
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+}
+
+/* 隠しメッセージ */
+.divine-secret-msg {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10, 8, 0, 0.92);
+    border: 1px solid rgba(212, 175, 55, 0.6);
+    color: #d4af37;
+    padding: 12px 32px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    box-shadow: 0 0 30px rgba(212,175,55,0.3), 0 4px 20px rgba(0,0,0,0.8);
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    z-index: 9999;
+    pointer-events: none;
+    white-space: nowrap;
+}
+.divine-secret-msg.visible { opacity: 1; }
+
+/* =====================================================
+   X-ray 管理者モード専用スタイル（青×ピンク）
+   ===================================================== */
+
+/* ヘッダー管理者版 */
+.admin-header {
+    background: linear-gradient(135deg,
+        rgba(0,212,255,0.2) 0%,
+        rgba(0,10,30,0.95) 40%,
+        rgba(20,0,30,0.98) 100%) !important;
+    border: 1px solid rgba(0, 212, 255, 0.4) !important;
+    box-shadow:
+        0 0 40px rgba(0, 212, 255, 0.15),
+        0 0 100px rgba(255, 0, 255, 0.05),
+        inset 0 1px 0 rgba(0,212,255,0.1) !important;
+    position: relative;
+    z-index: 1;
+}
+
+/* プレイヤー名：青×ピンクシマー */
+.admin-name {
+    background: linear-gradient(90deg, #00d4ff, #ffffff, #ff00ff, #00d4ff);
+    background-size: 250% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: adminShimmer 3s linear infinite;
+    position: relative;
+    cursor: default;
+    text-shadow: none;
+    filter: drop-shadow(0 0 10px rgba(0,212,255,0.7));
+}
+@keyframes adminShimmer {
+    0%   { background-position: 0% center; }
+    100% { background-position: 250% center; }
+}
+.admin-name::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0; top: 0;
+    background: linear-gradient(90deg, #00d4ff, #ff00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: blur(10px) brightness(1.5);
+    opacity: 0;
+    animation: adminGlow 3s ease-in-out infinite;
+    pointer-events: none;
+}
+@keyframes adminGlow {
+    0%,100% { opacity: 0.3; filter: blur(8px) brightness(1.2); }
+    50%     { opacity: 0.8; filter: blur(14px) brightness(2); }
+}
+
+/* ランク称号 管理者版 */
+.admin-rank-title {
+    font-size: 1rem;
+    font-weight: 900;
+    margin: 0;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, #00d4ff, #ff00ff, #00d4ff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: adminShimmer 2s linear infinite;
+}
+
+/* レート数字 管理者版 */
+.admin-rate {
+    font-size: 5.5rem;
+    font-weight: 900;
+    margin: 0;
+    line-height: 0.9;
+    font-family: 'Arial Black', sans-serif;
+    background: linear-gradient(180deg, #802222 0%, #e61029 50%, #ff003c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 18px rgba(83, 5, 5, 0.9));
+    animation: adminRatePulse 3s ease-in-out infinite;
+}
+@keyframes adminRatePulse {
+    0%,100% { filter: drop-shadow(0 0 2px rgba(255, 0, 76, 0.2)); }
+    50%     { filter: drop-shadow(0 0 2px rgb(255, 0, 157)) drop-shadow(0 0 2px rgba(255,0,255,0.2)); }
+}
+
+/* 管理者バッジ */
+.xray-badge {
+    background: linear-gradient(135deg, #001a2e, #002a4a) !important;
+    color: #00d4ff !important;
+    border: 1px solid #00d4ff !important;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    animation: xrayBadgeGlow 2s ease-in-out infinite;
+}
+.xray-badge-sub {
+    background: linear-gradient(135deg, #1a001a, #2a002a) !important;
+    color: #ff00ff !important;
+    border: 1px solid #ff00ff !important;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    animation: xrayBadgeGlow 2s ease-in-out infinite 0.5s;
+}
+@keyframes xrayBadgeGlow {
+    0%,100% { box-shadow: 0 0 6px rgba(0,212,255,0.4); }
+    50%     { box-shadow: 0 0 18px rgba(0,212,255,0.9), 0 0 35px rgba(255,0,255,0.3); }
+}
+
+/* ベストリスト 管理者版 */
+.admin-list {
+    background: rgba(0, 5, 20, 0.4) !important;
+    border: 1px solid rgba(0, 212, 255, 0.4) !important;
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.08) !important;
+}
+.admin-list-title {
+    background: linear-gradient(90deg, #00d4ff, #ff00ff, #00d4ff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    border-bottom: 2px solid rgba(0,212,255,0.5) !important;
+    animation: adminShimmer 3s linear infinite;
+}
+
+/* カード 管理者版 */
+.admin-card {
+    border: 1px solid rgba(0, 212, 255, 0.1) !important;
+}
+.admin-card:hover {
+    background: rgba(75, 118, 127, 0.07) !important;
+    border-color: rgba(0, 212, 255, 0.5) !important;
+    box-shadow: 0 0 20px rgba(0,212,255,0.15) !important;
+    transform: scale(1.01) !important;
+}
+.admin-song-rank {
+    background: linear-gradient(180deg, #001a2e, #000d1a) !important;
+    color: #00d4ff !important;
+    border-right: 1px solid rgba(0,212,255,0.3);
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+}
+
+/* =====================================================
+   通常スタイル（既存）
+   ===================================================== */
+.created-list {
+    background: rgba(15, 15, 35, 0.6); 
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid rgba(100, 150, 255, 0.2);
+    margin-top: 40px;
+}
+.created-list .list-title {
+    color: #a0d8ef; 
+    border-bottom: 2px solid rgba(160, 216, 239, 0.3);
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+.created-card {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    transition: all 0.3s ease;
+}
+.created-card .song-rank {
+    background-color: #1a1a2e !important;
+    color: #a0d8ef !important;
+    border-right: 1px solid rgba(160, 216, 239, 0.2) !important;
+}
+.created-card:hover {
+    background: rgba(160, 216, 239, 0.08) !important;
+    border-color: rgba(160, 216, 239, 0.5) !important;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
+    transform: translateY(-2px);
+}
+.created-card .song-name { color: #e0e0e0; }
+
+.header-box-gradient {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2) 0%, rgba(255, 0, 255, 0.2) 100%), rgba(15, 15, 15, 0.9);
+    padding: 30px 40px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+}
+.header-left-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.player-name {
+    font-size: 2.8rem;
+    margin: 0;
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1.1;
+}
+.player-sub-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.rank-title {
+    font-size: 1rem;
+    font-weight: 900;
+    margin: 0;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+.song-count {
+    color: #00d4ff;
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+.white-text { color: #ffffff; }
+.header-rate {
+    text-align: right;
+    min-width: 200px;
+}
+.rate-label {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #888;
+    letter-spacing: 3px;
+    margin: 0 0 5px 0;
+}
+.rate-number {
+    font-size: 5.5rem;
+    font-weight: 900;
+    margin: 0;
+    line-height: 0.9;
+    font-family: 'Arial Black', sans-serif;
+    text-shadow: 0 0 20px rgba(0,0,0,0.7);
+}
+.best-list {
+    background: rgba(10, 20, 40, 0.6);
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 212, 255, 0.7);
+}
+.list-title {
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: #00d4ff;
+    border-bottom: 2px solid #00d4ff;
+    padding-bottom: 12px;
+    margin-bottom: 25px;
+    letter-spacing: 2px;
+}
+.song-card {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    margin-bottom: 10px;
+    border-radius: 10px;
+    transition: 0.2s ease;
+    cursor: pointer;
+}
+.song-card:hover {
+    background: rgba(0, 212, 255, 0.1);
+    transform: scale(1.01);
+}
+.song-rank { width: 55px; height: 65px; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+.song-main { flex: 1; padding: 0 20px; }
+.song-name { font-weight: 800; margin: 0; font-size: 1.1rem; }
+.song-score { font-size: 0.85rem; color: #888; margin-top: 2px; font-family: monospace; }
+.song-rate { padding-right: 30px; font-size: 1.8rem; font-weight: 900; }
+
+@media (max-width: 768px) {
+    .header-box-gradient { flex-direction: column; text-align: center; }
+    .header-rate { margin-top: 30px; }
+    .rate-number { font-size: 4rem; }
+    .divine-secret-msg { font-size: 0.75rem; padding: 10px 20px; white-space: normal; text-align: center; width: 80%; }
+}
+</style>
+{% endblock %}

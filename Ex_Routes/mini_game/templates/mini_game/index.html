@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <link rel="icon" href="/static/images/favicon.ico">
+<link rel="apple-touch-icon" href="/static/images/logo.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Game Hub</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #888;
+            margin-bottom: 40px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 16px;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px 16px;
+            box-shadow: 
+                0 4px 6px rgba(0,0,0,0.02),
+                0 10px 15px rgba(0,0,0,0.03);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px rgba(0,0,0,0.06);
+        }
+
+        .icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            margin: 6px 0;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        p {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 16px;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 9px 20px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            transition: background 0.2s ease;
+            width: 85%;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #357abd;
+        }
+
+        .ranking-link {
+            margin-top: 12px;
+            font-size: 0.75rem;
+            color: #aaa;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .ranking-link:hover {
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>ミニゲーム置き場</h1>
+    <p class="subtitle">ミニゲームを極めよう</p>
+    <a href="/" style="text-decoration: none; color: #4a90e2; font-weight: bold; margin-bottom: 20px; display: block;">
+    ← Score Loader ホームに戻る
+</a>
+    
+    <div class="container"> <div class="game-card">
+            <div class="icon">👆</div>
+            <h3>10秒連打</h3>
+            <p>限界までボタンを連打して、ハイスコアを目指そう。</p>
+            <a href="/mini_game/play/clicker" class="btn">チャレンジ</a>
+            <a href="/mini_game/ranking/clicker" class="ranking-link">ランキング</a>
+        </div>
+
+        <div class="game-card">
+            <div class="icon">⏱</div>
+            <h3>10秒タイマー</h3>
+            <p>体内時計の正確さを測定。10.000秒に挑め。さんぼうおｗ</p>
+            <a href="/mini_game/play/stopwatch" class="btn">チャレンジ</a>
+            <a href="/mini_game/ranking/stopwatch" class="ranking-link">ランキング</a>
+        </div>
+
+        <div class="game-card">
+            <div class="icon">🎯</div>
+            <h3>エイム練習</h3>
+            <p>30秒間でいくつの的を撃ち抜けるか？正確な操作を極めろ。</p>
+            <a href="/mini_game/play/aim" class="btn">チャレンジ</a>
+            <a href="/mini_game/ranking/aim" class="ranking-link">ランキング</a>
+        </div>
+
+        <div class="game-card">
+            <div class="icon">⚡</div>
+            <h3>反射神経テスト</h3>
+            <p>画面が緑になった瞬間にクリック！君の反応速度は何秒だ？</p>
+            <a href="/mini_game/play/reaction" class="btn">チャレンジ</a>
+            <a href="/mini_game/ranking/reaction" class="ranking-link">ランキング</a>
+        </div>
+
+        <div class="game-card">
+    <div class="icon">⭕</div>
+    <h3>円書きチャレンジ</h3>
+    <p>中心の点を囲むように綺麗な円を描こう。精密な操作が鍵！</p>
+    <a href="/mini_game/play/circledraw" class="btn">チャレンジ</a>
+    <a href="/mini_game/ranking/circledraw" class="ranking-link">ランキング</a>
+</div>
+        <div class="game-card">
+    <div class="icon">🎹</div>
+    <h3>4K 加速チャレンジ</h3>
+    <p>BPMが100から300へ急加速！70msの判定を維持して叩き続けろ。</p>
+    <a href="/mini_game/play/4kspeed" class="btn">チャレンジ</a>
+    <a href="/mini_game/ranking/4kspeed" class="ranking-link">ランキング</a>
+</div> 
+        <div class="game-card">
+    <div class="icon">⌨️</div>
+    <h3>さんぼタイピング</h3>
+    <p>「さんぼ」を10秒間で何回打てるか。正確さと速度の限界に挑め。</p>
+    <a href="/mini_game/play/typesambo" class="btn">チャレンジ</a>
+    <a href="/mini_game/ranking/typesambo" class="ranking-link">ランキング</a>
+</div>
+        <div class="game-card">
+    <div class="icon">🧠</div>
+    <h3>数字記憶チャレンジ</h3>
+    <p>次々現れる3桁の数字を記憶せよ。10個目を超えると...?</p>
+    <a href="/mini_game/play/memory" class="btn">チャレンジ</a>
+    <a href="/mini_game/ranking/memory" class="ranking-link">ランキング</a>
+</div>
+        <div class="game-card">
+    <div class="icon">❤️</div>
+    <h3>避けゲー</h3>
+    <p>赤いハートを操作して、骨とガスターブラスターを回避せよ。</p>
+    <a href="/mini_game/avoiding" class="btn">チャレンジ</a>
+    <a href="/mini_game/ranking/avoiding" class="ranking-link">ランキング</a>
+</div>
+<div class="game-card">
+    <div class="icon">🧩</div>
+    <h3>スライドパズル</h3>
+    <p>数字を並べ替えて完成させよう。サイズ変更も可能です。</p>
+    <a href="/mini_game/play/puzzle" class="btn">チャレンジ</a>
+    <div style="display: flex; gap: 10px;">
+        <a href="/mini_game/ranking/puzzle_3x3" class="ranking-link">3x3</a>
+        <a href="/mini_game/ranking/puzzle_4x4" class="ranking-link">4x4</a>
+    </div>
+</div>
+<div class="game-card">
+    <div class="icon">💡</div>
+    <h3>ライツアウト</h3>
+    <p>すべてのパネルを消灯させろ！クリックで上下左右が反転します。</p>
+    <a href="/mini_game/play/lightsout" class="btn">チャレンジ</a>
+    <a href="/mini_game/ranking/lightsout" class="ranking-link">ランキング</a>
+</div>
+<div class="game-card">
+    <div class="icon">🔢</div>
+    <h3>2048</h3>
+    <p>タイルを合体させて2048を目指せ！PCは矢印キー、スマホはスワイプ</p>
+    <a href="/mini_game/play/game2048" class="btn">チャレンジ</a>
+    <div style="display: flex; gap: 10px;">
+        <a href="/mini_game/ranking/2048_score" class="ranking-link">スコア順</a>
+        <a href="/mini_game/ranking/2048_time" class="ranking-link">タイム順</a>
+    </div>
+</div>
+<div class="game-card">
+    <div class="icon">🗼</div>
+    <h3>ハノイの塔</h3>
+    <p>円盤を別の杭へ移動させよう。小さい円盤の上に大きいものは置けません。</p>
+    <a href="/mini_game/play/hanoi" class="btn">チャレンジ</a>
+    <a href="/mini_game/ranking/hanoi_3_time" class="ranking-link">ランキング一覧</a>
+</div>
+<div class="game-card">
+    <div class="icon">🧱</div>
+    <h3>ブロック崩し</h3>
+    <p>パドルを操りブロックを破壊せよ！タイムアタックとエンドレスの2モード。</p>
+    <a href="/mini_game/play/breakout" class="btn">チャレンジ</a>
+    <div style="display: flex; gap: 10px;">
+        <a href="/mini_game/ranking/breakout_time" class="ranking-link">タイム順</a>
+        <a href="/mini_game/ranking/breakout_score" class="ranking-link">スコア順</a>
+    </div>
+</div>
+    </div>
+        
+
+</body>
+</html>

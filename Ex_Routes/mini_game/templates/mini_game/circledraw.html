@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <link rel="icon" href="/static/images/favicon.ico">
+<link rel="apple-touch-icon" href="/static/images/logo.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>円書きチャレンジ</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; margin: 0; background: #f8f9fa; touch-action: none; }
+        #game-container { position: relative; width: 100vw; height: 70vh; display: flex; justify-content: center; align-items: center; }
+        canvas { background: white; border: 1px solid #ddd; touch-action: none; cursor: crosshair; border-radius: 8px; }
+        .info { padding: 20px; }
+        .score-display { font-size: 2rem; font-weight: bold; color: #4a90e2; }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h1>⭕ 円書きチャレンジ</h1>
+        <p>中心の点を目安に、綺麗な円を一周描こう！</p>
+        <div id="status" class="score-display">描いてみよう！</div>
+        <button onclick="resetCanvas()" style="margin-top:10px;">リセット</button>
+        <a href="/mini_game/">戻る</a>
+    </div>
+
+    <div id="game-container">
+        <canvas id="circleCanvas"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('circleCanvas');
+        const ctx = canvas.getContext('2d');
+        const status = document.getElementById('status');
+        
+        let drawing = false;
+        let points = [];
+        const targetRadius = 150; // 目標の半径
+        let centerX, centerY;
+
+        function initCanvas() {
+            canvas.width = Math.min(window.innerWidth * 0.9, 500);
+            canvas.height = canvas.width;
+            centerX = canvas.width / 2;
+            centerY = canvas.height / 2;
+            resetCanvas();
+        }
+
+        function resetCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // 中心点を描画
+            ctx.fillStyle = '#ff4757';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 5, 0, Math.PI * 2);
+            ctx.fill();
+            points = [];
+            status.innerText = "描いてみよう！";
+            status.style.color = "#4a90e2";
+        }
+
+        function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: clientX - rect.left, y: clientY - rect.top };
+        }
+
+        const startDrawing = (e) => {
+            drawing = true;
+            points = [];
+            const pos = getPos(e);
+            points.push(pos);
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        };
+
+        const moveDrawing = (e) => {
+            if (!drawing) return;
+            const pos = getPos(e);
+            points.push(pos);
+            ctx.strokeStyle = '#4a90e2';
+            ctx.lineWidth = 3;
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+        };
+
+        const endDrawing = () => {
+            if (!drawing) return;
+            drawing = false;
+            if (points.length < 20) return; // 短すぎたら無効
+            calculateScore();
+        };
+
+        function calculateScore() {
+    if (points.length < 30) return; // あまりに描画点が少ない場合は無視
+
+    const distances = points.map(p => Math.sqrt((p.x - centerX) ** 2 + (p.y - centerY) ** 2));
+    const avgRadius = distances.reduce((a, b) => a + b) / distances.length;
+    
+    // --- 【重要】サイズ制限ロジック ---
+    // 半径が70px未満の場合は「小さすぎる」として登録を拒否する
+    const minRequiredRadius = 70; 
+    if (avgRadius < minRequiredRadius) {
+        status.innerText = "円が小さすぎます！もっと大きく描いて！";
+        status.style.color = "#ffa502"; // オレンジ色で警告
+        return;
+    }
+
+    // 真円度の計算
+    let totalDeviation = 0;
+    distances.forEach(d => {
+        totalDeviation += Math.abs(d - avgRadius);
+    });
+    const avgDeviation = totalDeviation / distances.length;
+
+    // スコア計算：平均半径に対するズレの割合で採点（100点満点）
+    // ズレが半径の20%以上あると0点になるくらいの厳しめ設定
+    let score = Math.max(0, 100 - (avgDeviation / avgRadius * 500));
+
+    // 一周チェック
+    const start = points[0];
+    const end = points[points.length - 1];
+    const gap = Math.sqrt((start.x - end.x) ** 2 + (start.y - end.y) ** 2);
+    if (gap > 80) {
+        status.innerText = "最後まできっちり繋げて！";
+        status.style.color = "red";
+        return;
+    }
+
+    status.innerText = score.toFixed(1) + " %";
+    submitScore(score);
+}
+
+        function submitScore(score) {
+            fetch('/mini_game/api/submit_score', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ game_name: 'circledraw', score: score })
+            }).then(res => res.json()).then(data => console.log("Score saved"));
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', moveDrawing);
+        window.addEventListener('mouseup', endDrawing);
+        canvas.addEventListener('touchstart', startDrawing);
+        canvas.addEventListener('touchmove', moveDrawing);
+        window.addEventListener('touchend', endDrawing);
+
+        window.onload = initCanvas;
+    </script>
+</body>
+</html>

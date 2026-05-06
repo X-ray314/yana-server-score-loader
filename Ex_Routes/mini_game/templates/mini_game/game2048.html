@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>2048 - Mini Game</title>
+    <style>
+        :root {
+            --bg-color: #bbada0;
+            --tile-empty: #cdc1b4;
+            --text-dark: #776e65;
+            --text-light: #f9f6f2;
+            --cell-size: 72.5px;
+            --gap: 10px;
+            --padding: 10px;
+        }
+        body {
+            font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
+            background-color: #faf8ef;
+            display: flex; flex-direction: column; align-items: center;
+            margin: 0; padding: 20px; touch-action: none;
+        }
+        .header { text-align: center; width: 100%; max-width: 400px; }
+        .score-container {
+            display: flex; justify-content: space-between; margin-bottom: 10px;
+        }
+        .score-box {
+            background: var(--bg-color); color: white; padding: 5px 20px;
+            border-radius: 6px; text-align: center; min-width: 80px;
+        }
+        #grid-container {
+            position: relative;
+            width: 340px; height: 340px;
+            background: var(--bg-color);
+            border-radius: 6px;
+            padding: var(--padding);
+            box-sizing: border-box;
+        }
+        /* 背景グリッド */
+        .grid-background {
+            position: absolute;
+            inset: var(--padding);
+            display: grid;
+            grid-template-columns: repeat(4, var(--cell-size));
+            grid-template-rows: repeat(4, var(--cell-size));
+            gap: var(--gap);
+        }
+        .grid-cell {
+            background: var(--tile-empty);
+            border-radius: 3px;
+        }
+        /* タイルレイヤー */
+        .tile-layer {
+            position: absolute;
+            inset: var(--padding);
+        }
+        .tile {
+            position: absolute;
+            width: var(--cell-size);
+            height: var(--cell-size);
+            border-radius: 3px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 25px; font-weight: bold;
+            /* スライドアニメーション */
+            transition: left 0.1s ease-in-out, top 0.1s ease-in-out,
+                        background-color 0.05s, transform 0.08s ease-in-out;
+            z-index: 10;
+        }
+        /* 出現アニメーション */
+        @keyframes appear {
+            0%   { transform: scale(0); }
+            60%  { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .tile-new {
+            animation: appear 0.18s ease-out forwards;
+        }
+        /* 合体アニメーション */
+        @keyframes pop {
+            0%   { transform: scale(1); }
+            50%  { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+        .tile-merged {
+            animation: pop 0.15s ease-out forwards;
+            z-index: 20;
+        }
+
+        /* タイル色定義 */
+        .tile-2    { background: #eee4da; color: var(--text-dark); }
+        .tile-4    { background: #ede0c8; color: var(--text-dark); }
+        .tile-8    { background: #f2b179; color: var(--text-light); }
+        .tile-16   { background: #f59563; color: var(--text-light); }
+        .tile-32   { background: #f67c5f; color: var(--text-light); }
+        .tile-64   { background: #f65e3b; color: var(--text-light); }
+        .tile-128  { background: #edcf72; color: var(--text-light); font-size: 20px; }
+        .tile-256  { background: #edcc61; color: var(--text-light); font-size: 20px; }
+        .tile-512  { background: #edc850; color: var(--text-light); font-size: 20px; }
+        .tile-1024 { background: #edc53f; color: var(--text-light); font-size: 15px; }
+        .tile-2048 { background: #edc22e; color: var(--text-light); font-size: 15px; }
+
+        .btn {
+            background: #8f7a66; color: white; border: none; padding: 10px 20px;
+            border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>2048</h1>
+    <div class="score-container">
+        <div class="score-box">SCORE<br><span id="current-score">0</span></div>
+        <div class="score-box">TIME<br><span id="timer">0.0</span>s</div>
+    </div>
+    <a href="/mini_game/" style="text-decoration: none; color: #776e65;">← 戻る</a>
+</div>
+
+<div id="grid-container">
+    <!-- 背景セル -->
+    <div class="grid-background">
+        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+        <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+    </div>
+    <!-- タイルはJSで追加 -->
+    <div class="tile-layer" id="tile-layer"></div>
+</div>
+
+<button class="btn" onclick="setup()">New Game</button>
+
+<script>
+    const CELL = 72.5;
+    const GAP  = 10;
+
+    // タイルのDOM要素を管理するMap (id -> element)
+    let tileElements = {};
+    let nextTileId = 0;
+
+    // board: 各セルに { value, id } or null
+    let board = [];
+    let score = 0;
+    let startTime = null;
+    let timerInterval = null;
+    let reached2048 = false;
+
+    function cellPos(index) {
+        // index = row*4 + col
+        const col = index % 4;
+        const row = Math.floor(index / 4);
+        return {
+            left: col * (CELL + GAP),
+            top:  row * (CELL + GAP)
+        };
+    }
+
+    function createTileEl(val, index, isNew = false, isMerged = false) {
+        const layer = document.getElementById('tile-layer');
+        const el = document.createElement('div');
+        const pos = cellPos(index);
+        el.className = `tile tile-${val}${isNew ? ' tile-new' : ''}${isMerged ? ' tile-merged' : ''}`;
+        el.innerText = val;
+        el.style.left = pos.left + 'px';
+        el.style.top  = pos.top  + 'px';
+        layer.appendChild(el);
+        return el;
+    }
+
+    function moveTileEl(el, index) {
+        const pos = cellPos(index);
+        el.style.left = pos.left + 'px';
+        el.style.top  = pos.top  + 'px';
+    }
+
+    function setup() {
+        board = Array(16).fill(null);
+        score = 0;
+        reached2048 = false;
+        tileElements = {};
+        nextTileId = 0;
+        document.getElementById('tile-layer').innerHTML = '';
+        document.getElementById('current-score').innerText = '0';
+        document.getElementById('timer').innerText = '0.0';
+        clearInterval(timerInterval);
+        startTime = null;
+        addTile(); addTile();
+    }
+
+    function addTile() {
+        const empty = board.map((v, i) => v === null ? i : null).filter(v => v !== null);
+        if (!empty.length) return;
+        const idx = empty[Math.floor(Math.random() * empty.length)];
+        const val = Math.random() < 0.9 ? 2 : 4;
+        const id = nextTileId++;
+        board[idx] = { value: val, id };
+        tileElements[id] = createTileEl(val, idx, true, false);
+    }
+
+    function move(direction) {
+        if (!startTime) startTimer();
+
+        let hasChanged = false;
+
+        // 移動後の各タイル位置を計算し、DOMを更新
+        // direction: 0=up, 1=right, 2=down, 3=left
+        for (let i = 0; i < 4; i++) {
+            const indices = getLineIndices(i, direction);
+            const line = indices.map(idx => board[idx]);
+
+            const { newLine, changed, mergedIds } = slideLine(line);
+
+            if (changed) hasChanged = true;
+
+            // DOMとboardを更新
+            indices.forEach((boardIdx, j) => {
+                const prev = line[j];
+                const next = newLine[j];
+
+                if (prev && !next) {
+                    // このセルから他へ移動 → 移動先で処理するのでここでは何もしない
+                }
+                board[boardIdx] = next;
+            });
+
+            // 移動先のDOM更新（位置だけ即時、見た目はアニメーション後）
+            indices.forEach((boardIdx, j) => {
+                const cell = newLine[j];
+                if (!cell) return;
+                const el = tileElements[cell.id];
+                if (!el) return;
+                moveTileEl(el, boardIdx);
+                // 合体タイルの数字・色はスライド完了後に変更
+                if (mergedIds.has(cell.id)) {
+                    setTimeout(() => {
+                        el.className = `tile tile-${cell.value} tile-merged`;
+                        el.innerText = cell.value;
+                        el.style.animation = 'none';
+                        requestAnimationFrame(() => { el.style.animation = ''; });
+                    }, 100);
+                }
+            });
+        }
+
+        if (hasChanged) {
+            setTimeout(() => {
+                addTile();
+                if (isGameOver()) {
+                    clearInterval(timerInterval);
+                    submitScore('2048_score', score);
+                    setTimeout(() => alert('Game Over!'), 50);
+                }
+            }, 110);
+        }
+    }
+
+    function getLineIndices(i, dir) {
+        const res = [];
+        for (let j = 0; j < 4; j++) {
+            if (dir === 0) res.push(j * 4 + i);       // up
+            if (dir === 1) res.push(i * 4 + (3 - j)); // right
+            if (dir === 2) res.push((3 - j) * 4 + i); // down
+            if (dir === 3) res.push(i * 4 + j);       // left
+        }
+        return res;
+    }
+
+    function slideLine(line) {
+        const mergedIds = new Set();
+        let arr = line.filter(c => c !== null);
+        let changed = false;
+
+        for (let i = 0; i < arr.length - 1; i++) {
+            if (arr[i].value === arr[i + 1].value) {
+                // 合体: arr[i]に値を集約、arr[i+1]のDOMを消す
+                const merged = { value: arr[i].value * 2, id: arr[i].id };
+                score += merged.value;
+                document.getElementById('current-score').innerText = score;
+
+                // arr[i+1]のDOM削除 (少し遅延させてアニメーション後に消す)
+                const removedId = arr[i + 1].id;
+                const removedEl = tileElements[removedId];
+                if (removedEl) {
+                    setTimeout(() => removedEl.remove(), 110);
+                    delete tileElements[removedId];
+                }
+
+                arr[i] = merged;
+                arr.splice(i + 1, 1);
+                mergedIds.add(merged.id);
+                changed = true;
+
+                if (merged.value === 2048 && !reached2048) {
+                    reached2048 = true;
+                    setTimeout(() => {
+                        const time = parseFloat(document.getElementById('timer').innerText);
+                        alert(`2048到達！ タイム: ${time}s`);
+                        submitScore('2048_time', time);
+                    }, 150);
+                }
+            }
+        }
+
+        const newLine = [...arr];
+        while (newLine.length < 4) newLine.push(null);
+
+        // 元の line と比較して位置変化があるか確認
+        if (!changed) {
+            for (let i = 0; i < 4; i++) {
+                const a = line[i], b = newLine[i];
+                if ((a === null) !== (b === null)) { changed = true; break; }
+                if (a && b && a.id !== b.id)        { changed = true; break; }
+            }
+        }
+
+        return { newLine, changed, mergedIds };
+    }
+
+    function startTimer() {
+        startTime = Date.now();
+        timerInterval = setInterval(() => {
+            document.getElementById('timer').innerText =
+                ((Date.now() - startTime) / 1000).toFixed(1);
+        }, 100);
+    }
+
+    function isGameOver() {
+        if (board.some(c => c === null)) return false;
+        for (let i = 0; i < 16; i++) {
+            const r = Math.floor(i / 4), c = i % 4;
+            if (c < 3 && board[i].value === board[i + 1].value) return false;
+            if (r < 3 && board[i].value === board[i + 4].value) return false;
+        }
+        return true;
+    }
+
+    async function submitScore(name, val) {
+        try {
+            await fetch('/mini_game/api/submit_score', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ game_name: name, score: val })
+            });
+        } catch (e) {}
+    }
+
+    // キーボード操作
+    window.addEventListener('keydown', e => {
+        const map = { ArrowUp: 0, ArrowRight: 1, ArrowDown: 2, ArrowLeft: 3 };
+        if (e.key in map) { e.preventDefault(); move(map[e.key]); }
+    });
+
+    // スワイプ操作
+    let touchStartX, touchStartY;
+    window.addEventListener('touchstart', e => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    });
+    window.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(dx) > Math.abs(dy)) {
+            if (Math.abs(dx) > 30) move(dx > 0 ? 1 : 3);
+        } else {
+            if (Math.abs(dy) > 30) move(dy > 0 ? 2 : 0);
+        }
+    });
+
+    setup();
+</script>
+</body>
+</html>

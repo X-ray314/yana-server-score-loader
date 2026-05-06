@@ -1,0 +1,5042 @@
+[
+    {
+        "song_id": "song_001",
+        "name": "#あくあ色ぱれっと",
+        "difficulty": "H",
+        "star": "★0",
+        "youtube_url": "https://www.youtube.com/watch?v=6bnaBnd4kyU",
+        "chart_file": "#あくあ色ぱれっと.json",
+        "creator": "とらさん大好き！"
+    },
+    {
+        "song_id": "song_002",
+        "name": "トゥインクル・トゥインクル・スクールデイズ！",
+        "difficulty": "H",
+        "star": "★0",
+        "youtube_url": "https://www.youtube.com/watch?v=HX8JJbnvbdA",
+        "chart_file": "トゥインクル・トゥインクル・スクールデイズ！.json",
+        "creator": "とらさん大好き！"
+    },
+    {
+        "song_id": "song_003",
+        "name": "Viyella's Destiny",
+        "difficulty": "E",
+        "star": "★0",
+        "youtube_url": "https://www.youtube.com/watch?v=Jqa8gjG8Fn8",
+        "chart_file": "Viyella's Destiny.json",
+        "creator": "GokuLLLLL"
+    },
+    {
+        "song_id": "song_004",
+        "name": "Happy Sprite",
+        "difficulty": "H",
+        "star": "★0",
+        "youtube_url": "https://www.youtube.com/watch?v=LmYWPNY_TZI",
+        "chart_file": "Happy Sprite.json",
+        "creator": "とらさん大好き！"
+    },
+    {
+        "song_id": "song_005",
+        "name": "4+1とそれぞれの未来",
+        "difficulty": "E",
+        "star": "★0",
+        "youtube_url": "https://www.youtube.com/watch?v=WTWvlavcpoI",
+        "chart_file": "4+1のそれぞれの未来.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_006",
+        "name": "Star Fall in Evernight City",
+        "difficulty": "E",
+        "star": "★0",
+        "youtube_url": "https://www.youtube.com/watch?v=RFXi-MkgQys",
+        "chart_file": "Star Fall in Evernight City .json",
+        "creator": "とらさん大好き！"
+    },
+    {
+        "song_id": "song_007",
+        "name": "Star Fall in Evernight City",
+        "difficulty": "N",
+        "star": "★0",
+        "youtube_url": "https://www.youtube.com/watch?v=RFXi-MkgQys",
+        "chart_file": "Star Fall in Evernight City .json",
+        "creator": "とらさん大好き！"
+    },
+    {
+        "song_id": "song_008",
+        "name": "the Hole (違法猫)",
+        "difficulty": "E",
+        "star": "★0",
+        "youtube_url": "https://www.youtube.com/watch?v=qe29NgNqJZw",
+        "chart_file": "the Hole[違法猫].json",
+        "creator": ""
+    },
+    {
+        "song_id": "song_009",
+        "name": "Dec. [旧譜面]",
+        "difficulty": "N",
+        "star": "★0",
+        "youtube_url": "https://www.youtube.com/watch?v=9xbT8OZcDJQ",
+        "chart_file": "Dec.[旧譜面].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_010",
+        "name": "ネギソルジャー",
+        "difficulty": "H",
+        "star": "★0",
+        "youtube_url": "https://www.youtube.com/watch?v=EfQOFVTs_lM",
+        "chart_file": "ネギソルジャー.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_011",
+        "name": "Pastel Lines",
+        "difficulty": "H",
+        "star": "★0",
+        "youtube_url": "https://www.youtube.com/watch?v=p_F8_hGuIPs",
+        "chart_file": "Pastel Lines.json",
+        "creator": "とらさん大好き！"
+    },
+    {
+        "song_id": "song_012",
+        "name": "Drawing World",
+        "difficulty": "H",
+        "star": "★0",
+        "youtube_url": "https://www.youtube.com/watch?v=gJhUB_bQkYo",
+        "chart_file": "Drawing World.json",
+        "creator": "とらさん大好き！"
+    },
+    {
+        "song_id": "song_013",
+        "name": "君と太陽",
+        "difficulty": "H",
+        "star": "★0",
+        "youtube_url": "https://www.youtube.com/watch?v=96hFPpSmIKs",
+        "chart_file": "君と太陽.json",
+        "creator": "ma"
+    },
+    {
+        "song_id": "song_014",
+        "name": "いっせーのーで",
+        "difficulty": "H",
+        "star": "★0",
+        "youtube_url": "https://www.youtube.com/watch?v=vLigCJOcHOE",
+        "chart_file": "『いっせーのーで』（feat. 可不）.json",
+        "creator": "とらさん大好き！"
+    },
+    {
+        "song_id": "song_015",
+        "name": "白線",
+        "difficulty": "N",
+        "star": "★0",
+        "youtube_url": "https://www.youtube.com/watch?v=PB2v2e7xEd4",
+        "chart_file": "白線.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_016",
+        "name": "ロオド・ラスト",
+        "difficulty": "H",
+        "star": "★0",
+        "youtube_url": "https://www.youtube.com/watch?v=Xz9uNtfbfzQ",
+        "chart_file": "ロオド・ラスト.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_017",
+        "name": "Dec. [旧譜面]",
+        "difficulty": "H",
+        "star": "★1",
+        "youtube_url": "https://www.youtube.com/watch?v=9xbT8OZcDJQ",
+        "chart_file": "Dec.[旧譜面].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_018",
+        "name": "はいよろこんで",
+        "difficulty": "H",
+        "star": "★1",
+        "youtube_url": "https://www.youtube.com/watch?v=jzi6RNVEOtA",
+        "chart_file": "はいよろこんで.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_019",
+        "name": "気まぐれ流星群",
+        "difficulty": "H",
+        "star": "★1",
+        "youtube_url": "https://www.youtube.com/watch?v=TsI83WQwf2U",
+        "chart_file": "気まぐれ流星群.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_020",
+        "name": "Star Fall in Evernight City",
+        "difficulty": "H",
+        "star": "★1",
+        "youtube_url": "https://www.youtube.com/watch?v=RFXi-MkgQys",
+        "chart_file": "Star Fall in Evernight City .json",
+        "creator": "とらさん大好き！"
+    },
+    {
+        "song_id": "song_021",
+        "name": "けっかおーらい",
+        "difficulty": "H",
+        "star": "★1",
+        "youtube_url": "https://www.youtube.com/watch?v=Ug0N4qGRp_w",
+        "chart_file": "けっかおーらい.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_022",
+        "name": "フロムトーキョー",
+        "difficulty": "H",
+        "star": "★1",
+        "youtube_url": "https://www.youtube.com/watch?v=ydf6PIlMuyE",
+        "chart_file": "フロムトーキョー.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_023",
+        "name": "ようこそジャパリパークへ",
+        "difficulty": "H",
+        "star": "★1",
+        "youtube_url": "https://www.youtube.com/watch?v=xkMdLcB_vNU",
+        "chart_file": "ようこそジャパリパークへ.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_024",
+        "name": "Sepia",
+        "difficulty": "N",
+        "star": "★1",
+        "youtube_url": "https://www.youtube.com/watch?v=6TcGSAzRmN4",
+        "chart_file": "Sepia.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_025",
+        "name": "勝手に生きましょ",
+        "difficulty": "H",
+        "star": "★2",
+        "youtube_url": "https://www.youtube.com/watch?v=P8pDGQI9bQQ",
+        "chart_file": "勝手に生きましょ.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_026",
+        "name": "Final Hope",
+        "difficulty": "E",
+        "star": "★2",
+        "youtube_url": "https://www.youtube.com/watch?v=GOZIV3KH2ZE",
+        "chart_file": "Final Hope.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_027",
+        "name": "KONKON Beats",
+        "difficulty": "H",
+        "star": "★2",
+        "youtube_url": "https://www.youtube.com/watch?v=c2hbKnXIa_c",
+        "chart_file": "KONKON Beats.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_028",
+        "name": "4+1とそれぞれの未来",
+        "difficulty": "N",
+        "star": "★2",
+        "youtube_url": "https://www.youtube.com/watch?v=WTWvlavcpoI",
+        "chart_file": "4+1のそれぞれの未来.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_029",
+        "name": "ushirode / 知声",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://discord.com/channels/1241678465703481354/1386325733604851843/1386357416903577651",
+        "chart_file": "ushirode _ 知声.json",
+        "creator": "afu"
+    },
+    {
+        "song_id": "song_030",
+        "name": "ちゅきちゅきポコポコポン",
+        "difficulty": "H",
+        "star": "★2",
+        "youtube_url": "https://www.youtube.com/watch?v=pHakQLbGjaU",
+        "chart_file": "ちゅきちゅきポコポコポン.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_031",
+        "name": "パラジクロロベンゼン ver.2025(kakuteru)",
+        "difficulty": "H",
+        "star": "★2",
+        "youtube_url": "https://www.youtube.com/watch?v=0gUsfig2Gzw",
+        "chart_file": "パラジクロロベンゼン  ver.2025.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_032",
+        "name": "LOSER",
+        "difficulty": "H",
+        "star": "★2",
+        "youtube_url": "https://www.youtube.com/watch?v=Dx_fKPBPYUI",
+        "chart_file": "LOSER.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_033",
+        "name": "エビ揉め",
+        "difficulty": "H",
+        "star": "★2",
+        "youtube_url": "https://www.youtube.com/watch?v=tsG8MdHlxCI",
+        "chart_file": "エビ揉め.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_034",
+        "name": "スタートリップ",
+        "difficulty": "H",
+        "star": "★2",
+        "youtube_url": "https://www.youtube.com/watch?v=MEJC0FsCido",
+        "chart_file": "スタートリップ.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_035",
+        "name": "Cyberfantasia",
+        "difficulty": "E",
+        "star": "★2",
+        "youtube_url": "https://www.youtube.com/watch?v=2uHFUgMwZIM",
+        "chart_file": "Cyberfantasia.json",
+        "creator": "GokuLLLLL"
+    },
+    {
+        "song_id": "song_036",
+        "name": "白線",
+        "difficulty": "H",
+        "star": "★2",
+        "youtube_url": "https://www.youtube.com/watch?v=PB2v2e7xEd4",
+        "chart_file": "白線.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_037",
+        "name": "まっすぐ→→→ストリーム！",
+        "difficulty": "H",
+        "star": "★2",
+        "youtube_url": "https://www.youtube.com/watch?v=12FoYn1U_Zk",
+        "chart_file": "まっすぐ→→→ストリーム！.json",
+        "creator": ""
+    },
+    {
+        "song_id": "song_038",
+        "name": "ジェットブラック",
+        "difficulty": "H",
+        "star": "★2",
+        "youtube_url": "https://www.youtube.com/watch?v=L12K7BGVXws",
+        "chart_file": "ジェットブラック.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_039",
+        "name": "レグルス",
+        "difficulty": "H",
+        "star": "★2",
+        "youtube_url": "https://www.youtube.com/watch?v=i8XnOZgtE34",
+        "chart_file": "レグルス.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_040",
+        "name": "エモタオフォビア",
+        "difficulty": "H",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=LSuiBcRGkKo",
+        "chart_file": "エモタオフォビア.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_041",
+        "name": "熱風",
+        "difficulty": "H",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=y7uFVdBluns",
+        "chart_file": "熱風.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_042",
+        "name": "NEO",
+        "difficulty": "H",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=b2Di3kFGAUM",
+        "chart_file": "NEO.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_043",
+        "name": "ハオ",
+        "difficulty": "H",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=3GzRDW3hZ1k",
+        "chart_file": "ハオ.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_044",
+        "name": "テトリス",
+        "difficulty": "H",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=Soy4jGPHr3g",
+        "chart_file": "テトリス.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_045",
+        "name": "テレパシ",
+        "difficulty": "H",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=AVIo9K-DrcY",
+        "chart_file": " テレパシ.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_046",
+        "name": "Fervidex",
+        "difficulty": "H",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=fpAYf4Rhqf8",
+        "chart_file": "Fervidex.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_047",
+        "name": "少女A",
+        "difficulty": "H",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=AqI97zHMoQw",
+        "chart_file": "少女A.json",
+        "creator": "minakolin_3752"
+    },
+    {
+        "song_id": "song_048",
+        "name": "Usagi Flap",
+        "difficulty": "H",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=toPWvdaC84w",
+        "chart_file": "Usagi Flap.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_049",
+        "name": "果ての空、僕らが見た光。",
+        "difficulty": "H",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=Svzl3cY_6vE",
+        "chart_file": "果ての空、僕らが見た光。.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_050",
+        "name": "Viyella's Destiny",
+        "difficulty": "N",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=Jqa8gjG8Fn8",
+        "chart_file": "Viyella's Destiny.json",
+        "creator": "GokuLLLLL"
+    },
+    {
+        "song_id": "song_051",
+        "name": "キャンディークッキーチョコレート",
+        "difficulty": "H",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=bI3542HJRzY",
+        "chart_file": "キャンディークッキーチョコレート.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_052",
+        "name": "はぐ",
+        "difficulty": "H",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=PAwZl3Up-hc",
+        "chart_file": "はぐ.json",
+        "creator": "ma"
+    },
+    {
+        "song_id": "song_053",
+        "name": "アルマニ",
+        "difficulty": "H",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=w6uJC2WtREY",
+        "chart_file": "アルマニ.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_054",
+        "name": "忙シー日",
+        "difficulty": "H",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=61mP2Ho4Yr8",
+        "chart_file": "忙シー日.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_055",
+        "name": "184億回のマルチトニック",
+        "difficulty": "H",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=TiJf4SsU0F0",
+        "chart_file": "184億回のマルチトニック.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_056",
+        "name": "エクスプロウル (Nogimmick)",
+        "difficulty": "H",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=bHRwuFLw3B8",
+        "chart_file": "エクスプロウル（NO GIMMICK）.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_057",
+        "name": "ペンタトニック",
+        "difficulty": "H",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=JXbb-_ScjSY",
+        "chart_file": "ペンタトニック.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_058",
+        "name": "トンデモワンダース(やな)",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=dBQg24mx45Y",
+        "chart_file": "トンデモワンダース.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_059",
+        "name": "アンテナ39",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=7yJRsFFRoQY",
+        "chart_file": "アンテナ39.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_060",
+        "name": "ノウナイディスコ",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=NMiQmumW0nI",
+        "chart_file": "ノウナイディスコ.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_061",
+        "name": "ロースピードフェイクリリック",
+        "difficulty": "N",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=5bDI_ZgAIDw",
+        "chart_file": "ロースピードフェイクリリック.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_062",
+        "name": "I know 愛脳.",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=6DBLeD9OU9Y",
+        "chart_file": "I know 愛脳..json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_063",
+        "name": "Diffusing Lights [Yana]",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://rekumochizuki.bandcamp.com/track/diffusing-lights",
+        "chart_file": "Diffusing Lights.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_064",
+        "name": "新人類",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=rKdwNw-d3MQ",
+        "chart_file": "新人類.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_065",
+        "name": "Ai Nov",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=ovh--Q3y66Y",
+        "chart_file": "Ai Nov.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_066",
+        "name": "そにあずれこーど[旧]",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=x7P5FeckDVU",
+        "chart_file": "そにあずれこーど.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_067",
+        "name": "the Hole",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=qe29NgNqJZw",
+        "chart_file": "the Hole[Senka].json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_068",
+        "name": "モザイクロール",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=WysuxO4yR04",
+        "chart_file": "モザイクロール [ Reloaded ].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_069",
+        "name": "Cirno Break",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=9fyxdxZbIK0",
+        "chart_file": "Cirno Break.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_070",
+        "name": "Split EX",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=7ZYcRiJP9U4",
+        "chart_file": "Spilt EX [Apollo].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_071",
+        "name": "Snooze (sattyann118)",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=_gWn38pnmqI",
+        "chart_file": "snooze.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_072",
+        "name": "incomplete the one",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=SxKidP-8Zpw",
+        "chart_file": "incomplete the one.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_073",
+        "name": "レリギオス",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=1owZMxD3w9s",
+        "chart_file": "レリギオス.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_074",
+        "name": "Dreamin' stars",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=0La--s2efZ4",
+        "chart_file": "Dreamin' Stars.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_075",
+        "name": "[A]future",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=3V1T3KmiB_U",
+        "chart_file": "[A]future.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_076",
+        "name": "つづみぐさ",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=FpoZKD_nqbc",
+        "chart_file": "つづみぐさ.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_077",
+        "name": "Deicide",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=ozSdOykX8v8",
+        "chart_file": "Deicide.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_078",
+        "name": "シスターシスター",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=AvctZU1E_7Q",
+        "chart_file": "シスターシスター.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_079",
+        "name": "Summering",
+        "difficulty": "N",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=UxwHkqkzm0o",
+        "chart_file": "Summering.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_080",
+        "name": "パラジクロロベンゼン(ray)",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=0gUsfig2Gzw",
+        "chart_file": "パラジクロロベンゼン.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_081",
+        "name": "幕を下ろそう、パレードへ",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=Z9YgbmE5H_k",
+        "chart_file": "幕を下ろそう、パレードへ.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_082",
+        "name": "Cyaegha",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=OW8pMvedAtM",
+        "chart_file": "cyaegha.json",
+        "creator": "ma"
+    },
+    {
+        "song_id": "song_083",
+        "name": "ポッピンキャンディ☆フィーバー！",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=JCZCz0XQfRk",
+        "chart_file": "ポッピンキャンディ☆フィーバー！.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_084",
+        "name": "Final Hope",
+        "difficulty": "N",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=GOZIV3KH2ZE",
+        "chart_file": "Final Hope.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_085",
+        "name": "カガリビバナ",
+        "difficulty": "N",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=wFciaiCat7c",
+        "chart_file": "カガリヒバナ.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_086",
+        "name": "少女の空想庭園レプリカ",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=5ZxdXIZQ080",
+        "chart_file": "少女の空想庭園レプリカ.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_087",
+        "name": "星界ちゃんと可不ちゃんのおつかい合奏曲",
+        "difficulty": "N",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=hXabKIYl_Yo",
+        "chart_file": "星界ちゃんと可不ちゃんのおつかい合騒曲.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_088",
+        "name": "NightTheater",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=GQypsM4YILM",
+        "chart_file": "NightTheater.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_089",
+        "name": "裏命ちゃんのフクオカトリップ奇騒曲",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=YyUYbaBRi5g",
+        "chart_file": "裏命ちゃんのフクオカトリップ奇騒曲.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_090",
+        "name": "AMAZING MIGHTYYYY!!!!",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=-tbcsrKRfBs",
+        "chart_file": "AMAZING MIGHTYYYY!!!!.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_091",
+        "name": "Beat Eater",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=Rcc_BreWEMI",
+        "chart_file": "Beat Eater.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_092",
+        "name": "Rrhar'il",
+        "difficulty": "N",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=Hwny8gQRYZA",
+        "chart_file": "Rrhar'il.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_093",
+        "name": "抜錨",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=C7h6-jU1DCA",
+        "chart_file": "抜錨.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_094",
+        "name": "Cryptarithm",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=BJU0E1KHjzk",
+        "chart_file": "Cryptarithm.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_095",
+        "name": "ルルブ",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=p5hojvz0Y8g",
+        "chart_file": "ルルブ.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_096",
+        "name": "花弁、それにまつわる音声",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=LW1KBCgvEPQ",
+        "chart_file": "花弁、それにまつわる音声 _ 初音ミク.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_097",
+        "name": "Final Flash Flight",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=H6_ci427FAo",
+        "chart_file": "Final Flash Flight.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_098",
+        "name": "Axium crisis",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=1HyuI8Bvnsg",
+        "chart_file": "Axium Crisis.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_099",
+        "name": "カーニバルハッピー",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=nYyddo_VXs8",
+        "chart_file": "カーニバルハッピー.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_100",
+        "name": "Cyberfantasia",
+        "difficulty": "N",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=2uHFUgMwZIM",
+        "chart_file": "Cyberfantasia.json",
+        "creator": "GokuLLLLL"
+    },
+    {
+        "song_id": "song_101",
+        "name": "Good bye, Merry-Go-Round.",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=Jiq5mleB40w",
+        "chart_file": "Good bye, Merry-Go-Round..json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_102",
+        "name": "Radiance",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=7o1S3o_VNII",
+        "chart_file": "Radiance.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_103",
+        "name": "ジャックポットサッドガール",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=B2llCEKbxwA",
+        "chart_file": "ジャックポットサッドガール.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_104",
+        "name": "Arghena",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=l3jMCWZcFKU",
+        "chart_file": "Arghena.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_105",
+        "name": "アタシ♡カワイイ♡宣言!!! -Nenpulse Bootleg-",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=sLw1FKBoh8k",
+        "chart_file": "アタシ♡カワイイ♡宣言!!! -Nenpulse Bootleg-.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_106",
+        "name": "最愛人生ランナー",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=eUDtDGh_XeM",
+        "chart_file": "最愛人生ランナー.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_107",
+        "name": "ロースピードフェイクリリック",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=5bDI_ZgAIDw",
+        "chart_file": "ロースピードフェイクリリック.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_108",
+        "name": "リレイアウター",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=b56xjtP6Qac",
+        "chart_file": "リレイアウター.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_109",
+        "name": "ヒバナ",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=hxSg2Ioz3LM",
+        "chart_file": "ヒバナ.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_110",
+        "name": "異常な音を出すガール",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=pFlWr0fF7MQ",
+        "chart_file": "異常な音を出すガール.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_111",
+        "name": "Reverberate",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=5ahiAAgasaI",
+        "chart_file": "Reverberate.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_112",
+        "name": "solips",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=Aaf7N_wfUMM",
+        "chart_file": "sølips.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_113",
+        "name": "folern",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=54Mjq-QgT-Y",
+        "chart_file": "folern.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_114",
+        "name": "LETTER☆彡",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=I7CY960FEPo",
+        "chart_file": "LETTER☆彡.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_115",
+        "name": "Summering",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=UxwHkqkzm0o",
+        "chart_file": "Summering.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_116",
+        "name": "地獄行きの列車に乗ってさらば！",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=oz-NYTQXA9o",
+        "chart_file": "地獄行きの列車に乗ってさらば！.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_117",
+        "name": "ビターチョコデコレーション",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=XCyKJD6uQyg",
+        "chart_file": "【初音ミク】ビターチョコデコレーション .json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_118",
+        "name": "忘れものセンターにまたね！",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=Yn-Mo8mASdA",
+        "chart_file": "忘れものセンターにまたね！.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_119",
+        "name": "天球、彗星は空を仰いで",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=zLak0dxBKpM",
+        "chart_file": "天球、彗星は空を仰いで .json",
+        "creator": "minakolin_3752"
+    },
+    {
+        "song_id": "song_120",
+        "name": "Dual Dependency",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=Hb1b3B-FuZM",
+        "chart_file": "[From Arcaea] seatrus - Dual Dependency.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_121",
+        "name": "ファラウェア",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=-iPh3Vuhp80",
+        "chart_file": "ファラウェア.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_122",
+        "name": "電脳スペクタクル",
+        "difficulty": "E",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=IH8zcxIef6s",
+        "chart_file": "電脳スペクタクル.json",
+        "creator": "ma"
+    },
+    {
+        "song_id": "song_123",
+        "name": "Feel The Luv",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=xNBvIZM7smU",
+        "chart_file": "Feel The Luv.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_124",
+        "name": "Ref:rain (for 7th Heaven)",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=-3wzWwhHW3g",
+        "chart_file": "Ref_rain (for 7th Heaven).json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_125",
+        "name": "虚無さん",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=7bsJDMmWbrk",
+        "chart_file": "虚無さん.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_126",
+        "name": "未完成讃歌",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=PmRtXlhzgAU",
+        "chart_file": "未完成讃歌.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_127",
+        "name": "Halloween of the Dead",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=riGLKKfJfas",
+        "chart_file": "Halloween of the Dead.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_128",
+        "name": "やんなっちゃう！",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=n1nKVZPd_x4",
+        "chart_file": "やんなっちゃう！.json",
+        "creator": "ma"
+    },
+    {
+        "song_id": "song_129",
+        "name": "スマイル*シンフォニー",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=Bj84UUMt44U",
+        "chart_file": "スマイル_シンフォニー .json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_130",
+        "name": "幽霊船戦",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=QfGuQELt1Tk",
+        "chart_file": "幽霊船戦.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_131",
+        "name": "Rrhar'il",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=Hwny8gQRYZA",
+        "chart_file": "Rrhar'il.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_132",
+        "name": "こちら足立区北千住駅前観測所",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=01pmrpIbasc",
+        "chart_file": "こちら足立区北千住駅前観測所.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_133",
+        "name": "おしゃまなプリンセス",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=yQw6E9Er2bw",
+        "chart_file": "おしゃまなプリンセス.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_134",
+        "name": "キラー",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=Yz2UiHN-u6E",
+        "chart_file": "キラー.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_135",
+        "name": "4+1とそれぞれの未来",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=WTWvlavcpoI",
+        "chart_file": "4+1のそれぞれの未来.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_136",
+        "name": "Latent Kingdom",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=izi39dYfKMw",
+        "chart_file": "Latent Kingdom.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_137",
+        "name": "Xetta",
+        "difficulty": "N",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=-qs-6M7ET90",
+        "chart_file": "Xetta.json",
+        "creator": "lpmmoyojs"
+    },
+    {
+        "song_id": "song_138",
+        "name": "蛇鉄",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=h_jt17ce0sU",
+        "chart_file": "蛇鉄.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_139",
+        "name": "AstrøNotes.",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=PxjPDidc7u8",
+        "chart_file": "AstrøNotes..json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_140",
+        "name": "Valsqotch",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=z06QWO7uCXQ",
+        "chart_file": "Valsqotch.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_141",
+        "name": "シリウスの輝きのように",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=LMFLssXrPX4",
+        "chart_file": "『シリウスの輝きのように』.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_142",
+        "name": "ももいろの鍵",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=sAUdWpemfGw",
+        "chart_file": "ももいろの鍵.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_143",
+        "name": "〚盲従〛～Fantasia Sonata Flower",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=F8qwivYJw5U",
+        "chart_file": "〚盲従〛～Fantasia Sonata Flower.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_144",
+        "name": "ニャルラト",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=z1imm_yPUHI",
+        "chart_file": "ニャルラト.json",
+        "creator": "minakolin_3752"
+    },
+    {
+        "song_id": "song_145",
+        "name": "雑魚",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=kqj7b59D85Y",
+        "chart_file": "雑魚.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_146",
+        "name": "Unwelcome School (Mimizu remix)",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=2Q2fPfKGfrw",
+        "chart_file": "Unwelcome School (mimizu Remix).json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_147",
+        "name": "マツヨイナイトバグ",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=AAhsXxHzMRg",
+        "chart_file": "マツヨイナイトバグ.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_148",
+        "name": "Ωκεανός",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=vy4mtbeRUx0",
+        "chart_file": "Ωκεανος.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_149",
+        "name": "Baphomet",
+        "difficulty": "N",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=GLO7xijEKPw",
+        "chart_file": "Baphomet.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_150",
+        "name": "トゥイー・ボックスの人形劇場",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=_-fgbICIu7w",
+        "chart_file": "トゥイー・ボックスの人形劇場.json",
+        "creator": "ma"
+    },
+    {
+        "song_id": "song_151",
+        "name": "カオティックライバー",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=B1VgNyQGXpo",
+        "chart_file": "カオティックライバー.json",
+        "creator": "minakolin_3752"
+    },
+    {
+        "song_id": "song_152",
+        "name": "MAHOROBA",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=SxKidP-8Zpw",
+        "chart_file": "MAHOROBA.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_153",
+        "name": "超深淵帯(旧)",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=IJN0piNZhBE",
+        "chart_file": "超深淵帯.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_154",
+        "name": "雨露霜雪",
+        "difficulty": "N",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=k1DFcnOKhuA",
+        "chart_file": "雨露霜雪.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_155",
+        "name": "Crystal Gravity",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=rANhtdzoSZY",
+        "chart_file": "Crystal Gravity.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_156",
+        "name": "Stardust explorer",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=2Tx8VfjWkZY",
+        "chart_file": "Stardust Explorer.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_157",
+        "name": "Shelter (Assertive & Mitomoro Bootleg)",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=uYOUMC6RlCs",
+        "chart_file": "Shelter (Assertive & Mitomoro Bootleg).json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_158",
+        "name": "そして勇者は眠りにつく",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=RgdSSmlM0Rg",
+        "chart_file": "そして勇者は眠りにつく.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_159",
+        "name": "星界ちゃんと可不ちゃんのおつかい合奏曲",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=hXabKIYl_Yo",
+        "chart_file": "星界ちゃんと可不ちゃんのおつかい合騒曲.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_160",
+        "name": "Lonely Sapphire",
+        "difficulty": "N",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=mXdXtImWwq0",
+        "chart_file": "Lonely Sapphire.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_161",
+        "name": "And Revive the Melody",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=YPSJ-wnxnRI",
+        "chart_file": "And Revive the Melody.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_162",
+        "name": "Haunted Dance",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=vij74IBUHs0",
+        "chart_file": "Haunted Dance.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_163",
+        "name": "What's up? Pop!",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=pS31mdpYuh4",
+        "chart_file": "What's up_ Pop!.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_164",
+        "name": "βlαnoir",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=w6zGqrU_5So",
+        "chart_file": "βlαnoir ［re_CRΞ4T1ØИ］.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_165",
+        "name": "≠彡\"/了→",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=uy59Fs2GwGM",
+        "chart_file": " ≠彡__了→.json",
+        "creator": "はるちん"
+    },
+    {
+        "song_id": "song_166",
+        "name": "蜘蛛の糸",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=j0aBmzO70HY",
+        "chart_file": "蜘蛛の糸.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_167",
+        "name": "メモリア",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=TMZThivXrj0",
+        "chart_file": "メモリア.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_168",
+        "name": "ヘイラ",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=cmD4F9i9Mko",
+        "chart_file": "ヘイラ.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_169",
+        "name": "Titania (Long Version)",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=OiWglD4EqVk",
+        "chart_file": "titania (long version).json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_170",
+        "name": "Zitronectar",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=0ZFRSgG4Yvc",
+        "chart_file": "Zitronectar.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_171",
+        "name": "ダンガンノーツ",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=SOKNGjdJF80",
+        "chart_file": "ダンガンノーツ.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_172",
+        "name": "To：Be Countinued",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=IUudJMMiqPQ",
+        "chart_file": "To：Be Continued.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_173",
+        "name": "『IV』",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=Ankvjd9dGeU",
+        "chart_file": "IV.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_174",
+        "name": "DREAM PLACE",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=3UzTlNnt3l4",
+        "chart_file": "DREAM PLACE.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_175",
+        "name": "Literal Crystal In The Cyphisonia [Apollo Reworked.]",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=R4bs06l46Ew",
+        "chart_file": "Literal Crystal In The Cyphisonia [Apollo Reworked.].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_176",
+        "name": "Halcyon",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=OhTu5zT3nQ4",
+        "chart_file": "Halcyon.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_177",
+        "name": "Straight into the lights",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=zqH9qgVNzHI",
+        "chart_file": "Straight into the lights.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_178",
+        "name": "VERTeX",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=_eCRHb4NAqU",
+        "chart_file": "VERTeX.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_179",
+        "name": "ぼかろころしあむ",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=5kIeUb5AE4s",
+        "chart_file": "ぼかろころしあむ.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_180",
+        "name": "MarbleBlue.",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=Qb1vJnLrA3I",
+        "chart_file": "MarbleBlue..json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_181",
+        "name": "MAXRAGE",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=2Zyg-5x43jA",
+        "chart_file": "MAXRAGE.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_182",
+        "name": "超ナイト・オブ・ナイツ",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=yA_h7zM0bcU",
+        "chart_file": "超ナイト・オブ・ナイツ.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_183",
+        "name": "Synthesis.",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=dOP7G5J755s",
+        "chart_file": "Synthesis..json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_184",
+        "name": "Eyes on me",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=i4w65eoL6PA",
+        "chart_file": "Eyes on me feat. Such.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_185",
+        "name": "White Aura (pln)",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=nIdaEfyUtiU",
+        "chart_file": "White Aura.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_186",
+        "name": "Fallen",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=rJdXC7YPK00",
+        "chart_file": "Fallen.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_187",
+        "name": "World Vanquisher",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=MXzU7AvdXIM",
+        "chart_file": "World Vanquisher.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_188",
+        "name": "iL-Artifact",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=xC36xZQfa2Y",
+        "chart_file": "iL-Artifact.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_189",
+        "name": "c.s.q.n.",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=gE2hEebqqw4",
+        "chart_file": "c.s.q.n..json",
+        "creator": "ma"
+    },
+    {
+        "song_id": "song_190",
+        "name": "Re: Unknown X",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=Fgx_RpMPSUI",
+        "chart_file": "Re_Unknown X.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_191",
+        "name": "Sweet Requiem",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=x9PU6rUg-kk",
+        "chart_file": "Sweet Requiem.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_192",
+        "name": "SPOOKY BADBALL",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=oNfBcQB0qO4",
+        "chart_file": "SPOOKY BADBALL.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_193",
+        "name": "廃墟にいますキャンペーン",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=3QCCszQXg00",
+        "chart_file": "廃墟にいますキャンペーン.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_194",
+        "name": "!nterroban(?,",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=kzJomy2udsI",
+        "chart_file": "!nterroban(_,.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_195",
+        "name": "Opfer",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=B63k6Y4kQSA",
+        "chart_file": "Opfer.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_196",
+        "name": "マシンガンポエムドール",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=UgZFpO_Y6qo",
+        "chart_file": "マシンガンポエムドール V2.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_197",
+        "name": "KINGWORLD",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=yVaQpUUAzik",
+        "chart_file": "KINGWORLD.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_198",
+        "name": "超音速天使暴走曲[旧]",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=d4RDeuo5fz0",
+        "chart_file": "超音速天使暴走曲.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_199",
+        "name": "FLΛME/FRΦST",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=YyHtzIjWCB0",
+        "chart_file": "FLΛME_FRΦST.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_200",
+        "name": "SoulStone -闇喰イサァカス団-",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=piQrIX_nLZo",
+        "chart_file": "SoulStone -闇喰イサァカス団-.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_201",
+        "name": "Utopia or Dystopia",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=8ozmE8qTX9w",
+        "chart_file": "Utopia or Dystopia 【TV size】.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_202",
+        "name": "LAMIA",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=JNAw1ElMgqU",
+        "chart_file": "LAMIA.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_203",
+        "name": "Final Hope",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=GOZIV3KH2ZE",
+        "chart_file": "Final Hope.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_204",
+        "name": "Lonely Sapphire",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=mXdXtImWwq0",
+        "chart_file": "Lonely Sapphire.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_205",
+        "name": "超最終鬼畜妹フランドール・S",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=OhYxV0CL3r0",
+        "chart_file": "超最終鬼畜妹フランドール・S.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_206",
+        "name": "Small Cloud Sugar Candy",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=KIr6v7f_xWE",
+        "chart_file": "Small Cloud Sugar Candy.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_207",
+        "name": "旅星に渇く",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=u_jC3xKtO1w",
+        "chart_file": "旅星に乾く.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_208",
+        "name": "氷滅の135小節",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=BdViA7YyrNw",
+        "chart_file": "氷滅の135小節.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_209",
+        "name": "Fracture Ray",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=1v7WXxLWSrk",
+        "chart_file": "Fracture Ray.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_210",
+        "name": "Igallta",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=w7duCaf4cbs",
+        "chart_file": "Igallta.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_211",
+        "name": "MONSTERS",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=gTkYid2wFeU",
+        "chart_file": "MONSTERS (Erasure Remix).json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_212",
+        "name": "Broken Fruitz",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=gJuG4NVmAfM",
+        "chart_file": "Broken Fruitz.json",
+        "creator": "はるちん"
+    },
+    {
+        "song_id": "song_213",
+        "name": "Cyberfantasia",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=2uHFUgMwZIM",
+        "chart_file": "Cyberfantasia.json",
+        "creator": "GokuLLLLL"
+    },
+    {
+        "song_id": "song_214",
+        "name": "カーニバルハッピー 【END】",
+        "difficulty": "",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=nYyddo_VXs8",
+        "chart_file": "カーニバルハッピー 【END】.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_215",
+        "name": "girls.exe",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=t0xj5ZxWU3c",
+        "chart_file": "girls.exe.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_216",
+        "name": "SPOOKY Abyssal Vow",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=9Py7RZuCWGs",
+        "chart_file": "SPOOKY Abyssal Vow.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_217",
+        "name": "宿星審判",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=VxPRLDQvz8Y",
+        "chart_file": "宿星審判.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_218",
+        "name": "MIRINAE",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=nwHXUczx2gc",
+        "chart_file": "MRINAE.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_219",
+        "name": "Starlight Traveler",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=aZ3TRmIa6cI",
+        "chart_file": "Starlight Traveler.json",
+        "creator": "ma"
+    },
+    {
+        "song_id": "song_220",
+        "name": "Emma",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=xrJ_gZTuaPo",
+        "chart_file": "Emma.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_221",
+        "name": "Miss Me Marionette",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=HhfmLmEuAIc",
+        "chart_file": "Miss Me Marionette.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_222",
+        "name": "Theatore Creatore",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=J0Gd9nzJ-iY",
+        "chart_file": "Theatore Creatore.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_223",
+        "name": "地球の裏[旧]",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=ruBxsq03FZo",
+        "chart_file": "地球の裏.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_224",
+        "name": "カガリビバナ",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=wFciaiCat7c",
+        "chart_file": "カガリヒバナ.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_225",
+        "name": "StratoStrider",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=Iy3HEcw3HVc",
+        "chart_file": "stratostrider.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_226",
+        "name": "How To Make 音ゲ〜曲!",
+        "difficulty": "N",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=Ljjut210k90",
+        "chart_file": "How To Make 音ゲ～曲！.json",
+        "creator": "lpmmoyojs"
+    },
+    {
+        "song_id": "song_227",
+        "name": "4+1とそれぞれの未来おに",
+        "difficulty": "N",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=WTWvlavcpoI",
+        "chart_file": "4+1おに修正.jsonn",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_228",
+        "name": "星河一天 [Galaxy]",
+        "difficulty": "",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=cisbyqRjK-A",
+        "chart_file": "星河一天 [ GALAXY ] .json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_229",
+        "name": "YURUSHITE",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=WVn9_PH4IUQ",
+        "chart_file": "YURUSHITE.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_230",
+        "name": "The Future of 太鼓ドラム",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=xXgW2ia4hZw",
+        "chart_file": "The Future of the 太鼓ドラム.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_231",
+        "name": "poxei♦DOON",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=OlLQw7Xg2Fk",
+        "chart_file": "poxei♦︎DOON.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_232",
+        "name": "Tiamat F-minor",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=ynwbngCuJJ4",
+        "chart_file": "TiamaT_F minor.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_233",
+        "name": "Taiko drum Monster",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=ZSSAptCrFHY",
+        "chart_file": "Taiko Drum Monster.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_234",
+        "name": "電脳スペクタクル",
+        "difficulty": "N",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=IH8zcxIef6s",
+        "chart_file": "電脳スペクタクル.json",
+        "creator": "ma"
+    },
+    {
+        "song_id": "song_235",
+        "name": "Lamento (Dankagu Edit)",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=rB_ZD7Enod0",
+        "chart_file": "Lamento (Dankagu Edit).json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_236",
+        "name": "Lilly",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=ABfTxFshBbE",
+        "chart_file": "Lilly.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_237",
+        "name": "Löschen",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=nR5JCn7hiM0",
+        "chart_file": "Löschen.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_238",
+        "name": "Red and Blue[Blue]",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=Ae32KneTIHE",
+        "chart_file": "Red and Blue (Blue).json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_239",
+        "name": "Absolute Queen [X-ray]",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=FF9Uy5NX2bk",
+        "chart_file": "Absolute Queen[ray].json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_240",
+        "name": "IMAWANOKIWA",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=OVwCr2MESfo",
+        "chart_file": "IMAWANOKIWA.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_241",
+        "name": "Halloween of the Dead[Creepy]",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=riGLKKfJfas",
+        "chart_file": "Halloween of the Dead【Creepy】.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_242",
+        "name": "RATIO'D + CRINGED + SCRATCHED",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=jfayPrvPz0c",
+        "chart_file": "RATIO'D + CRINGED + SCRATCHED.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_243",
+        "name": "ファラウェア[Hard+]",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=-iPh3Vuhp80",
+        "chart_file": "ファラウェア【HARD＋】.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_244",
+        "name": "スプーキィダンスパーティ",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=TnlNfcS-zeQ",
+        "chart_file": "スプーキィダンスパーティ.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_245",
+        "name": "NiFlhel",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=LZ-j8yIkTCI",
+        "chart_file": "niflhel.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_246",
+        "name": "Designant. [No gimick]",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=bautietoaBo",
+        "chart_file": "Designant.【no gimmick】.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_247",
+        "name": "Selenadia",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=Sa3gWUHVEv8",
+        "chart_file": "Selenadia.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_248",
+        "name": "Xetta",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=-qs-6M7ET90",
+        "chart_file": "Xetta.json",
+        "creator": "lpmmoyojs"
+    },
+    {
+        "song_id": "song_249",
+        "name": "Traxxendenza",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=do-69S1inFM",
+        "chart_file": "Traxxendenza.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_250",
+        "name": "Åntinomiε",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=PCPUyo-kON0",
+        "chart_file": "Åntinomiε.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_251",
+        "name": "コズミックファンファーレ!!!!",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=uUuuujKqkqQ",
+        "chart_file": "コズミックファンファーレ!!!!.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_252",
+        "name": "神竜 〜Shinryu〜",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=HBc_QxP2haE",
+        "chart_file": "神竜 〜Shinryu〜.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_253",
+        "name": "幕末維新譚",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=RXJXXQsfH4Y",
+        "chart_file": "幕末維新譚.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_254",
+        "name": "黎明に殉ず",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=KLuY9BaV47k",
+        "chart_file": "黎明に殉ず.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_255",
+        "name": "Aegleseeker",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=s0K53t4dNyg",
+        "chart_file": "𝓐 𝓮 𝓰 𝓵 𝓮 𝓼 𝓮 𝓮 𝓴 𝓮 𝓻.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_256",
+        "name": "飈",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=peKihjQNJnc",
+        "chart_file": "飈.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_257",
+        "name": "失われた記憶の彼方",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=ycyEatLjGpE",
+        "chart_file": "失われた記憶の彼方.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_258",
+        "name": "赤と白薔薇の魔女 full",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=wD_5ptg_vjc",
+        "chart_file": "赤と白薔薇の魔女.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_259",
+        "name": "Starburst Travelers!",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=VOjdcJQIQDk",
+        "chart_file": "Starburst Travelers!.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_260",
+        "name": "モノクロボイス",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=3nSO6Ad_Na4",
+        "chart_file": "モノクロボイス.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_261",
+        "name": "Forsaken Tale",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=QT48C3GGBMQ",
+        "chart_file": "Forsaken Tale.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_262",
+        "name": "snooze[miffy]",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=_gWn38pnmqI",
+        "chart_file": "snooze[miffy].json",
+        "creator": "lpmmoyojs"
+    },
+    {
+        "song_id": "song_263",
+        "name": "電脳スペクタクル",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=IH8zcxIef6s",
+        "chart_file": "電脳スペクタクル.json",
+        "creator": "ma"
+    },
+    {
+        "song_id": "song_264",
+        "name": "Killing Rhythm",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=zQy_fT4wFiA",
+        "chart_file": "Killing Rhythm.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_265",
+        "name": "LiftOff",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=dFlBzvLK4LA",
+        "chart_file": "LiftOff.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_266",
+        "name": "《Ж》",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=iUB32XQAwEE",
+        "chart_file": "《Ж》.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_267",
+        "name": "See the lights!",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=gwElilddDuc",
+        "chart_file": "See the Lights!.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_268",
+        "name": "Sayonara Planet Wars",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=NU1yHCZz7jY",
+        "chart_file": "Sayonara Planet Wars.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_269",
+        "name": "Makear",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=aYlmxUimCMU",
+        "chart_file": "Makear.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_270",
+        "name": "Everlasting Eternity",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=VmMyY6W-93E",
+        "chart_file": "Everlasting Eternity.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_271",
+        "name": "Suddendeath EXH",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=6U2r_XEHBKQ",
+        "chart_file": "Suddeиdeath [EXH].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_272",
+        "name": "雨露霜雪",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=k1DFcnOKhuA",
+        "chart_file": "あめつゆしもゆき.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_273",
+        "name": "Xenovcipher",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=h0c2SQHSem0",
+        "chart_file": "Xenovcipher.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_274",
+        "name": "QZkago Requiem",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=bVSqBkeLSzY",
+        "chart_file": "QZkago Requiem.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_275",
+        "name": "逆月",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=Ho536P-KV44",
+        "chart_file": "逆月.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_276",
+        "name": "Lacuna02",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://soundcloud.com/suji_lament/lacuna02",
+        "chart_file": "Lacuna02.json",
+        "creator": "afu"
+    },
+    {
+        "song_id": "song_277",
+        "name": "Chaotic Ørder",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=Jo5YkME3OW8",
+        "chart_file": "Chaotic Ørder.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_278",
+        "name": "黄金数（2024 ver.)",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=jRXwkY_cpvQ",
+        "chart_file": "黄金数（2024 ver.）.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_279",
+        "name": "6kcal",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=8khqFKHj6d8",
+        "chart_file": "6kcal.json",
+        "creator": "lpmmoyojs"
+    },
+    {
+        "song_id": "song_280",
+        "name": "HYPER-ULTRA-PLAY!!!",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=QkZXOakVjTg",
+        "chart_file": "HYPER-ULTRA-PLAY!!!.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_281",
+        "name": "VVelcome!!",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=UUyzkq4JUDc",
+        "chart_file": "VVelcome!!.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_282",
+        "name": "Everything Will Be One",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=NT1p3OWG9sw",
+        "chart_file": "Everything Will Be One.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_283",
+        "name": "World's end BLACKBOX",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=t0D8caiDodo",
+        "chart_file": "World's end BLACKBOX.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_284",
+        "name": "comet casting capsule (Long Version)",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=kv3fhj4bA9g",
+        "chart_file": "comet casting capsule (catching celestial clusters Long Version).json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_285",
+        "name": "Antagonism",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=HVPOKR_N9EU",
+        "chart_file": "Antagonism.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_286",
+        "name": "輪廻玲々",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=0MTGa3XRv84",
+        "chart_file": "輪廻玲々.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_287",
+        "name": "ギザバ怪文書",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=rf-hjy8W2OI",
+        "chart_file": "ギザ歯怪文書.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_288",
+        "name": "Trrricksters!!",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=ykGwW15A2Fo",
+        "chart_file": "Trrricksters!! [2023 Remaster short].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_289",
+        "name": "Geheimnis",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=vaNRlHt2qaQ",
+        "chart_file": "geheimnis.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_290",
+        "name": "雪男",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=6wXw5tzEdH0",
+        "chart_file": "雪男.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_291",
+        "name": "4+1とそれぞれの未来裏",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=WTWvlavcpoI",
+        "chart_file": "4+1おに修正.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_292",
+        "name": "How To Make 音ゲ〜曲!",
+        "difficulty": "H",
+        "star": "★14",
+        "youtube_url": "https://www.youtube.com/watch?v=Ljjut210k90",
+        "chart_file": "How To Make 音ゲ～曲！.json",
+        "creator": "lpmmoyojs"
+    },
+    {
+        "song_id": "song_293",
+        "name": "Crossing Dimension",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=8uWv0-L0xUM",
+        "chart_file": "Crossing Dimension.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_294",
+        "name": "0.0000034",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=IQpGoQ7oDLY",
+        "chart_file": "0.0000034.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_295",
+        "name": "Eviternity",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=zbg3f5uiM7A",
+        "chart_file": "eviternity.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_296",
+        "name": "バカ通信 【狂】",
+        "difficulty": "H",
+        "star": "★14",
+        "youtube_url": "https://www.youtube.com/watch?v=pRjWRV1Bhfs",
+        "chart_file": "バカ通信 【狂】.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_297",
+        "name": "疾風怒濤 full",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=12-_V_1rqck",
+        "chart_file": "疾風怒濤 [HAYATE].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_298",
+        "name": "Atomic Disassembler",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=R2lh5Lyz888",
+        "chart_file": "atomic disassembler.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_299",
+        "name": "FIN4LE ~終止線の彼方へ~",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=aw8Una7KuMU",
+        "chart_file": "FIN4LE ～終止線の彼方へ～.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_300",
+        "name": "Stellar:Dream [ 𝙸𝙽𝚃𝙴𝚁𝚂𝚃𝙴𝙻𝙻𝙰𝚁 ]",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=dt3p2HtLzDA",
+        "chart_file": "𝚂𝚝𝚎𝚕𝚕𝚊𝚛_𝙳𝚛𝚎𝚊𝚖 [ 𝙸𝙽𝚃𝙴𝚁𝚂𝚃𝙴𝙻𝙻𝙰𝚁 ].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_301",
+        "name": "アンリミテッドゲームズ",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=7HAhoBFU8XI",
+        "chart_file": "アンリミテッドゲームズ.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_302",
+        "name": "Baphomet",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=GLO7xijEKPw",
+        "chart_file": "Baphomet.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_303",
+        "name": "イルミナティ",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=gWfzjrZs59w",
+        "chart_file": "イルミナティ.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_304",
+        "name": "ネクラチューンサーカス",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=nOtWU5MRiTU",
+        "chart_file": "ネクラチューンサーカス.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_305",
+        "name": "lovelynonsense",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=sPB4HBf5Q6A",
+        "chart_file": "lovelynonsense.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_306",
+        "name": "Parallel Universe Shifter",
+        "difficulty": "H",
+        "star": "★14",
+        "youtube_url": "https://www.youtube.com/watch?v=5adPbyM6Bo4",
+        "chart_file": "Parallel Universe Shifter.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_307",
+        "name": "魑魅魍魎",
+        "difficulty": "H",
+        "star": "★14",
+        "youtube_url": "https://www.youtube.com/watch?v=t3kOeUsnocg",
+        "chart_file": "魑魅魍魎  -跋扈-.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_308",
+        "name": "Apollo",
+        "difficulty": "H",
+        "star": "★14",
+        "youtube_url": "https://www.youtube.com/watch?v=xwdiTT-XM74",
+        "chart_file": "Apollo.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_309",
+        "name": "FREEDOM DIVE↓",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=OI3C9qQlb1U",
+        "chart_file": "FREEDOM DIVE↓ [FOUR DIMENTION].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_310",
+        "name": "ランページレイサ",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=U6ZCkrYo2sg",
+        "chart_file": "ランページレイサ (原曲_Rampage☆Rag).json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_311",
+        "name": "Crazy Tek",
+        "difficulty": "H",
+        "star": "★14",
+        "youtube_url": "https://soundcloud.com/djnoriken/plight-crazy-tekdj-noriken-remix",
+        "chart_file": "Crazy Tek (DJ Noriken Remix).json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_312",
+        "name": "Palace of Melancholia",
+        "difficulty": "H",
+        "star": "★14",
+        "youtube_url": "https://www.youtube.com/watch?v=-Wq8Kk9Trsw",
+        "chart_file": "Palace of Melancholia.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_313",
+        "name": "♪ペィペイ",
+        "difficulty": "H",
+        "star": "★14",
+        "youtube_url": "https://discord.com/channels/1241678465703481354/1386325733604851843/1386348665781620852",
+        "chart_file": "♪ペィペイ.json",
+        "creator": "afu"
+    },
+    {
+        "song_id": "song_314",
+        "name": "ダーク・エクス・マキナ",
+        "difficulty": "H",
+        "star": "★14",
+        "youtube_url": "https://www.youtube.com/watch?v=klv4FU8WTfk",
+        "chart_file": "ダーク・エクス・マキナ♡.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_315",
+        "name": "Dyscontrolled Galaxy",
+        "difficulty": "H",
+        "star": "★14",
+        "youtube_url": "https://www.youtube.com/watch?v=0eeFxAkWTjg",
+        "chart_file": "Dyscontrolled Galaxy.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_316",
+        "name": "Bismuth",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=-kgp8LgP98c",
+        "chart_file": "bismuth.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_317",
+        "name": "Tru'nembra",
+        "difficulty": "H",
+        "star": "★14",
+        "youtube_url": "https://www.youtube.com/watch?v=oycKwzUBhxU",
+        "chart_file": "Tru'nembra.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_318",
+        "name": "あだぽしゃ",
+        "difficulty": "H",
+        "star": "★14",
+        "youtube_url": "https://www.youtube.com/watch?v=Wr-2xcQkke4",
+        "chart_file": "あだぽしゃ.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_319",
+        "name": "僕ノイズごっこ",
+        "difficulty": "H",
+        "star": "★14",
+        "youtube_url": "https://www.youtube.com/watch?v=mnPe2BRGU-0",
+        "chart_file": "僕ノイズごっこ.json",
+        "creator": "lpmmoyojs"
+    },
+    {
+        "song_id": "song_320",
+        "name": "ダイジョブですかRemake",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=2AD1jTs516E",
+        "chart_file": "ダイジョブですか？ 【Remake】.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_321",
+        "name": "Singularity",
+        "difficulty": "H",
+        "star": "★14",
+        "youtube_url": "https://www.youtube.com/watch?v=-t_jqpK5884",
+        "chart_file": "Singularity.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_322",
+        "name": "Phenomenon",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=Np9rzX6wPe4",
+        "chart_file": "PhenomenoN.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_323",
+        "name": "Lazulis Gambit",
+        "difficulty": "H",
+        "star": "★14",
+        "youtube_url": "https://www.youtube.com/watch?v=xq8ax1VN1s8",
+        "chart_file": "Lazulis Gambit.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_324",
+        "name": "グローリー・ワンダーランド",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=7N-GzJ0i2fk",
+        "chart_file": "グローリー・ワンダーランド.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_325",
+        "name": "GAME：CHANGER",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=hPKs7vL-Xf4",
+        "chart_file": "GAME：CHANGER.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_326",
+        "name": "Qliphothgear",
+        "difficulty": "H",
+        "star": "★14",
+        "youtube_url": "https://www.youtube.com/watch?v=nFoHVuFnTZk",
+        "chart_file": "Qliphothgear.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_327",
+        "name": "DA'AT -The First Seeker of Souls-",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=YAi5YVmACO4",
+        "chart_file": "DA'AT -The First Seeker of Souls-.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_328",
+        "name": "ラストピースに祝福と栄光を",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=y-_m2z28-HM",
+        "chart_file": "ラストピースに祝福と栄光を.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_329",
+        "name": "イマジナリイフレンド [Out of the Dream]",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=01qWAAo3c-M",
+        "chart_file": "イマジナリイフレンド [OUT OF DREAM].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_330",
+        "name": "Mutation [extended]",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=d9L4PMmr8AY",
+        "chart_file": "Mutation [extended].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_331",
+        "name": "StardustRAY",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=q6MJ7BlGP48",
+        "chart_file": "Stardust_RAY.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_332",
+        "name": "麒麟",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=oUphadutexM",
+        "chart_file": "麒麟.json",
+        "creator": "lpmmoyojs"
+    },
+    {
+        "song_id": "song_333",
+        "name": "Steve's Lava Chicken (Camellia Remix)",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=eoJyskz0TxU",
+        "chart_file": "Steve's Lava Chicken (Camellia Remix).json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_334",
+        "name": "Xetta [ Mega ]",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=-qs-6M7ET90",
+        "chart_file": "Xetta【Mega】.json",
+        "creator": "lpmmoyojs"
+    },
+    {
+        "song_id": "song_335",
+        "name": "Dimention Wars",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=n0f1DShY8WQ",
+        "chart_file": "dimension wars.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_336",
+        "name": "碧空の約束",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=vUaix4z3PfQ",
+        "chart_file": "碧空の約束.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_337",
+        "name": "メズマライザー 破壊",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=aTgGEIJCOk4",
+        "chart_file": "メズマライザー　破壊.json",
+        "creator": "はるちん"
+    },
+    {
+        "song_id": "song_338",
+        "name": "カルペ・ディエム",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=A3cUryLBx-o",
+        "chart_file": "カルペ・ディエム.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_339",
+        "name": "23時54分、陽の旅路へのプレリュード",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=s0N7-AKN4ZI",
+        "chart_file": "23時54分、陽の旅路へのプレリュード.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_340",
+        "name": "FLUFFY FLASH",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=-gl7sZFr9gs",
+        "chart_file": "FLUFFY FLASH.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_341",
+        "name": "センダンライフ",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=ZgjrL8XDNEQ",
+        "chart_file": "センダンライフ (katagiri Bootleg).json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_342",
+        "name": "Tuatha Dé Danann",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=1JEda9ugnII",
+        "chart_file": "Tuatha Dé Danann.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_343",
+        "name": "Echoes of Memoria",
+        "difficulty": "H",
+        "star": "★16",
+        "youtube_url": "https://www.youtube.com/watch?v=MQssmhzxxAw",
+        "chart_file": "Echoes of Memoria.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_344",
+        "name": "ABYSSAL CHRONOS",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=QAWCxwFROko",
+        "chart_file": "ABYSSAL CHRONOS.json",
+        "creator": "はるちん"
+    },
+    {
+        "song_id": "song_345",
+        "name": "/data_eraser.wav",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=mFvn6JUu8FQ",
+        "chart_file": "_data_eraser.wav.json",
+        "creator": "はるちん"
+    },
+    {
+        "song_id": "song_346",
+        "name": "I",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=gzZKgyqf3XE",
+        "chart_file": "I.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_347",
+        "name": "憎悪と醜悪の花束[short.ver]",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=ZvEpbVG99gw",
+        "chart_file": "憎悪と醜悪の花束 【REATTACK】.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_348",
+        "name": "LIGHΓ LEFΓ BEHIΠD",
+        "difficulty": "H",
+        "star": "★16",
+        "youtube_url": "https://soundcloud.com/billiummoto/lightleftbehind",
+        "chart_file": "LIGHΓ LEFΓ BEHIΠD.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_349",
+        "name": "Crimson Fighter",
+        "difficulty": "H",
+        "star": "★16",
+        "youtube_url": "https://www.youtube.com/watch?v=fEORZSJw6jA",
+        "chart_file": "Crimson Fighter.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_350",
+        "name": "夜襲",
+        "difficulty": "H",
+        "star": "★16",
+        "youtube_url": "https://www.youtube.com/watch?v=ulI6boMyb34",
+        "chart_file": "夜襲.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_351",
+        "name": "What's up? Pop!",
+        "difficulty": "E",
+        "star": "★17",
+        "youtube_url": "https://www.youtube.com/watch?v=pS31mdpYuh4",
+        "chart_file": "What's up_ Pop!.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_352",
+        "name": "Duplicity Shade",
+        "difficulty": "H",
+        "star": "★16",
+        "youtube_url": "https://www.youtube.com/watch?v=4K2eLs7EmZs",
+        "chart_file": "duplicity shade.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_353",
+        "name": "Roars of V.E.N.G.E.A.N.C.E -Take Back Everything-",
+        "difficulty": "H",
+        "star": "★16",
+        "youtube_url": "https://www.youtube.com/watch?v=UBAW75EuG4M",
+        "chart_file": "Roars of V.E.N.G.E.A.N.C.E -Take Back Everything-.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_354",
+        "name": "Final Hope HOPELESS",
+        "difficulty": "H",
+        "star": "★17",
+        "youtube_url": "https://www.youtube.com/watch?v=GOZIV3KH2ZE",
+        "chart_file": "Final Hope [HØP3ГE$§].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_355",
+        "name": "SswwiinnddlleerR!!",
+        "difficulty": "H",
+        "star": "★16",
+        "youtube_url": "https://www.youtube.com/watch?v=OOfV8sZUT9c",
+        "chart_file": "SswwiinnddlleerR!!.json",
+        "creator": "はるちん"
+    },
+    {
+        "song_id": "song_356",
+        "name": "OUTRAGE",
+        "difficulty": "H",
+        "star": "★16",
+        "youtube_url": "https://www.youtube.com/watch?v=YPGaEhKa3_8",
+        "chart_file": "OUTRAGE.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_357",
+        "name": "Angel Dust",
+        "difficulty": "H",
+        "star": "★16",
+        "youtube_url": "https://www.youtube.com/watch?v=gk9Bokv16LM",
+        "chart_file": "Angel Dust.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_358",
+        "name": "VVelcome[UNWELCOME]",
+        "difficulty": "H",
+        "star": "★16",
+        "youtube_url": "https://www.youtube.com/watch?v=UUyzkq4JUDc",
+        "chart_file": "VVelcome!! [UNWELCOME].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_359",
+        "name": "20XX",
+        "difficulty": "H",
+        "star": "★16",
+        "youtube_url": "https://www.youtube.com/watch?v=MYtAy1JkTdo",
+        "chart_file": "20XX.json",
+        "creator": "lpmmoyojs"
+    },
+    {
+        "song_id": "song_360",
+        "name": "Executioner",
+        "difficulty": "H",
+        "star": "★17",
+        "youtube_url": "https://www.youtube.com/watch?v=XuOC53ryias",
+        "chart_file": "Executioner.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_361",
+        "name": "MixxioN",
+        "difficulty": "H",
+        "star": "★16",
+        "youtube_url": "https://www.youtube.com/watch?v=jVM702FC1b8",
+        "chart_file": "Mixxion.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_362",
+        "name": "Crossmythos Rhapsodia",
+        "difficulty": "H",
+        "star": "★17",
+        "youtube_url": "https://www.youtube.com/watch?v=jXv6R6tLW4A",
+        "chart_file": "Crossmythos Rhapsodia.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_363",
+        "name": "ΩΩPARTS",
+        "difficulty": "H",
+        "star": "★17",
+        "youtube_url": "https://www.youtube.com/watch?v=lc4nTM6M9KY",
+        "chart_file": "ΩΩPARTS.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_364",
+        "name": "ピアノ狂奏曲「突貫・伍」",
+        "difficulty": "H",
+        "star": "★17",
+        "youtube_url": "https://www.youtube.com/watch?v=h_mQPkkQxIQ",
+        "chart_file": "ピアノ狂奏曲「突貫・伍」.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_365",
+        "name": "STARQUAKE",
+        "difficulty": "H",
+        "star": "★17",
+        "youtube_url": "https://www.youtube.com/watch?v=kgn68weF2E0",
+        "chart_file": "STARQUAKE.json",
+        "creator": "afu"
+    },
+    {
+        "song_id": "song_366",
+        "name": "Ultimate Force [SUPER POWER]",
+        "difficulty": "H",
+        "star": "★18",
+        "youtube_url": "https://www.youtube.com/watch?v=4kYLJeouTfA",
+        "chart_file": "𝐔𝐥𝐭𝐢𝐦𝐚𝐭𝐞 𝐅𝐨𝐫𝐜𝐞 [𝐒𝐔𝐏𝐄𝐑 𝐏𝐎𝐖𝐄𝐑].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_367",
+        "name": "KINGDOM COME 【MΛXiMUM】",
+        "difficulty": "H",
+        "star": "★18",
+        "youtube_url": "https://www.youtube.com/watch?v=p_yH7ppc5iA",
+        "chart_file": "KINGDOM COME 【MΛXiMUM】.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_368",
+        "name": "Customized Justice",
+        "difficulty": "H",
+        "star": "★18",
+        "youtube_url": "https://www.youtube.com/watch?v=RdP3GMXfnNs",
+        "chart_file": "Customized Justice ［TRUE］.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_369",
+        "name": "CRUXNAUT [OVERRUN]",
+        "difficulty": "H",
+        "star": "★18",
+        "youtube_url": "https://www.youtube.com/watch?v=dpr0HnmM4PI",
+        "chart_file": "CRUXNAUT [OVERRUN].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_370",
+        "name": "Xéroa 【CRØIR3】",
+        "difficulty": "H",
+        "star": "★18",
+        "youtube_url": "https://www.youtube.com/watch?v=fQMw5QjOSOQ",
+        "chart_file": "Xéroa 【CRØIR3】.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_371",
+        "name": "ULT!MATE END【OVERL!MiT】",
+        "difficulty": "H",
+        "star": "★18",
+        "youtube_url": "https://www.youtube.com/watch?v=INVTeqJLfaQ",
+        "chart_file": "ULT!MATE END【OVERL!MiT】.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_372",
+        "name": "XHRONOXAPSULΞ [AN0THΞR]",
+        "difficulty": "H",
+        "star": "★18",
+        "youtube_url": "https://www.youtube.com/watch?v=sE691QamM4k",
+        "chart_file": "XHRONOXAPSULΞ [AN0THΞR].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_373",
+        "name": "Crackpot Evangelist [BlackJacK]",
+        "difficulty": "H",
+        "star": "★18",
+        "youtube_url": "https://www.youtube.com/watch?v=uURsdxwxSPY",
+        "chart_file": "Crackpot Evangelist.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_374",
+        "name": "おぎゃりないざー (CosMo.B.S.P.310 Remix) 【𝑽𝑶𝑪𝑨𝑳𝑶𝑰𝑫'𝑺 𝑯𝑰𝑮𝑯𝑬𝑺𝑻】",
+        "difficulty": "H",
+        "star": "★18",
+        "youtube_url": "https://www.youtube.com/watch?v=5hxzl_ZYG_Y",
+        "chart_file": "おぎゃりないざー (CosMo.B.S.P.310 Remix) 【𝑽𝑶𝑪𝑨𝑳𝑶𝑰𝑫'𝑺  𝑯𝑰𝑮𝑯𝑬𝑺𝑻】.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_375",
+        "name": "SuddeИDeath",
+        "difficulty": "H",
+        "star": "★隔離",
+        "youtube_url": "https://www.youtube.com/watch?v=6U2r_XEHBKQ",
+        "chart_file": "Suddeиdeath.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_376",
+        "name": "Angel's Salad",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=Acn-Jri-tr4",
+        "chart_file": "Angel's Salad.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_377",
+        "name": "Strange Love",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=JKAkJrEYfdc",
+        "chart_file": "Strange Love.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_378",
+        "name": "アポカリプスに反逆の焔を焚べろ",
+        "difficulty": "H",
+        "star": "★17",
+        "youtube_url": "https://www.youtube.com/watch?v=ZiBazGz0SJQ",
+        "chart_file": "アポカリプスに反逆の焔を焚べろ.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_379",
+        "name": "QuomodocunquizE",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=desPKEaJMgM",
+        "chart_file": "QuomodocunquizE.json",
+        "creator": "はるちん"
+    },
+    {
+        "song_id": "song_380",
+        "name": "666[ExTRA]",
+        "difficulty": "H",
+        "star": "★隔離",
+        "youtube_url": "https://www.youtube.com/watch?v=HBN2OErbJlM",
+        "chart_file": "666 [ExTRA].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_381",
+        "name": "Sadistic.Music∞Factory - Remake The second phase",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=KwORhzLvyzQ",
+        "chart_file": "Sadistic.Music∞Factory - Remake The second phase -.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_382",
+        "name": "DENGEKI Tube",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=kr9F9QZbSx4",
+        "chart_file": "dengeki tube.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_383",
+        "name": "Reconciliation is New Hope",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=ZkrwBxQeKR8",
+        "chart_file": "Reconciliation is New Hope.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_384",
+        "name": "Aria for Lepus【OverBeaT】",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=LgyqKM7Sf_I",
+        "chart_file": "aria for lepus.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_385",
+        "name": "^7(L[_(L+#＜＞+&^(o)【ζ】",
+        "difficulty": "H",
+        "star": "★隔離",
+        "youtube_url": "https://www.youtube.com/watch?v=4YZ2vaEt9lA",
+        "chart_file": "^7(L[_(L+#＜＞+&^(o)【ζ】.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_386",
+        "name": "Ascension to Heaven【ζ】",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=wlYGZx0R8KE",
+        "chart_file": "Ascension to Heaven【ζ】.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_387",
+        "name": "Paradigm Shift [D-CSC]【ζ】",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=0eI06oMPooE",
+        "chart_file": "Paradigm Shift [D-CSC]【ζ】.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_388",
+        "name": "Traxxendenza Insane",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=do-69S1inFM",
+        "chart_file": "Traxxendenza【INSANE】.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_389",
+        "name": "sigrdrifa",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=5xosUV8z22E",
+        "chart_file": "Sigrdrifa 【vioLeNce】.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_390",
+        "name": "Central Nucleus",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=tVgjfgwOJ2w",
+        "chart_file": "Central Nucleus.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_391",
+        "name": "水想",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=wem5F6-UVug",
+        "chart_file": "水想.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_392",
+        "name": "チルノのパーフェクトさんすう学園 [ ⑨ ]",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=PE0rxHzyxNs",
+        "chart_file": "チルノのパーフェクトさんすう学園 [ ⑨ ].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_393",
+        "name": "X.E.N.O.",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=Iu0wpWFpe3Y",
+        "chart_file": "_X.E.N.O._.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_394",
+        "name": "スーハー2000",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=JG2rnLPIoRg",
+        "chart_file": "スーハー2000.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_395",
+        "name": "Son of Sun",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=TckpRsT4unE",
+        "chart_file": "Son of Sun.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_396",
+        "name": "キノコが生えてる！！",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=XwCv6Gm3Q3Q",
+        "chart_file": "キノコがはえてる!!.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_397",
+        "name": "デンパラダイム",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=WMKWZDpEZ8A",
+        "chart_file": "デンパラダイム.json",
+        "creator": "minakolin_3752"
+    },
+    {
+        "song_id": "song_398",
+        "name": "RENDA JOCEKY",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=woynmzNUJdM",
+        "chart_file": "RENDA JOCEKY.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_399",
+        "name": "蜘蛛の糸",
+        "difficulty": "E",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=j0aBmzO70HY",
+        "chart_file": "蜘蛛の糸.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_400",
+        "name": "でていけー!!!![旧]",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=GXoFGszHVeU",
+        "chart_file": "でていけー!!!!.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_401",
+        "name": "セカイはまだ始まってすらいない",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=cFExVIRuGso",
+        "chart_file": "セカイはまだ始まってすらいない.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_402",
+        "name": "WYSI (When You See It)",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=1qBWa6dWBRk",
+        "chart_file": "WYSI (When You See It).json",
+        "creator": "はるちん"
+    },
+    {
+        "song_id": "song_403",
+        "name": "ひどいモアイソング【リズム天国】",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=LzRs2GYuAqc",
+        "chart_file": "ひどいモアイソング【リズム天国】.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_404",
+        "name": "憎悪と醜悪の花束 (Uncut Edition)",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=4bJHE29O9hY",
+        "chart_file": "憎悪と醜悪の花束 [Uncut Edition].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_405",
+        "name": "My First Phone",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=oQL8iKgF9Rs",
+        "chart_file": "My First Phone.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_406",
+        "name": "躯樹の墓守",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=4WIvEU6jGzY",
+        "chart_file": "躯樹の墓守.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_407",
+        "name": "KHYMΞXΛ",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=tjfzgAVvxqk",
+        "chart_file": "KHYMΞXΛ.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_408",
+        "name": "有明/Ariake",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=tszhZ5LjdTo",
+        "chart_file": "有明_Ariake.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_409",
+        "name": "Viyella's Destiny",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=Jqa8gjG8Fn8",
+        "chart_file": "Viyella's Destiny.json",
+        "creator": "GokuLLLLL"
+    },
+    {
+        "song_id": "song_411",
+        "name": "いっかい✕んでくる！",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=qJmVowKU7b0",
+        "chart_file": "いっかい✕んでくる！.json",
+        "creator": "ma"
+    },
+    {
+        "song_id": "song_412",
+        "name": "ヤババイナ",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=l3VpCFoUOko",
+        "chart_file": "ヤババイナ feat_初音ミク、重音テト、ずんだもん.json",
+        "creator": "minakolin_3752"
+    },
+    {
+        "song_id": "song_413",
+        "name": "SAN値直葬",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=l36yKc43_9o",
+        "chart_file": "SAN値直葬.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_414",
+        "name": "MΔX FLAVØR",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=OrmHE7ss1pQ",
+        "chart_file": "MΔX FLAVØR.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_415",
+        "name": "〈D1AB0LiC_DEV0Ti0N〉",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=yHeH0-mOAYY",
+        "chart_file": "〈D1AB0LiC_DEV0Ti0N〉.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_416",
+        "name": "Ars Cantate",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=imzrRINb4tU",
+        "chart_file": "Ars Cantate.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_417",
+        "name": "幸せになれる隠しコマンドがあるらしい",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=lwT4h6x3UM0",
+        "chart_file": "幸せになれる隠しコマンドがあるらしい.json",
+        "creator": "ma"
+    },
+    {
+        "song_id": "song_418",
+        "name": "Retribution ~ Cycle of Redemption ~ SP",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=DmDK68ls930",
+        "chart_file": "Retribution ~ Cycle of Redemption ~ [SP].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_419",
+        "name": "怒槌",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=whviN8hUP48",
+        "chart_file": "怒槌.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_420",
+        "name": "神鳴",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=7F_FAoMcNU8",
+        "chart_file": "神鳴.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_421",
+        "name": "VVelcome!! [没]",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=UUyzkq4JUDc",
+        "chart_file": "VVelcome!! [没].json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_422",
+        "name": "Internet Bitch",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=nIxLuJ0Eipk",
+        "chart_file": "Internet bitch P-Light Remix.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_423",
+        "name": "まいごのみち",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=dk0Z0YBk6QY",
+        "chart_file": "まいごのみち.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_424",
+        "name": "きゅうくらりん",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=2b1IexhKPz4",
+        "chart_file": "きゅうくらりん.json",
+        "creator": "minakolin_3752"
+    },
+    {
+        "song_id": "song_425",
+        "name": "Red and Blue[Red]",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=Ae32KneTIHE",
+        "chart_file": "Red and Blue (Red).json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_426",
+        "name": "Abyssal Altar",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=Gg6KEUdo1rE",
+        "chart_file": "Abyssal Altar.json",
+        "creator": "GokuLLLLL"
+    },
+    {
+        "song_id": "song_427",
+        "name": "Sepia",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=6TcGSAzRmN4",
+        "chart_file": "Sepia.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_428",
+        "name": "Cyberfantasia【Hard+】",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=2uHFUgMwZIM",
+        "chart_file": "Cyberfantasia【Hard+】.json",
+        "creator": "GokuLLLLL"
+    },
+    {
+        "song_id": "song_429",
+        "name": "宙天",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=xG5rqh2C4gg",
+        "chart_file": "宙天.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_430",
+        "name": "Amereistr",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=M8awRrN2d7s",
+        "chart_file": "Amereistr.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_431",
+        "name": "AFTER PANDORA",
+        "difficulty": "N",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=M3SpaMdhMvk",
+        "chart_file": "AFTER PANDORA.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_432",
+        "name": "Xaleid◆scopiX",
+        "difficulty": "H",
+        "star": "★16",
+        "youtube_url": "https://www.youtube.com/watch?v=-PTe8zkYt9A",
+        "chart_file": "Xaleid♦︎ScopiX.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_433",
+        "name": "Spin Eternally 【HypeR GimmicK】",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=IuRwqB9NwVQ",
+        "chart_file": "Spin Eternally 【HypeR GimmicK】.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_434",
+        "name": "怪獣になりたい",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=TbakFPc4ZTw",
+        "chart_file": "怪獣になりたい.json",
+        "creator": "ma"
+    },
+    {
+        "song_id": "song_435",
+        "name": "堕楽ノ鎮魂歌",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=N6XH5-ZZxGM",
+        "chart_file": "堕楽ノ鎮魂歌.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_436",
+        "name": "メモリア [Lost Memory]",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=TMZThivXrj0",
+        "chart_file": "メモリア [Lost Memory].json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_437",
+        "name": "ミオソティスの花束",
+        "difficulty": "N",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=ec_CBvmccpg",
+        "chart_file": "ミオソティスの花束.json",
+        "creator": "minakolin_3752"
+    },
+    {
+        "song_id": "song_438",
+        "name": "ミオソティスの花束",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=ec_CBvmccpg",
+        "chart_file": "ミオソティスの花束.json",
+        "creator": "minakolin_3752"
+    },
+    {
+        "song_id": "song_439",
+        "name": "Glory Steady Go!",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=G8-_auIz1LA",
+        "chart_file": "Glory Steady Go!.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_440",
+        "name": "Lost Secret",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=eqUr-dwquhA",
+        "chart_file": "Lost Secret.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_441",
+        "name": "Joker",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=mCK6mXlLo5Y",
+        "chart_file": "Joker.json",
+        "creator": "ma"
+    },
+    {
+        "song_id": "song_442",
+        "name": "親愛なるあなたは火葬",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=jDos7axCazU",
+        "chart_file": "親愛なるあなたは火葬.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_443",
+        "name": "Abstruse Dilemma",
+        "difficulty": "",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=nnpyIv4wGeQ",
+        "chart_file": "Abstruse Dilemma.json",
+        "creator": "ma"
+    },
+    {
+        "song_id": "song_444",
+        "name": "無意識レクイエム (cosmobsp rmx)",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=hCgAiV-MYYw",
+        "chart_file": "無意識レクイエム (cosmobsp rmx).json",
+        "creator": "ma"
+    },
+    {
+        "song_id": "song_445",
+        "name": "だれかぬいてくれ",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=VgLNfVougpI",
+        "chart_file": "だ  れ  か  ぬ  い  て  く  れ.json",
+        "creator": "ma"
+    },
+    {
+        "song_id": "song_446",
+        "name": "長音厨肺活量テスト",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=WOcdBpHfGeA",
+        "chart_file": "長音厨肺活量テスト.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_447",
+        "name": "Agoniya",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=Ef0X5UR9slo",
+        "chart_file": "Agoniya .json",
+        "creator": "はるちん"
+    },
+    {
+        "song_id": "song_448",
+        "name": "ENDYMION",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=nYJXWwKFabA",
+        "chart_file": "ENDYMION.json",
+        "creator": "lpmmoyojs"
+    },
+    {
+        "song_id": "song_449",
+        "name": "悪戯センセーション",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=_VH91mivTUw",
+        "chart_file": "悪戯センセーション.json",
+        "creator": "ばうむくーへん"
+    },
+    {
+        "song_id": "song_450",
+        "name": "Confessions of a Rotten Girl",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=sV2H712ldOI",
+        "chart_file": "Confessions of a Rotten Girl.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_451",
+        "name": "祈 -我ら神祖と共に歩む者なり-",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=rjB6waYflTg",
+        "chart_file": "祈 -我ら神祖と共に歩む者なり-.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_452",
+        "name": "創 -汝ら新世界へ歩む者なり-",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=kLs6UW43MsQ",
+        "chart_file": "創 -汝ら新世界へ歩む者なり-.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_453",
+        "name": "vs.VIGVANGS【𝑹𝒉𝒚𝒕𝒉𝒎𝒊𝒄 𝑰𝒏𝒇𝒍𝒂𝒕𝒊𝒐𝒏】",
+        "difficulty": "H",
+        "star": "★隔離",
+        "youtube_url": "https://www.youtube.com/watch?v=8kx39wTvG0Q",
+        "chart_file": "vs.VIGVANGS【𝑹𝒉𝒚𝒕𝒉𝒎𝒊𝒄 𝑰𝒏𝒇𝒍𝒂𝒕𝒊𝒐𝒏】.json",
+        "creator": "GokuLLLLL"
+    },
+    {
+        "song_id": "song_454",
+        "name": "Absolute Queen(pln)",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=FF9Uy5NX2bk",
+        "chart_file": "Absolute Queen[pln].json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_455",
+        "name": "チューリングラブ",
+        "difficulty": "H",
+        "star": "★0",
+        "youtube_url": "https://www.youtube.com/watch?v=L-MVk5I6wjo",
+        "chart_file": "チューリングラブ.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_456",
+        "name": "Dear Revolutional Players",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=PkZj0ViS1w8",
+        "chart_file": "Dear Revolutional Players_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_457",
+        "name": "Mood Swing",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=U3NXw-7nVj4",
+        "chart_file": "Mood Swing_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_458",
+        "name": "snooze[pln]",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=_gWn38pnmqI&ab_channel=wotaku",
+        "chart_file": "snooze[pln]_H.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_459",
+        "name": "Arghena",
+        "difficulty": "E",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=l3jMCWZcFKU",
+        "chart_file": "Arghena_E.json",
+        "creator": "ma"
+    },
+    {
+        "song_id": "song_460",
+        "name": "Inverse World",
+        "difficulty": "N",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=9WACIdM5os0",
+        "chart_file": "Inverse World_N.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_461",
+        "name": "Inverse World",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=9WACIdM5os0",
+        "chart_file": "Inverse World_H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_462",
+        "name": "Burn(Haocore Mix) ",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=Wrs3NtkOWwM",
+        "chart_file": "Burn(Haocore Mix) _H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_463",
+        "name": "生命性シンドロウム",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=d1XF05qkBb0",
+        "chart_file": "生命性シンドロウム_H.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_464",
+        "name": "Luminescence",
+        "difficulty": "H",
+        "star": "★0",
+        "youtube_url": "https://www.youtube.com/watch?v=tSCIZra5kaY",
+        "chart_file": "Luminescence_H.json",
+        "creator": "GokuLLLLL"
+    },
+    {
+        "song_id": "song_465",
+        "name": "超！高速！除夜の鐘 ",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=jrD9n_rTS8Q",
+        "chart_file": "超！高速！除夜の鐘 _H.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_466",
+        "name": "超！高速！除夜の鐘 ",
+        "difficulty": "N",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=jrD9n_rTS8Q",
+        "chart_file": "超！高速！除夜の鐘 _N.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_467",
+        "name": "超！高速！除夜の鐘 （No Gimmick）",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=jrD9n_rTS8Q",
+        "chart_file": "超！高速！除夜の鐘 （No Gimmick）_H.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_468",
+        "name": "STNC",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=qzY1HBPtpbM",
+        "chart_file": "STNC_H.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_469",
+        "name": "Spin Eternally 【No GimmicK】",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=IuRwqB9NwVQ",
+        "chart_file": "Spin Eternally 【No GimmicK】_H.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_470",
+        "name": "ミライ再生成ボタン",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=lBZeMeZrDEE",
+        "chart_file": "ミライ再生成ボタン_H.json",
+        "creator": "ma"
+    },
+    {
+        "song_id": "song_471",
+        "name": "サイバーパンクデットボーイ",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=5HPJ7eUvU4o",
+        "chart_file": "サイバーパンクデットボーイ_H.json",
+        "creator": "ma"
+    },
+    {
+        "song_id": "song_472",
+        "name": "シ゛ャ゛ン゛ボ゛リ゛ミ゛ッ゛（自主規制）ーーーーー！！！！！",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=kDYtUmzAaQw",
+        "chart_file": "シ゛ャ゛ン゛ボ゛リ゛ミ゛ッ゛（自主規制）ーーーーー！！！！！_H.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_473",
+        "name": "ねぇ、どろどろさん",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=DOCy49mTGTE",
+        "chart_file": "ねぇ、どろどろさん_H.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_474",
+        "name": "Mood Swing【MIDNIGHT】",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=U3NXw-7nVj4",
+        "chart_file": "Mood Swing【MIDNIGHT】_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_475",
+        "name": "yours forever",
+        "difficulty": "H",
+        "star": "★17",
+        "youtube_url": "https://www.youtube.com/watch?v=oahrP2tuFHg",
+        "chart_file": "yours forever_H.json",
+        "creator": "lpmmoyojs"
+    },
+    {
+        "song_id": "song_476",
+        "name": "かるみあどーるず",
+        "difficulty": "H",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=ziJLg8UJK7k",
+        "chart_file": "かるみあどーるず_H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_477",
+        "name": "キャットラビング",
+        "difficulty": "N",
+        "star": "★1",
+        "youtube_url": "https://www.youtube.com/watch?v=7gwvBrlUiww",
+        "chart_file": "キャットラビング_N.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_478",
+        "name": "キャットラビング",
+        "difficulty": "H",
+        "star": "★2",
+        "youtube_url": "https://www.youtube.com/watch?v=7gwvBrlUiww",
+        "chart_file": "キャットラビング_H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_479",
+        "name": "おやすみモノクローム",
+        "difficulty": "H",
+        "star": "★2",
+        "youtube_url": "https://www.youtube.com/watch?v=5B0m1OkUgzA",
+        "chart_file": "おやすみモノクローム_H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_480",
+        "name": "breath of stella",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=CozHHU_yhwo",
+        "chart_file": "breath of stella_H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_481",
+        "name": "𝐃𝐞𝐞𝐩 𝐁𝐥𝐮𝐞 【 𝙽𝙰𝚅𝚈 】",
+        "difficulty": "H",
+        "star": "★🪦",
+        "youtube_url": "https://www.youtube.com/watch?v=MqwHhod7TZo",
+        "chart_file": "𝐃𝐞𝐞𝐩 𝐁𝐥𝐮𝐞 【 𝙽𝙰𝚅𝚈 】_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_482",
+        "name": "acta est fabula, plaudite【Shatter】",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=F_KDuvk1FkE",
+        "chart_file": "acta est fabula, plaudite【Shatter】_H.json",
+        "creator": "afu"
+    },
+    {
+        "song_id": "song_483",
+        "name": "祈らず行脚",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=kwOLaJEKVnE",
+        "chart_file": "祈らず行脚_H.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_484",
+        "name": "Deep Blue",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=MqwHhod7TZo",
+        "chart_file": "Deep Blue_H.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_485",
+        "name": "酒呑童子",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=zNdBPsngLKM",
+        "chart_file": "酒呑童子_H.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_486",
+        "name": "カラフルボイス",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=Pn8xZq-CJjQ",
+        "chart_file": "カラフルボイス_H.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_487",
+        "name": "BEYOND",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=7H7W8KLplL4",
+        "chart_file": "BEYOND_H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_488",
+        "name": "REX",
+        "difficulty": "H",
+        "star": "★16",
+        "youtube_url": "https://www.youtube.com/watch?v=iwfui1__Ceo",
+        "chart_file": "REX_H.json",
+        "creator": "GokuLLLLL"
+    },
+    {
+        "song_id": "song_489",
+        "name": "モエチャッカファイア",
+        "difficulty": "H",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=wZlv3qDPfjk",
+        "chart_file": "モエチャッカファイア_H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_490",
+        "name": "うたかたのせかいで",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=NROQyBPX9Uo",
+        "chart_file": "うたかたのせかいで_H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_491",
+        "name": "Night of Core",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=zu5I1JmOtwg",
+        "chart_file": "Night of Core_H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_492",
+        "name": "Kirakira Noel Story!!",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=GxR3gpdcndE",
+        "chart_file": "Kirakira Noel Story!!_H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_493",
+        "name": "Please",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=OWjOW57KWBE",
+        "chart_file": "Please_H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_494",
+        "name": " Final-Boss-Chan",
+        "difficulty": "H",
+        "star": "★16",
+        "youtube_url": "https://www.youtube.com/watch?v=_hzaNYYgQb0",
+        "chart_file": " Final-Boss-Chan_H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_495",
+        "name": "SAtAN",
+        "difficulty": "H",
+        "star": "★17",
+        "youtube_url": "https://soundcloud.com/get_jaded/sdvx-satan-nofx",
+        "chart_file": "SAtAN_H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_496",
+        "name": "Stargazer",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=hYkTI2CZGOM",
+        "chart_file": "Stargazer_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_497",
+        "name": "星屑ストラック",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=z0MSMqnaYbk",
+        "chart_file": "星屑ストラック_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_498",
+        "name": "vs.VIGVANGS",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=ogGYZpKsz3M",
+        "chart_file": "vs.VIGVANGS_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_499",
+        "name": "𝕄𝕒𝕜𝕖𝕒𝕣 【𝓠𝓾𝓮𝓮𝓷】",
+        "difficulty": "H",
+        "star": "★16",
+        "youtube_url": "https://www.youtube.com/watch?v=aYlmxUimCMU",
+        "chart_file": "𝕄𝕒𝕜𝕖𝕒𝕣 【𝓠𝓾𝓮𝓮𝓷】_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_500",
+        "name": "ゼーレンヴァンデルング",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=H5dJjUxgO40",
+        "chart_file": "ゼーレンヴァンデルング_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_502",
+        "name": "DESTRUCTION 3,2,1",
+        "difficulty": "H",
+        "star": "★17",
+        "youtube_url": "https://www.youtube.com/watch?v=lJHipVi48bo",
+        "chart_file": "DESTRUCTION 3,2,1_H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_503",
+        "name": "U.N.オーエンは彼女なのか？ (USAO Euphoric Frenchcore Remix)",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=QDde3_iyY-U",
+        "chart_file": "U.N.オーエンは彼女なのか？ (USAO Euphoric Frenchcore Remix)_H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_504",
+        "name": "Knight Rider",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://www.youtube.com/watch?v=uNM3cwhwYxU",
+        "chart_file": "Knight Rider_H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_505",
+        "name": "いんふぃにてぃ🐰もふりてぃ(cut)",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=DF9VTtM6dQY",
+        "chart_file": "いんふぃにてぃ🐰もふりてぃ(cut)_H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_506",
+        "name": "人生",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=wpVa0cnEeIw",
+        "chart_file": "人生_H.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_507",
+        "name": "人生 (CosMo.B.S.P.-185 \"Inverted\" Remix) 【𝑶𝒖𝒓 𝑳𝒊𝒇𝒆】",
+        "difficulty": "H",
+        "star": "★18",
+        "youtube_url": "https://www.youtube.com/watch?v=QO6ZCC3qA8M",
+        "chart_file": "人生 (CosMo.B.S.P.-185 Inverted Remix) 【𝑶𝒖𝒓 𝑳𝒊𝒇𝒆】_H.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_508",
+        "name": "オペレート・ミー",
+        "difficulty": "H",
+        "star": "★14",
+        "youtube_url": "https://www.youtube.com/watch?v=XfYEzA2fIMM",
+        "chart_file": "オペレート・ミー_H.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_509",
+        "name": "トレジャーガーデン",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=RIpHyjsv_84",
+        "chart_file": "トレジャーガーデン_H.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_510",
+        "name": "コネクトカラーズ",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=nCHbhptQpCI",
+        "chart_file": "コネクトカラーズ_H.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_511",
+        "name": "アクセラレイト",
+        "difficulty": "H",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=UrQLCbn4YHk",
+        "chart_file": "アクセラレイト_H.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_512",
+        "name": "Destination 2F29",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=6hL6EUwLOZg",
+        "chart_file": "Destination 2F29_H.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_513",
+        "name": "アンチユー",
+        "difficulty": "H",
+        "star": "★3",
+        "youtube_url": "https://www.youtube.com/watch?v=d3Eqz55SxlA",
+        "chart_file": "アンチユー_H.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_514",
+        "name": "私の恋はヘルファイア",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=heTaHWABCOo",
+        "chart_file": "私の恋はヘルファイア_H.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_515",
+        "name": "零號車輛",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=Mk0OFd9du0w",
+        "chart_file": "零號車輛_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_516",
+        "name": " 4小節ごとにジャンルが変わるHIGH5LANDER.Remix",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=DTKOfu5htbo",
+        "chart_file": " 4小節ごとにジャンルが変わるHIGH5LANDER.Remix_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_517",
+        "name": "Altale",
+        "difficulty": "H",
+        "star": "★4",
+        "youtube_url": "https://www.youtube.com/watch?v=ikr59Iplnlo",
+        "chart_file": "Altale_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_518",
+        "name": "轆轤首",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=K6QC4mNBaoc",
+        "chart_file": "轆轤首_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_519",
+        "name": "BANGING STRIKE",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=KqhHtcgVjos",
+        "chart_file": "BANGING STRIKE_H.json",
+        "creator": "GokuLLLLL"
+    },
+    {
+        "song_id": "song_520",
+        "name": "Absolute Disintegration",
+        "difficulty": "H",
+        "star": "★14",
+        "youtube_url": "https://www.youtube.com/watch?v=9LoUBqDDYN8",
+        "chart_file": "Absolute Disintegration_H.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_521",
+        "name": "Hypothesize",
+        "difficulty": "H",
+        "star": "★6",
+        "youtube_url": "https://soundcloud.com/sephid/hypothesize1",
+        "chart_file": "Hypothesize_H.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_522",
+        "name": "Sigrdrifa",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=5xosUV8z22E",
+        "chart_file": "Sigrdrifa_H.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_523",
+        "name": "異星にいこうね",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=PubukElqUJw",
+        "chart_file": "異星にいこうね_H.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_1107",
+        "name": "ハッピーミルフィーユ",
+        "difficulty": "H",
+        "star": "★5",
+        "youtube_url": "https://www.youtube.com/watch?v=AON5aAVG3QU",
+        "chart_file": "ハッピーミルフィーユ_H.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_1108",
+        "name": "僕たちの旅とエピローグ[Ending]",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=8Dz_v3vBd6E",
+        "chart_file": "僕たちの旅とエピローグ[Ending]_H.json",
+        "creator": "minakolin_3752"
+    },
+    {
+        "song_id": "song_1109",
+        "name": "[G2R2018] Pictured as Perfect [BGA]",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=6361EXrvUAQ",
+        "chart_file": "[G2R2018] Pictured as Perfect [BGA]_H.json",
+        "creator": "minakolin_3752"
+    },
+    {
+        "song_id": "song_1110",
+        "name": "†:OLPHEUX:† [ EoN 2025 TieBreakeR ] ",
+        "difficulty": "H",
+        "star": "★17",
+        "youtube_url": "https://www.youtube.com/watch?v=l3epjSbcXkY",
+        "chart_file": "†OLPHEUX† [ EoN 2025 TieBreakeR ] _H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_1111",
+        "name": "𝑭𝒍𝒂𝒎𝒆𝒘𝒂𝒍𝒍【ℋℰℒℒℋ𝒪ℒℰ】",
+        "difficulty": "H",
+        "star": "★🪦",
+        "youtube_url": "https://www.youtube.com/watch?v=aYKN5_b7yVo",
+        "chart_file": "𝑭𝒍𝒂𝒎𝒆𝒘𝒂𝒍𝒍【ℋℰℒℒℋ𝒪ℒℰ】_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_1112",
+        "name": "人生 [reincarnation]",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=wpVa0cnEeIw",
+        "chart_file": "人生 [reincarnation]_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_1113",
+        "name": "Daphnis",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=goFEmrr6sqI",
+        "chart_file": "Daphnis_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_1114",
+        "name": "Sweet & Sour",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=ZBCs5CVtwJA",
+        "chart_file": "Sweet & Sour_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_1115",
+        "name": "複製された空の記憶",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=vag8qGl5cAk",
+        "chart_file": "複製された空の記憶_H.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_1116",
+        "name": "GIGALODOON",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=oh9QvT3FcIc",
+        "chart_file": "GIGALODOON_H.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_1117",
+        "name": "君が代",
+        "difficulty": "H",
+        "star": "★0",
+        "youtube_url": "https://www.youtube.com/watch?v=JUoPm1xJJak",
+        "chart_file": "君が代_H.json",
+        "creator": "とらさん大好き！"
+    },
+    {
+        "song_id": "song_1118",
+        "name": "Stardust:RAY【Re: BURST】",
+        "difficulty": "H",
+        "star": "★14",
+        "youtube_url": "https://www.youtube.com/watch?v=q6MJ7BlGP48",
+        "chart_file": "StardustRAY【Re BURST】_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_1119",
+        "name": "Deep Blue【abNORMAL】",
+        "difficulty": "N",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=MqwHhod7TZo",
+        "chart_file": "Deep Blue【abNORMAL】_N.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_1120",
+        "name": "Aiolos",
+        "difficulty": "H",
+        "star": "★9",
+        "youtube_url": "https://www.youtube.com/watch?v=tgkvljBYVsI",
+        "chart_file": "Aiolos_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_1121",
+        "name": "Divide et impera!",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=Tkh0JkhWnik",
+        "chart_file": "Divide et impera!_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_1122",
+        "name": "Break The Speakers",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=6RTLznn_I7k",
+        "chart_file": "Break The Speakers_H.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_1123",
+        "name": "タタキナ",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=DpHt9ys-6I8",
+        "chart_file": "タタキナ_H.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_1124",
+        "name": "Superlative",
+        "difficulty": "H",
+        "star": "★14",
+        "youtube_url": "https://www.youtube.com/watch?v=BcZh7MgENkc",
+        "chart_file": "Superlative_H.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_1125",
+        "name": "うたかたのせかいで 【𝑓𝑟𝑎𝑔𝑖𝑙𝑒】",
+        "difficulty": "H",
+        "star": "★11",
+        "youtube_url": "https://www.youtube.com/watch?v=NROQyBPX9Uo",
+        "chart_file": "うたかたのせかいで 【𝑓𝑟𝑎𝑔𝑖𝑙𝑒】_H.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_1126",
+        "name": "ももいろけいほう",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=y2boj0KVdhs",
+        "chart_file": "ももいろけいほう_H.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_1127",
+        "name": "罪過の聖堂",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=Y545nQO6fQ4",
+        "chart_file": "罪過の聖堂_H.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_1128",
+        "name": "EX-ris",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=kkE1z76fgFs",
+        "chart_file": "EX-ris_H.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_1129",
+        "name": "DESTRUCTION 3,2,1 【COUNTDΘ₩N】",
+        "difficulty": "H",
+        "star": "★14",
+        "youtube_url": "https://www.youtube.com/watch?v=lJHipVi48bo",
+        "chart_file": "DESTRUCTION 3,2,1 【COUNTDΘ₩N】_H.json",
+        "creator": "sattyann118"
+    },
+    {
+        "song_id": "song_1130",
+        "name": "astral ability",
+        "difficulty": "H",
+        "star": "★2",
+        "youtube_url": "https://www.youtube.com/watch?v=0EJ7HvJYe1M",
+        "chart_file": "astral ability_H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_1131",
+        "name": "Verse X【𝕏𝕩_𝕍𝕀ℂ𝕋𝕆ℝ𝕐_𝕩𝕏】",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=DbK6twErgUg",
+        "chart_file": "Verse X【𝕏𝕩_𝕍𝕀ℂ𝕋𝕆ℝ𝕐_𝕩𝕏】_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_1132",
+        "name": "天藍のアイスヘヴン",
+        "difficulty": "H",
+        "star": "★8",
+        "youtube_url": "https://www.youtube.com/watch?v=D2oOoNfjkEg",
+        "chart_file": "天藍のアイスヘヴン_H.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_1133",
+        "name": "Phalaenopsis-reaction",
+        "difficulty": "H",
+        "star": "★7",
+        "youtube_url": "https://www.youtube.com/watch?v=J8AXYxS3DTM",
+        "chart_file": "Phalaenopsis-reaction_H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_1134",
+        "name": "Blossom of Ashes",
+        "difficulty": "H",
+        "star": "★17",
+        "youtube_url": "https://www.youtube.com/watch?v=53kIFoRuvfA",
+        "chart_file": "Blossom of Ashes_H.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_1135",
+        "name": "Stella-rium",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=GNkPJvVEm0s",
+        "chart_file": "Stella-rium_H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_1136",
+        "name": "White Promise",
+        "difficulty": "H",
+        "star": "★2",
+        "youtube_url": "https://www.youtube.com/watch?v=0l7hVGnSWq4",
+        "chart_file": "White Promise_H.json",
+        "creator": "X-ray"
+    },
+    {
+        "song_id": "song_1137",
+        "name": "Sigmund (The Requiem's Extended MIX)",
+        "difficulty": "H",
+        "star": "★15",
+        "youtube_url": "https://www.youtube.com/watch?v=iGiAnbvij2M",
+        "chart_file": "Sigmund (The Requiem's Extended MIX)_H.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_1139",
+        "name": " こわれちゃった！！【𝑩𝑹𝑶𝑲𝑬𝑵】",
+        "difficulty": "",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=XEvoptb8x8U",
+        "chart_file": " こわれちゃった！！【𝑩𝑹𝑶𝑲𝑬𝑵】_.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_1140",
+        "name": "Oiiaioooooiai(yana) X-ray`s Death edit",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=bN1shALfJqg",
+        "chart_file": "Oiiaioooooiai(yana) X-ray`s Death edit_H.json",
+        "creator": "yanaaaaaaa+X-ray"
+    },
+    {
+        "song_id": "song_1141",
+        "name": "音街が威嚇するだけ",
+        "difficulty": "H",
+        "star": "★2",
+        "youtube_url": "https://www.youtube.com/watch?v=GRbWV4DQnYs&t=47s",
+        "chart_file": "音街が威嚇するだけ_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_1142",
+        "name": "ヤミナベ!!!! ",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=NFT6GMPeYJI",
+        "chart_file": "ヤミナベ!!!! _H.json",
+        "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_1143",
+        "name": "Distorted Fate【Another Tide】",
+        "difficulty": "H",
+        "star": "★?",
+        "youtube_url": "https://www.youtube.com/watch?v=GVPG_pZ6tBA",
+        "chart_file": "Distorted Fate【Another Tide】_H.json",
+        "creator": "GokuLLLLL"
+    },
+    {
+        "song_id": "song_1144",
+        "name": "☾ ◐ ◯ ◑ ☽",
+        "difficulty": "H",
+        "star": "★17",
+        "youtube_url": "https://www.youtube.com/watch?v=RKxL2qNXsZo",
+        "chart_file": "☾ ◐ ◯ ◑ ☽_H.json",
+        "creator": "pentatonic"
+    },
+    {
+        "song_id": "song_1145",
+        "name": "Phantom Crisis",
+        "difficulty": "H",
+        "star": "★16",
+        "youtube_url": "https://www.youtube.com/watch?v=UDRPNwAYusw",
+        "chart_file": "Phantom Crisis_H.json",
+        "creator": "yanaaaaaaa"
+    },
+    {
+        "song_id": "song_1146",
+        "name": "ヤミナベ!!!! 弱体化 ",
+        "difficulty": "H",
+        "star": "★13",
+        "youtube_url": "https://www.youtube.com/watch?v=NFT6GMPeYJI",
+        "chart_file": "ヤミナベ!!!! 弱体化 _H.json",
+        "creator": "kakuteru"
+    }
+]

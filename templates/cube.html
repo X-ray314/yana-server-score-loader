@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+
+{% block title %}ルービックキューブ{% endblock %}
+
+{% block extra_style %}
+<style>
+    /* 1. スクロールを完全に禁止 */
+    body {
+        overflow: hidden !important;
+        margin: 0;
+    }
+
+    /* 2. ナビバー以外のエリアを全画面化 */
+    main {
+        padding: 0 !important;
+        margin: 0 !important;
+        /* ナビバーの高さを除いた全画面 */
+        height: calc(100vh - 65px) !important; 
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    /* スコアローダーの共通コンテナを全画面対応に */
+    .main-container {
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        max-width: none !important;
+        padding: 0 !important;
+        position: relative;
+    }
+
+    /* 3. キューブ描画エリア */
+    #cube-container {
+        flex: 1;
+        width: 100%;
+        background: transparent !important; /* 透明に指定 */
+        cursor: grab;
+    }
+
+    #cube-container:active {
+        cursor: grabbing;
+    }
+
+    /* 4. フッターを最下部に張り付ける */
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        padding: 8px 0 !important;
+        background: rgba(10, 10, 10, 0.9) !important;
+        z-index: 100;
+        border-top: 1px solid #333;
+    }
+
+    /* 5. スクランブルボタン */
+    .scramble-btn {
+        position: absolute;
+        bottom: 60px; /* フッターの上 */
+        right: 20px;
+        z-index: 110;
+        background: rgba(0, 0, 0, 0.7);
+        border: 1px solid var(--accent, #00d4ff);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 30px;
+        cursor: pointer;
+        backdrop-filter: blur(8px);
+        font-family: 'Exo 2', sans-serif;
+        transition: all 0.3s ease;
+    }
+    .scramble-btn:hover {
+        background: var(--accent, #00d4ff);
+        color: black;
+        transform: scale(1.05);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="cube-container"></div>
+<button id="btn-scramble" class="scramble-btn">Scramble</button>
+{% endblock %}
+
+{% block extra_script %}
+<script type="importmap">
+{
+    "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+}
+</script>
+
+<script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    // --- 設定 ---
+    const CUBE_DIMENSION = 3;
+    const CUBE_SIZE = 1;
+    const GAP = 0.02;
+    const ANIMATION_SPEED = 0.2;
+
+    let isAnimating = false;
+    let activeGroup = null;
+    let rotationAxis = null;
+    let rotationAngle = 0;
+    let cubelets = [];
+
+    const container = document.getElementById('cube-container');
+    
+    // --- Scene & Renderer ---
+    const scene = new THREE.Scene();
+    
+    // 初期サイズをコンテナから取得。取得できない場合のフォールバックを設定
+    let width = container.clientWidth || window.innerWidth;
+    let height = container.clientHeight || (window.innerHeight - 80);
+
+    const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(width, height);
+    renderer.setClearColor(0x000000, 0); 
+    container.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    camera.position.set(4, 4, 6);
+    controls.enableDamping = true;
+
+    // --- キューブ生成 ---
+    const colors = [
+        { color: 0xc41e3a }, // R
+        { color: 0xff5800 }, // L
+        { color: 0xffffff }, // U
+        { color: 0xffd500 }, // D
+        { color: 0x009e60 }, // F
+        { color: 0x0051ba }  // B
+    ];
+    const blackMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+    const materials = colors.map(c => new THREE.MeshBasicMaterial({ color: c.color }));
+
+    for (let x = 0; x < CUBE_DIMENSION; x++) {
+        for (let y = 0; y < CUBE_DIMENSION; y++) {
+            for (let z = 0; z < CUBE_DIMENSION; z++) {
+                if (x === 1 && y === 1 && z === 1) continue;
+
+                const cubeletMats = [];
+                cubeletMats.push(x === 2 ? materials[0] : blackMat); // R
+                cubeletMats.push(x === 0 ? materials[1] : blackMat); // L
+                cubeletMats.push(y === 2 ? materials[2] : blackMat); // U
+                cubeletMats.push(y === 0 ? materials[3] : blackMat); // D
+                cubeletMats.push(z === 2 ? materials[4] : blackMat); // F
+                cubeletMats.push(z === 0 ? materials[5] : blackMat); // B
+
+                const mesh = new THREE.Mesh(new THREE.BoxGeometry(CUBE_SIZE, CUBE_SIZE, CUBE_SIZE), cubeletMats);
+                mesh.position.set(
+                    (x - 1) * (CUBE_SIZE + GAP),
+                    (y - 1) * (CUBE_SIZE + GAP),
+                    (z - 1) * (CUBE_SIZE + GAP)
+                );
+                scene.add(mesh);
+                cubelets.push(mesh);
+            }
+        }
+    }
+
+    // --- 操作ロジック ---
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    let isMouseDown = false;
+    let startPoint = null;
+    let clickedFaceNormal = null;
+    let clickedCubelet = null;
+    let startMousePos = new THREE.Vector2();
+
+    renderer.domElement.addEventListener('mousedown', (event) => {
+        if (isAnimating) return;
+        const rect = renderer.domElement.getBoundingClientRect();
+        mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+        startMousePos.set(event.clientX, event.clientY);
+
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(cubelets);
+
+        if (intersects.length > 0) {
+            isMouseDown = true;
+            controls.enabled = false;
+            const intersect = intersects[0];
+            clickedCubelet = intersect.object;
+            startPoint = intersect.point;
+            clickedFaceNormal = intersect.face.normal.clone().transformDirection(clickedCubelet.matrixWorld);
+        }
+    });
+
+    renderer.domElement.addEventListener('mousemove', (event) => {
+        if (!isMouseDown || isAnimating) return;
+        const deltaX = event.clientX - startMousePos.x;
+        const deltaY = event.clientY - startMousePos.y;
+        if (Math.sqrt(deltaX * deltaX + deltaY * deltaY) > 30) {
+            initiateRotation(new THREE.Vector2(deltaX, -deltaY).normalize());
+            isMouseDown = false;
+        }
+    });
+
+    renderer.domElement.addEventListener('mouseup', () => {
+        isMouseDown = false;
+        controls.enabled = true;
+    });
+
+    function initiateRotation(dragDir2D) {
+        const normal = clickedFaceNormal.clone().normalize();
+        const axes = [
+            { name: 'x', vec: new THREE.Vector3(1, 0, 0) },
+            { name: 'y', vec: new THREE.Vector3(0, 1, 0) },
+            { name: 'z', vec: new THREE.Vector3(0, 0, 1) }
+        ].filter(a => Math.abs(a.vec.dot(normal)) < 0.1);
+
+        let bestAxis = null, maxSimilarity = -1, finalAngle = 0;
+        axes.forEach(axisObj => {
+            const moveDir3D = new THREE.Vector3().crossVectors(axisObj.vec, normal).normalize();
+            const screenStart = startPoint.clone().project(camera);
+            const screenEnd = startPoint.clone().add(moveDir3D.clone().multiplyScalar(0.1)).project(camera);
+            const screenDir2D = new THREE.Vector2(screenEnd.x - screenStart.x, screenEnd.y - screenStart.y).normalize();
+            const similarity = dragDir2D.dot(screenDir2D);
+
+            if (Math.abs(similarity) > maxSimilarity) {
+                maxSimilarity = Math.abs(similarity);
+                bestAxis = axisObj;
+                finalAngle = (Math.PI / 2) * Math.sign(similarity);
+            }
+        });
+
+        if (bestAxis) {
+            const worldPos = new THREE.Vector3();
+            clickedCubelet.getWorldPosition(worldPos);
+            const layer = Math.round(worldPos[bestAxis.name] / (CUBE_SIZE + GAP));
+            startRotationAnimation(bestAxis.name, layer, finalAngle);
+        }
+    }
+
+    function startRotationAnimation(axis, layer, angle) {
+        isAnimating = true;
+        activeGroup = new THREE.Group();
+        scene.add(activeGroup);
+        const targets = cubelets.filter(c => {
+            const pos = new THREE.Vector3();
+            c.getWorldPosition(pos);
+            return Math.round(pos[axis] / (CUBE_SIZE + GAP)) === layer;
+        });
+        targets.forEach(c => activeGroup.add(c));
+        rotationAxis = axis;
+        rotationAngle = angle;
+    }
+
+    document.getElementById('btn-scramble').addEventListener('click', () => {
+        if (isAnimating) return;
+        let moves = 0;
+        const interval = setInterval(() => {
+            const a = ['x', 'y', 'z'][Math.floor(Math.random()*3)];
+            const l = [-1, 0, 1][Math.floor(Math.random()*3)];
+            const ag = [Math.PI/2, -Math.PI/2][Math.floor(Math.random()*2)];
+            startRotationAnimation(a, l, ag);
+            if(++moves >= 20) clearInterval(interval);
+        }, 300);
+    });
+
+    function animate() {
+        requestAnimationFrame(animate);
+        if (isAnimating && activeGroup) {
+            const step = rotationAngle * ANIMATION_SPEED;
+            activeGroup.rotation[rotationAxis] += step;
+            if (Math.abs(activeGroup.rotation[rotationAxis]) >= Math.abs(rotationAngle)) {
+                activeGroup.rotation[rotationAxis] = rotationAngle;
+                [...activeGroup.children].forEach(c => {
+                    const wp = new THREE.Vector3(), wq = new THREE.Quaternion();
+                    c.getWorldPosition(wp); c.getWorldQuaternion(wq);
+                    scene.attach(c);
+                    c.position.copy(wp); c.quaternion.copy(wq);
+                });
+                scene.remove(activeGroup);
+                activeGroup = null; isAnimating = false;
+            }
+        }
+        controls.update();
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+        const w = container.clientWidth, h = container.clientHeight;
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h);
+    });
+</script>
+{% endblock %}

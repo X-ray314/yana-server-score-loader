@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ブロック崩し - Mini Game</title>
+    <style>
+        :root { --primary: #4a90e2; --bg: #f8f9fa; }
+        body {
+            font-family: sans-serif; background: var(--bg); color: #222;
+            display: flex; flex-direction: column; align-items: center;
+            margin: 0; padding: 20px;
+        }
+        .header { text-align: center; width: 100%; max-width: 640px; margin-bottom: 10px; }
+        h1 { margin: 6px 0; font-size: 1.6rem; color: #222; }
+        a.back { text-decoration: none; color: #776e65; font-size: 0.9rem; display: block; margin-bottom: 6px; }
+        .stats {
+            display: flex; gap: 24px; justify-content: center;
+            font-weight: bold; font-size: 1rem; margin-bottom: 10px; color: #444;
+        }
+        #mode-selector { display: flex; gap: 16px; justify-content: center; margin: 10px 0; }
+        .btn {
+            background: var(--primary); color: white; border: none;
+            padding: 10px 28px; border-radius: 20px; cursor: pointer;
+            font-weight: bold; font-size: 0.95rem;
+        }
+        .btn:hover { background: #357abd; }
+        canvas {
+            background: #fff; border: 1.5px solid #ddd;
+            border-radius: 10px; cursor: default; display: block;
+        }
+        .hint { margin-top: 10px; color: #aaa; font-size: 0.8rem; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <a href="/mini_game/" class="back">← 戻る</a>
+    <h1>ブロック崩し</h1>
+</div>
+
+<div id="mode-selector">
+    <button class="btn" onclick="startGame('time')">タイムアタック</button>
+    <button class="btn" onclick="startGame('endless')">エンドレス</button>
+</div>
+
+<div class="stats" id="stats-area" style="display:none;">
+    <div id="lives-display">ライフ: ❤️❤️❤️</div>
+    <div id="stat-label">スコア: 0</div>
+    <div id="timer-display">タイム: 0.0s</div>
+</div>
+
+<canvas id="gameCanvas"></canvas>
+<div class="hint" id="hint" style="display:none;">矢印キーまたはマウスで操作</div>
+
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx    = canvas.getContext('2d');
+canvas.width  = 560;
+canvas.height = 480;
+
+// ---- Web Audio API ----
+let audioCtx = null;
+function getAudio() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    return audioCtx;
+}
+function playTone(freq, type, duration, vol = 0.15) {
+    try {
+        const ac = getAudio();
+        const osc = ac.createOscillator();
+        const g   = ac.createGain();
+        osc.connect(g); g.connect(ac.destination);
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, ac.currentTime);
+        g.gain.setValueAtTime(vol, ac.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + duration);
+        osc.start(); osc.stop(ac.currentTime + duration);
+    } catch(e) {}
+}
+const sfx = {
+    brick:  () => playTone(500, 'square',   0.07, 0.14),
+    paddle: () => playTone(250, 'sine',     0.10, 0.16),
+    wall:   () => playTone(170, 'triangle', 0.06, 0.09),
+    lose:   () => playTone(110, 'sawtooth', 0.45, 0.18),
+    win:    () => {
+        playTone(523, 'sine', 0.14);
+        setTimeout(() => playTone(659, 'sine', 0.14), 150);
+        setTimeout(() => playTone(784, 'sine', 0.22), 300);
+    }
+};
+
+// ---- 定数 ----
+const PADDLE_H = 12, PADDLE_W = 90;
+const BR = 7, MAX_SPEED = 9, INIT_SPEED = 3.8;
+const COL = 9, B_PAD = 6, B_TOP = 32, BH = 20;
+// ブロック幅をキャンバス幅にぴったり合わせる（隙間なし）
+const BW = (canvas.width - B_PAD * (COL + 1)) / COL;
+function brickX(c) { return B_PAD + c * (BW + B_PAD); }
+
+// ---- 状態 ----
+let mode = '', score = 0, lives = 3, startTime = 0, gameRunning = false, animId = null;
+let overlayState = null;
+let finalResultTime = 0;
+let paddleX = (canvas.width - PADDLE_W) / 2;
+let rightPressed = false, leftPressed = false;
+let bx, by, bdx, bdy;
+let bricks = [];
+let totalRowsEver = 0;
+let rowHueBase = 200;
+
+// ---- オーバーレイボタン位置 ----
+const OV_BTN = {
+    time:    { x: canvas.width/2 - 155, y: canvas.height/2 + 30, w: 140, h: 40 },
+    endless: { x: canvas.width/2 + 15,  y: canvas.height/2 + 30, w: 140, h: 40 },
+};
+
+// ---- イベント ----
+document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') { rightPressed = true; e.preventDefault(); }
+    if (e.key === 'ArrowLeft')  { leftPressed  = true; e.preventDefault(); }
+});
+document.addEventListener('keyup', e => {
+    if (e.key === 'ArrowRight') rightPressed = false;
+    if (e.key === 'ArrowLeft')  leftPressed  = false;
+});
+document.addEventListener('mousemove', e => {
+    if (!gameRunning) return;
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (canvas.width / rect.width);
+    paddleX = Math.max(0, Math.min(canvas.width - PADDLE_W, mx - PADDLE_W / 2));
+});
+canvas.addEventListener('click', e => {
+    if (!overlayState) return;
+    const rect = canvas.getBoundingClientRect();
+    const cx = (e.clientX - rect.left) * (canvas.width  / rect.width);
+    const cy = (e.clientY - rect.top)  * (canvas.height / rect.height);
+    if (hitBtn(cx, cy, OV_BTN.time))    startGame('time');
+    if (hitBtn(cx, cy, OV_BTN.endless)) startGame('endless');
+});
+function hitBtn(cx, cy, b) {
+    return cx >= b.x && cx <= b.x + b.w && cy >= b.y && cy <= b.y + b.h;
+}
+
+// ---- ブロック生成 ----
+function rowColor(rowIndex) {
+    return `hsl(${(rowHueBase + rowIndex * 32) % 360}, 60%, 58%)`;
+}
+function initBricks(rows) {
+    bricks = [];
+    totalRowsEver = rows - 1;
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < COL; c++) {
+            bricks.push({ x: brickX(c), y: B_TOP + r * (BH + B_PAD), alive: true, row: r });
+        }
+    }
+}
+
+// ---- ゲーム開始 ----
+function startGame(selectedMode) {
+    mode = selectedMode;
+    score = 0;
+    lives = 3;
+    overlayState = null;
+    gameRunning = true;
+    startTime = Date.now();
+    rowHueBase = Math.random() * 360;
+
+    paddleX = (canvas.width - PADDLE_W) / 2;
+    bx = canvas.width / 2;
+    by = canvas.height - 60;
+    bdx = INIT_SPEED * (Math.random() < 0.5 ? 1 : -1);
+    bdy = -INIT_SPEED;
+
+    document.getElementById('mode-selector').style.display = 'none';
+    document.getElementById('stats-area').style.display    = 'flex';
+    document.getElementById('hint').style.display          = 'block';
+
+    initBricks(mode === 'time' ? 5 : 4);
+    if (animId) cancelAnimationFrame(animId);
+    loop();
+}
+
+// ---- ループ ----
+function loop() {
+    if (!gameRunning) return;
+    update();
+    render();
+    animId = requestAnimationFrame(loop);
+}
+
+function update() {
+    if (rightPressed) paddleX = Math.min(canvas.width - PADDLE_W, paddleX + 8);
+    if (leftPressed)  paddleX = Math.max(0, paddleX - 8);
+
+    // サブステップで高速時の壁抜けを防止
+    const steps = Math.ceil(Math.max(Math.abs(bdx), Math.abs(bdy)) / (BR * 0.8));
+    const sx = bdx / steps, sy = bdy / steps;
+    for (let s = 0; s < steps; s++) {
+        bx += sx; by += sy;
+        resolveWalls();
+        if (resolvePaddle()) break;
+        if (resolveBricks()) break;
+    }
+
+    if (by - BR > canvas.height) {
+    lives--;
+    sfx.lose(); // ミス時の音
+    if (lives > 0) {
+        // ボールとパドルの位置をリセットして続行
+        bx = canvas.width / 2;
+        by = canvas.height - 60;
+        bdx = INIT_SPEED * (Math.random() < 0.5 ? 1 : -1);
+        bdy = -INIT_SPEED;
+        paddleX = (canvas.width - PADDLE_W) / 2;
+    } else {
+        endGame(false); // ライフが尽きたらゲームオーバー
+        return;
+    }
+}
+document.getElementById('lives-display').innerText = "ライフ: " + "❤️".repeat(lives);
+    const t     = ((Date.now() - startTime) / 1000).toFixed(1);
+    const alive = bricks.filter(b => b.alive).length;
+    const total = bricks.length;
+    document.getElementById('stat-label').innerText =
+        mode === 'time' ? `ブロック: ${total - alive} / ${total}` : `スコア: ${score}`;
+    document.getElementById('timer-display').innerText = `タイム: ${t}s`;
+}
+
+function resolveWalls() {
+    if (bx - BR < 0)            { bx = BR;                bdx =  Math.abs(bdx); sfx.wall(); }
+    if (bx + BR > canvas.width) { bx = canvas.width - BR; bdx = -Math.abs(bdx); sfx.wall(); }
+    if (by - BR < 0)            { by = BR;                bdy =  Math.abs(bdy); sfx.wall(); }
+}
+
+function resolvePaddle() {
+    const top = canvas.height - PADDLE_H;
+    if (bdy > 0 && by + BR >= top && by + BR < canvas.height
+        && bx >= paddleX && bx <= paddleX + PADDLE_W) {
+        
+        by = top - BR;
+        const hit = (bx - paddleX) / PADDLE_W;
+        const angle = (hit - 0.5) * 2.0;
+
+        // --- 速度計算ここから ---
+        let spd;
+        if (mode === 'endless') {
+            // エンドレス：現在の速度を1.005倍し、初期速度の1.8倍を上限とする
+            let currentSpd = Math.sqrt(bdx * bdx + bdy * bdy);
+            spd = Math.min(currentSpd * 1.005, INIT_SPEED * 1.4);
+        } else {
+            // タイムアタック等：常に初期速度(INIT_SPEED)を維持
+            spd = INIT_SPEED*1.4;
+        }
+        // --- 速度計算ここまで ---
+
+        // 反射角の計算
+        bdx = spd * Math.sin(angle);
+        bdy = -Math.abs(spd * Math.cos(angle)) || -spd;
+
+        sfx.paddle();
+        return true;
+    }
+    return false;
+}
+
+function resolveBricks() {
+    for (const b of bricks) {
+        if (!b.alive) continue;
+        if (bx + BR < b.x || bx - BR > b.x + BW) continue;
+        if (by + BR < b.y || by - BR > b.y + BH) continue;
+        b.alive = false;
+        score++;
+        sfx.brick();
+        const oL = (bx + BR) - b.x,  oR = (b.x + BW) - (bx - BR);
+        const oT = (by + BR) - b.y,  oB = (b.y + BH) - (by - BR);
+        if (Math.min(oL, oR) < Math.min(oT, oB)) bdx = -bdx;
+        else                                       bdy = -bdy;
+        if (mode === 'endless' && score % COL === 0) addEndlessRow();
+        if (mode === 'time' && bricks.every(b => !b.alive)) { endGame(true); return true; }
+        return true;
+    }
+    return false;
+}
+
+function addEndlessRow() {
+    for (const b of bricks) {
+        b.y += BH + B_PAD;
+        if (b.alive && b.y + BH > canvas.height - 90) { endGame(false); return; }
+    }
+    totalRowsEver++;
+    for (let c = 0; c < COL; c++) {
+        bricks.push({ x: brickX(c), y: B_TOP, alive: true, row: totalRowsEver });
+    }
+}
+
+// ---- 終了 ----
+async function endGame(isWin) {
+    gameRunning = false;
+    overlayState = isWin ? 'win' : 'gameover';
+    finalResultTime = parseFloat(((Date.now() - startTime) / 1000).toFixed(2));
+    isWin ? sfx.win() : sfx.lose();
+    render();
+    if (isWin && mode === 'time')     await submitScore('breakout_time',  finalResultTime);
+    if (!isWin && mode === 'endless') await submitScore('breakout_score', score);
+}
+
+async function submitScore(name, val) {
+    try {
+        await fetch('/mini_game/api/submit_score', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ game_name: name, score: val })
+        });
+    } catch(e) {}
+}
+
+// ---- 描画 ----
+function render() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // ブロック
+    for (const b of bricks) {
+        if (!b.alive) continue;
+        ctx.fillStyle = rowColor(b.row);
+        ctx.beginPath();
+        ctx.roundRect(b.x, b.y, BW, BH, 4);
+        ctx.fill();
+    }
+
+    // パドル
+    ctx.fillStyle = '#4a90e2';
+    ctx.beginPath();
+    ctx.roundRect(paddleX, canvas.height - PADDLE_H, PADDLE_W, PADDLE_H, 6);
+    ctx.fill();
+
+    // ボール
+    ctx.fillStyle = '#333';
+    ctx.beginPath();
+    ctx.arc(bx, by, BR, 0, Math.PI * 2);
+    ctx.fill();
+
+    // オーバーレイ
+    if (overlayState) {
+        ctx.fillStyle = 'rgba(255,255,255,0.88)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        const isWin = overlayState === 'win';
+        const cx = canvas.width / 2, cy = canvas.height / 2;
+
+        ctx.textAlign = 'center';
+        ctx.fillStyle = isWin ? '#27ae60' : '#e74c3c';
+        ctx.font = 'bold 38px sans-serif';
+        ctx.fillText(isWin ? 'クリア！' : 'ゲームオーバー', cx, cy - 55);
+
+        ctx.fillStyle = '#333';
+        ctx.font = '20px sans-serif';
+        ctx.fillText(
+            (isWin && mode === 'time') ? `タイム: ${finalResultTime}s` : `スコア: ${score}`,
+            cx, cy - 18
+        );
+
+        ctx.fillStyle = '#888';
+        ctx.font = '14px sans-serif';
+        ctx.fillText('モードを選んでリトライ', cx, cy + 20);
+
+        drawOvBtn(OV_BTN.time,    'タイムアタック');
+        drawOvBtn(OV_BTN.endless, 'エンドレス');
+    }
+}
+
+function drawOvBtn(b, label) {
+    ctx.fillStyle = '#4a90e2';
+    ctx.beginPath();
+    ctx.roundRect(b.x, b.y, b.w, b.h, 8);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 15px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(label, b.x + b.w / 2, b.y + b.h / 2 + 6);
+}
+</script>
+</body>
+</html>

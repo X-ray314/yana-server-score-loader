@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Json-Preview-Editor // X-ray</title>
+    <style>
+        :root {
+            --bg-dark: #050505;
+            --panel-bg: #0d0d0d;
+            --accent: #00ffff;
+            --neon-pink: #ff00ff;
+            --accent-green: #39ff14;
+            --accent-red: #ff3131;
+            --text: #c0c0c0;
+            --sidebar-width: 320px;
+        }
+
+        body { 
+            display: flex; 
+            background: var(--bg-dark); 
+            color: var(--text); 
+            margin: 0; 
+            font-family: 'Share Tech Mono', 'Fira Code', monospace; 
+            height: 100vh; 
+            width: 100vw;
+            overflow: hidden;
+        }
+
+        /* --- サイドバー --- */
+        #sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: #000;
+            border-right: 1px solid var(--accent);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 25px 20px;
+            box-sizing: border-box;
+            transition: margin-left 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            z-index: 100;
+            overflow-y: auto;
+        }
+        #sidebar.collapsed { margin-left: calc(var(--sidebar-width) * -1); }
+
+        #sidebar-toggle {
+            position: absolute;
+            right: -30px; top: 50%; transform: translateY(-50%);
+            width: 30px; height: 120px; background: #000;
+            border: 1px solid var(--accent); border-left: none;
+            color: var(--accent); cursor: pointer;
+            writing-mode: vertical-rl; font-size: 11px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 5px 0 15px rgba(0, 255, 255, 0.2);
+        }
+
+        /* --- プレビューエリア --- */
+ /* --- プレビューエリア --- */
+        #main-view { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            background: #000; 
+            position: relative; 
+            min-width: 0; 
+        }
+
+/* 親コンテナに基準を設定 */
+#canvas-container {
+    position: relative; 
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* ブラインドバー本体 */
+#blind-bar {
+    position: absolute;
+    top: 0;
+    /* キャンバスの左右中央に配置するための設定 */
+    left: 50%;
+    transform: translateX(-50%); 
+    background: rgba(0, 0, 0, 0.95);
+    border-bottom: 3px solid #00ffff;
+    z-index: 100;
+    pointer-events: none;
+    display: none;
+}
+
+/* ハンドル（ドラッグ領域） */
+#blind-handle {
+    position: absolute;
+    bottom: -15px;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    cursor: ns-resize;
+    pointer-events: auto;
+    z-index: 101;
+}
+
+/* CSS内の canvas 部分を少し柔軟にします */
+canvas { 
+    height: 87%; 
+    width: auto; /* 2Dの時は aspect-ratio に従う */
+    max-width: 100%; /* 親要素からはみ出さないようにする */
+    background: #000; 
+    border-left: 2px solid #111; 
+    border-right: 2px solid #111;
+    image-rendering: -webkit-optimize-contrast;
+}
+        /* --- JSONエディタ --- */
+        #editor-container { flex: 0 0 40%; display: flex; flex-direction: column; background: var(--panel-bg); border-left: 1px solid var(--accent); min-width: 0; }
+        #editor {
+            white-space: pre; 
+            overflow-x: auto;
+            flex: 1; 
+            background: #050505; 
+            color: #00ffcc; 
+            padding: 15px; 
+            font-family: 'Fira Code', monospace; 
+            font-size: 13px; 
+            line-height: 20px; 
+            border: none; 
+            outline: none; 
+            resize: none;
+            background-attachment: local;
+            background-image: linear-gradient(
+                to bottom,
+                transparent 0%,
+                transparent var(--highlight-top, 0px),
+                rgba(0, 255, 255, 0.15) var(--highlight-top, 0px),
+                rgba(0, 255, 255, 0.15) var(--highlight-bottom, 0px),
+                transparent var(--highlight-bottom, 0px)
+            );
+        }
+        /* ブラインド本体 */
+        #score-stats-panel {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid var(--accent);
+    padding: 15px;
+    font-family: 'Share Tech Mono', monospace;
+    color: #fff;
+    pointer-events: none;
+    z-index: 110;
+    min-width: 180px;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+}
+.stat-header { font-size: 12px; color: var(--accent); margin-bottom: 8px; border-bottom: 1px solid var(--accent); }
+.stat-item { font-size: 14px; margin: 4px 0; display: flex; justify-content: space-between; }
+
+
+/* ハンドルにマウスが乗った時に光らせる演出 */
+#blind-handle:hover {
+    background: rgba(0, 255, 255, 0.2);
+}
+
+        /* 共通UI */
+        .section { display: flex; flex-direction: column; gap: 8px; margin-bottom: 5px; }
+        .label { color: var(--accent); font-size: 10px; border-left: 2px solid var(--accent); padding-left: 8px; text-transform: uppercase; font-weight: bold; }
+        button { background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 7px; font-size: 10px; cursor: pointer; transition: 0.2s; border-radius: 2px; text-transform: uppercase;}
+        button:hover { background: var(--accent); color: #000; box-shadow: 0 0 10px var(--accent); }
+        .btn-active { background: var(--accent) !important; color: #000 !important; }
+        .btn-save { border-color: var(--accent-green); color: var(--accent-green); }
+        .btn-clean { border-color: var(--accent-red); color: var(--accent-red); }
+        .btn-group-triple { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+        input[type="range"] { -webkit-appearance: none; background: #222; height: 2px; margin: 10px 0; }
+        select { background: #000; color: var(--accent); border: 1px solid var(--accent); font-size: 10px; padding: 5px; }
+    </style>
+</head>
+<body>
+
+<div id="sidebar">
+    <div class="section">
+        <span class="label">TIME</span>
+        <button id="playBtn" style="font-size: 12px; padding: 10px;">Play</button>
+        <input type="range" id="timeSlider" min="0" value="0">
+        <div style="display:flex; justify-content:space-between; font-size:11px; color: var(--accent);">
+            <span id="timeVal">0</span><span>ms</span>
+        </div>
+    </div>
+
+    <div class="section">
+        <span class="label">ツール</span>
+        <div class="btn-group-triple">
+            <button id="btnNormal" class="btn-active" onclick="setNoteType('normal')">N</button>
+            <button id="btnAttack" onclick="setNoteType('attack')">AN</button>
+            <button id="btnLong" onclick="setNoteType('long')">LN</button>
+        </div>
+    </div>
+    <div class="section">
+        <span class="label">グリッド表示</span>
+   <div class="btn-group">
+    <button id="div4Btn" class="btn btn-active" onclick="setDivisor(4)">4(16)分</button>
+    <button id="div6Btn" class="btn" onclick="setDivisor(6)">4分(8分まで置ける)</button>
+    <button id="div3Btn" class="btn" onclick="setDivisor(3)">3分(6倍取り時の元16分)</button> 
+    </div>
+        <span class="label">Advanced Edit (Current Measure)</span>
+        <div class="btn-group-triple">
+            <button onclick="copyMeasure()">Copy</button>
+            <button onclick="pasteMeasure()">Paste</button>
+            <button onclick="mirrorMeasure()" style="border-color: #ff00ff; color: #ff00ff;">Mirror</button>
+        </div>
+        <button onclick="undo()" style="margin-top:5px; border-color: #ffeb3b; color: #ffeb3b;">[ 戻る (Undo) ]</button>
+    </div>
+
+    <div class="section">
+        <span class="label">EDIT (Measure Control)</span>
+        <div class="measure-controls" style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
+            <label>拍子:</label>
+            <input type="number" id="beatN" value="4" min="1" style="width: 50px; padding: 4px;">
+            <span>/ 4 </span>
+            <button onclick="addNewMeasureCustom()" style="padding: 4px 12px; cursor: pointer;">小節追加</button>
+        </div>
+        <div class="btn-group-triple" style="margin-top:5px;">
+            <button onclick="multiplyCurrentMeasureDensity(2)">x2</button>
+            <button onclick="multiplyCurrentMeasureDensity(3)">x3</button>
+            <button onclick="multiplyCurrentMeasureDensity(4)">x4</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <span class="label">BPM CONTROL</span>
+        <div class="bpm-controls" style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
+            <label>変更後のBPM:</label>
+            <input type="number" id="newBpmValue" value="120" step="0.1" style="width: 70px; padding: 4px;">
+            <button onclick="insertBpmChange()" style="padding: 4px 12px; background: #03dac6; color: #000; border: none; cursor: pointer; border-radius: 4px; font-weight: bold;">挿入</button>
+        </div>
+        <div style="margin-top:10px; display: flex; flex-direction: column; gap: 5px;">
+            <button onclick="changeAllBpm()" style="border-color: #ffaa00; color: #ffaa00;">Global BPM Change</button>
+            <button onclick="removeOrphanedEndsAll()" class="btn-clean">Clean Lone Ends</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <span class="label">View & Sync</span>
+        <button id="editModeBtn" style="background: #6200ee;">Mode: VIEW</button>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:9px;">SPD:</span>
+            <input type="range" id="speedSlider" min="0.1" max="2.0" step="0.1" value="1.0">
+            <span id="speedVal" style="font-size:10px;">1.0</span>
+        </div>
+    </div>
+
+    <div class="section">
+        <span class="label">Files</span>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+            <input type="file" id="audioInput" accept="audio/*">
+            <input type="file" id="jsonInput" accept=".json">
+            <button id="downloadBtn" class="btn-save">[ EXPORT_JSON ]</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <span class="label">Sound Settings</span>
+        <span style="font-size: 8px;">楽曲音量</span>
+        <input type="range" id="musicVolume" min="0" max="1" step="0.01" value="0.5">
+        <span style="font-size: 8px;">SE音量</span>
+        <input type="range" id="clapVolume" min="0" max="1" step="0.01" value="0.5">
+        <select id="clapType">
+            <option value="noise">SNARE (Noise)</option>
+        </select>
+        <button onclick="clearSavedData()" class="btn-clean" style="margin-top: 10px;">RESET_JSON</button>
+    </div>
+</div>
+
+
+<div id="main-view">
+<div id="canvas-container">
+    <canvas id="previewCanvas" width="400" height="600"></canvas>
+    <div id="blind-bar" style="display: none;">
+        <div id="blind-handle"></div>
+    </div>
+    <div id="score-stats-panel" style="display: none;">
+    <div class="stat-header">CHART STATISTICS</div>
+    <div class="stat-item" style="font-size: 18px; border-bottom: 1px solid #333; padding-bottom: 5px;">
+        SCORE: <span id="stat-current-score" style="color: #00ffff;">000,000</span>
+    </div>
+    <div class="stat-item">MAX SCORE: <span style="color: gold;">1,000,000</span></div>
+    <hr style="border: 0.5px solid #333;">
+    <div class="stat-item">Total Notes: <span id="stat-note-count">0</span></div>
+    <div class="stat-item">Attack Notes: <span id="stat-attack-count">0</span></div>
+    <div class="stat-item">Base Note: <span id="stat-unit-score">0</span> pts</div>
+    <div class="stat-item">Attack Note: <span id="stat-attack-unit">0</span> pts</div>
+    <div class="stat-item">Density: <span id="stat-density">0.0</span> nps</div>
+</div>
+</div>
+</div>
+
+<div id="editor-container">
+    <div style="padding: 10px 15px; font-size: 11px; background: #000; border-bottom: 1px solid var(--accent); display:flex; justify-content:space-between; align-items:center;">
+        <span id="syncStatus" style="color: var(--accent); font-weight:bold;">● SYSTEM_READY</span>
+       
+        <span id="noteTypeIndicator" style="color: var(--neon-pink); font-weight:bold;">Type: NORMAL</span>
+                <a href="/guide">使い方</a>
+    </div>
+    <textarea id="editor" spellcheck="false"></textarea>
+</div>
+
+<script>
+/**
+ * UI & Core Logic Integration - Optimized Version
+ */
+const editor = document.getElementById('editor');
+const canvas = document.getElementById('previewCanvas');
+const ctx = canvas.getContext('2d');
+const timeSlider = document.getElementById('timeSlider');
+const timeVal = document.getElementById('timeVal');
+const playBtn = document.getElementById('playBtn');
+const audioInput = document.getElementById('audioInput');
+const jsonInput = document.getElementById('jsonInput');
+const speedSlider = document.getElementById('speedSlider');
+const speedVal = document.getElementById('speedVal');
+const editModeBtn = document.getElementById('editModeBtn');
+const downloadBtn = document.getElementById('downloadBtn');
+
+// --- 設定変数 ---
+
+let SCROLL_SPEED = 1.0; 
+let JUDGE_LINE_Y = canvas.height - 60; 
+let audioCtx = null, audioBuffer = null, sourceNode = null;
+let startTime = 0, seekOffset = 0, isPlaying = false;
+let isEditMode = false;
+let notes = []; 
+let chartConfig = { bpm: 120, startTime: 0 }; 
+let currentNoteType = 'normal'; 
+let longNotePending = [null, null, null, null]; 
+let targetSeekOffset = 0; 
+let closestGrid = null;
+let isSmoothScrolling = false;
+let visibleGridPoints = [];
+let mouseX = 0, mouseY = 0;
+let playbackRate = 1.0;
+// --- 履歴管理用の変数 ---
+let undoStack = [];
+const MAX_UNDO_STEPS = 50; // 最大50回分保存
+// --- オーディオ関連の変更 ---
+
+let audioTag = new Audio(); // AudioBufferSourceNodeの代わりにこれを使用
+
+let clapGainNode = null;
+
+let mediaSourceNode = null; // AudioTagをWeb Audio APIに繋ぐためのノード
+
+// --- クラップ音設定 ---
+let clapBuffer = null;
+let lastClapTime = -1;
+let musicGainNode = null;
+let currentClapVolume = 0.5; // 名前を変更して要素IDとの衝突を避ける
+
+
+// 丸みのあるヒット音（osu!ライク）を生成する
+async function loadClapSound() {
+    if (!audioCtx) return;
+    
+    const duration = 0.25; // 少し長めに確保して余韻を作る
+    const sampleRate = audioCtx.sampleRate;
+    const frameCount = sampleRate * duration;
+    clapBuffer = audioCtx.createBuffer(1, frameCount, sampleRate);
+    const data = clapBuffer.getChannelData(0);
+
+    const baseFreq = 160; // わずかに低くして重みを出す
+
+    for (let i = 0; i < frameCount; i++) {
+        const t = i / sampleRate;
+        const attackNoise = (Math.random() * 2 - 1) * Math.exp(-i / (sampleRate * 0.005));
+
+        const sweep = Math.exp(-i / (sampleRate * 0.02)) * 400; 
+        const phase = 2 * Math.PI * (baseFreq * t + (sweep * (1 - Math.exp(-t * 20)) / 20));
+        
+        const tone1 = Math.sin(phase);
+        const tone2 = Math.sin(phase * 2.05) * 0.4; // 非整数倍音で木質的な響き
+        const tone3 = Math.sin(phase * 3.1) * 0.2;
+        
+        const body = (tone1 + tone2 + tone3) * Math.exp(-i / (sampleRate * 0.04));
+        const resonance = (Math.random() * 2 - 1) * Math.exp(-i / (sampleRate * 0.08)) * 0.1;
+
+        // --- 4. 合成と後処理 ---
+        let sample = (attackNoise * 0.7 + body * 0.5 + resonance);
+
+        // 指数関数的な減衰を全体にかける
+        const envelope = Math.exp(-i / (sampleRate * 0.06));
+        sample *= envelope;
+        data[i] = Math.tanh(sample * 2.0) * 0.7;
+    }
+    console.log("Clap sound generated with improved body.");
+}
+// 現在の状態を履歴に保存する
+function saveUndoState() {
+    undoStack.push(editor.value);
+    if (undoStack.length > MAX_UNDO_STEPS) {
+        undoStack.shift(); // 古い履歴を削除
+    }
+}
+
+let lastValueBeforeChange = editor.value;
+
+// 1. キーが押された瞬間（ペーストや削除の直前）の状態をバックアップ
+editor.addEventListener('keydown', (e) => {
+    lastValueBeforeChange = editor.value;
+});
+
+// 2. 内容が変更された時の処理
+editor.addEventListener('input', () => {
+    clearTimeout(editTimeout);
+    if (undoStack.length === 0 || undoStack[undoStack.length - 1] !== lastValueBeforeChange) {
+        undoStack.push(lastValueBeforeChange);
+        // 履歴が溜まりすぎないよう制限（任意）
+        if (undoStack.length > 50) undoStack.shift();
+    }
+
+    // 0.5秒後にプレビューを更新する（ここは従来通り）
+    editTimeout = setTimeout(() => {
+        parseChart();
+        // 念のため現在の状態も保存（連続入力の区切りとして）
+        saveUndoState();
+    }, 500);
+});
+
+// 3. undo関数（以前お伝えした改善版を適用してください）
+function undo() {
+    if (undoStack.length === 0) return;
+    
+    const scrollPos = editor.scrollTop;
+    let prevState = undoStack.pop();
+
+    // 現在と同じ状態ならもう一つ前へ
+    if (prevState === editor.value && undoStack.length > 0) {
+        prevState = undoStack.pop();
+    }
+
+    editor.value = prevState;
+    parseChart();
+    
+    requestAnimationFrame(() => {
+        editor.scrollTop = scrollPos;
+    });
+}
+// 再生ロジック（そのまま引き継ぎ）
+// --- 修正後: 同時押し数に応じて音量を調整 ---
+function playClap(count = 1) {
+    if (!clapBuffer || !audioCtx) return;
+    const source = audioCtx.createBufferSource();
+    const gainNode = audioCtx.createGain();
+    source.buffer = clapBuffer;
+    
+    // 基本の音量に、同時押しボーナス（例：1つ増えるごとに+30%）を加算
+    // countが1ならそのまま、2なら1.3倍、3なら1.6倍...（お好みで調整してください）
+    const volumeMultiplier = 1 + (count - 1) * 0.8;
+    gainNode.gain.value = currentClapVolume * volumeMultiplier; 
+    
+    source.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    source.start();
+}
+// ページ復元と初期値の設定
+window.addEventListener('DOMContentLoaded', () => {
+    const savedData = localStorage.getItem('chartEditorData');
+    
+    // ご提示のJSON構造をデフォルト値として定義
+    const defaultValue = {
+        "title": "",
+        "artist": "",
+        "bgColor": [
+            "#3720fa",
+            "#5f019d"
+        ],
+        "beats": 4,
+        "bpm": 100,
+        "startTime": 0,
+        "level": {
+            "easy": "",
+            "normal": "",
+            "hard": 15
+        },
+        "map": {
+            "easy": [""],
+            "normal": [""],
+            "hard": [",,,,,,,,,,,,,,,"]
+        }
+    };
+
+    if (savedData) {
+        editor.value = savedData;
+    } else {
+        // 保存データがない場合、整形して流し込む
+        editor.value = JSON.stringify(defaultValue, null, 4);
+    }
+    
+    parseChart();
+});
+
+// オーディオシステム初期化
+async function initAudioContext() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        musicGainNode = audioCtx.createGain();
+        musicGainNode.gain.value = document.getElementById('musicVolume').value;
+        musicGainNode.connect(audioCtx.destination);
+        await loadClapSound();
+    }
+    if (audioCtx.state === 'suspended') {
+        await audioCtx.resume();
+    }
+}
+
+function getMousePos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    return { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleY };
+}
+
+// --- 核心となる時間計算 ---
+function getExactTime() { 
+    if (isPlaying && audioCtx) {
+        // audioCtx.currentTime はブラウザの物理時計なので、処理落ちに影響されません
+        const elapsed = audioCtx.currentTime - startTime;
+        // (経過時間 * 再生速度 + 開始位置) をミリ秒に変換
+        return (elapsed * playbackRate + seekOffset) * 1000;
+    }
+    return seekOffset * 1000; 
+}
+
+// --- 再生・停止ロジック ---
+// --- 再生・停止ロジックの改善 ---
+function togglePlay() {
+    if (!audioBuffer) return;
+    initAudioContext();
+
+    if (isPlaying) { 
+        // 停止した瞬間の正確な位置を保存
+        seekOffset += (audioCtx.currentTime - startTime) * playbackRate; 
+        targetSeekOffset = seekOffset; // 停止位置をターゲットにも同期
+        if (sourceNode) sourceNode.stop(); 
+        isPlaying = false; 
+        playBtn.innerText = "Play"; 
+    } else {
+        // 重要：ホイールでスクロール中の場合、その位置を現在の再生位置として確定させる
+        seekOffset = targetSeekOffset;
+        isSmoothScrolling = false; // スムーススクロールを停止
+
+        sourceNode = audioCtx.createBufferSource(); 
+        sourceNode.buffer = audioBuffer; 
+        sourceNode.playbackRate.value = playbackRate;
+        
+        if ('preservesPitch' in sourceNode) sourceNode.preservesPitch = true;
+        sourceNode.connect(musicGainNode);
+        
+        startTime = audioCtx.currentTime; 
+        sourceNode.start(0, Math.max(0, seekOffset));
+        isPlaying = true; 
+        playBtn.innerText = "Pause";
+        lastClapTime = (seekOffset * 1000) - 1;
+    }
+}
+
+function setPlaybackRate(rate) {
+    const now = audioCtx ? audioCtx.currentTime : 0;
+    if (isPlaying && audioCtx) {
+        const currentPos = (now - startTime) * playbackRate;
+        playbackRate = rate;
+        startTime = now - (currentPos / playbackRate);
+        if (sourceNode) {
+            sourceNode.playbackRate.setValueAtTime(rate, now);
+            if ('preservesPitch' in sourceNode) sourceNode.preservesPitch = true;
+        }
+    } else {
+        playbackRate = rate;
+    }
+
+    const rateButtons = ['rate05', 'rate075', 'rate10'];
+    rateButtons.forEach(id => document.getElementById(id)?.classList.remove('btn-active'));
+    let activeId = rate === 0.5 ? 'rate05' : rate === 0.75 ? 'rate075' : 'rate10';
+    document.getElementById(activeId)?.classList.add('btn-active');
+}
+
+// --- エディタ & 描画ロジック (既存機能を維持) ---
+
+function parseChart() {
+    try {
+        const chartData = JSON.parse(editor.value);
+        chartConfig.bpm = parseFloat(chartData.bpm) || 120;
+        chartConfig.startTime = parseFloat(chartData.startTime) || 0;
+        notes = [];
+        let longNoteStarts = [null, null, null, null];
+        let tempBpm = chartConfig.bpm; 
+        let currentTime = chartConfig.startTime;
+        let isInParentheses = false; 
+
+        chartData.map.hard.forEach((line) => {
+            if (typeof line === 'object') { 
+                if (line.bpm !== undefined) tempBpm = parseFloat(line.bpm); 
+                return; 
+            }
+            let word = "";
+            for (let char of line) {
+                if (char === '(') { isInParentheses = true; continue; }
+                if (char === ')') { isInParentheses = false; continue; }
+                if (char === ',') {
+                    processChars(word, currentTime, longNoteStarts); 
+                    word = "";
+                    currentTime += (60000 / tempBpm) * (isInParentheses ? (1/6) : (1/4));
+                } else word += char;
+            }
+            processChars(word, currentTime, longNoteStarts);
+            currentTime += (60000 / tempBpm) * (isInParentheses ? (1/6) : (1/4));
+        });
+        localStorage.setItem('chartEditorData', editor.value);
+    } catch (e) {}
+}
+
+function processChars(chars, time, longNoteStarts) {
+    const mapping = { "1":0,"2":1,"3":2,"4":3, "5":0,"6":1,"7":2,"8":3 };
+    for (let c of chars) {
+        if ("1234".includes(c)) notes.push({ time, lane: mapping[c], type: 'normal' });
+        if ("5678".includes(c)) notes.push({ time, lane: mapping[c], type: 'attack' });
+        if ("abcd".includes(c)) longNoteStarts["abcd".indexOf(c)] = time;
+        if ("efgh".includes(c)) {
+            let l = "efgh".indexOf(c);
+            if (longNoteStarts[l] !== null) {
+                notes.push({ time: longNoteStarts[l], lane: l, type: 'long', endTime: time });
+                longNoteStarts[l] = null;
+            }
+        }
+    }
+}
+let currentDivisor = 4; // 4=16分, 6=24分, 3=12分
+function setDivisor(d) {
+    currentDivisor = d;
+
+    // 一旦すべてのボタンから btn-active クラスを消す
+    [4, 6, 3].forEach(val => {
+        const btn = document.getElementById('div' + val + 'Btn');
+        if (btn) btn.classList.remove('btn-active');
+    });
+
+    // 選択されたボタンに btn-active を追加
+    const activeBtn = document.getElementById('div' + d + 'Btn');
+    if (activeBtn) activeBtn.classList.add('btn-active');
+
+    parseChart(); // 3分ボタンなどで直接実行していた処理をここに集約
+}
+function updateJsonSurgically(targetInfo, lane, type) {
+    if (!targetInfo) return null;
+    saveUndoState();
+    try {
+        let data = JSON.parse(editor.value);
+        let line = data.map.hard[targetInfo.lineIdx];
+
+        // 1. 小節を「最小単位（16分1つ分、またはカッコ1つ分）」に分解
+        let segments = [];
+        let temp = "";
+        let depth = 0;
+        for (let char of line) {
+            if (char === '(') depth++;
+            if (char === ')') depth--;
+            if (char === ',' && depth === 0) {
+                segments.push(temp); temp = "";
+            } else { temp += char; }
+        }
+        segments.push(temp);
+
+        // 2. クリック位置がどのセグメントか、また拍内の絶対ステップ(16分換算)を特定
+        let currentTotalStep = 0;
+        let targetSegIdx = -1;
+        for (let i = 0; i < segments.length; i++) {
+            let subSteps = segments[i].includes('(') ? (segments[i].match(/,/g) || []).length + 1 : 1;
+            if (targetInfo.stepIdx >= currentTotalStep && targetInfo.stepIdx < currentTotalStep + subSteps) {
+                targetSegIdx = i; break;
+            }
+            currentTotalStep += subSteps;
+        }
+
+        // 3. 24分(三連符)モード時の拡張処理
+        if (currentDivisor === 6 && !segments[targetSegIdx].includes('(')) {
+            // 8分ブロック判定：拍の0-1番目か、2-3番目か
+            let stepInBeat = targetInfo.stepIdx % 4; 
+            let isFirstHalf = stepInBeat < 2;
+            let idx1 = isFirstHalf ? targetSegIdx : targetSegIdx - 1;
+            let idx2 = isFirstHalf ? targetSegIdx + 1 : targetSegIdx;
+
+            // 隣り合う2つの16分スロットをチェック
+            let s1 = segments[idx1], s2 = segments[idx2];
+            
+            // 排他条件：どちらかに既にノーツがある、または既にカッコなら不可
+            // ただし、ブロックの最後（カンマの直前）にノーツがある場合は許可（仕様に準拠）
+            let hasNoteBetween = (s1 && s1.match(/[1-4a-h]/)) || (s2 && s2.match(/[1-4a-h]/));
+            
+            if (hasNoteBetween || !s1 || !s2 || s1.includes('(') || s2.includes('(')) {
+                console.warn("ノーツが介在するためこのブロックは24分化できません");
+                // 既にノーツがある場合は既存の16分として処理を続行（またはreturn）
+            } else {
+                // 2つのカンマを1つの三連符(,,)に合体
+                let newTriplet = "(,,)";
+                segments.splice(idx1, 2, newTriplet);
+                targetSegIdx = idx1;
+                // subIdxを調整
+                targetInfo.stepIdx = currentTotalStep - (isFirstHalf ? 0 : 1); 
+            }
+        }
+
+// --- 4. ノーツ記号の書き込み（トグル） ---
+// --- 4. ノーツ記号の書き込み（修正版） ---
+let char = (type === 'normal') ? (lane + 1).toString() :
+           (type === 'attack') ? (lane + 5).toString() :
+           (type === 'longStart') ? String.fromCharCode(97 + lane) : 
+           String.fromCharCode(101 + lane);
+
+let subContent = segments[targetSegIdx].replace(/[()]/g, "").split(',');
+let segStartStep = 0;
+for(let i=0; i < targetSegIdx; i++) {
+    segStartStep += segments[i].includes('(') ? (segments[i].split(',').length) : 1;
+}
+let subIdx = targetInfo.stepIdx - segStartStep;
+
+let cell = subContent[subIdx] || "";
+
+// 同じレーンの「状態」を管理する記号（1, 5, a, e など）
+const related = [(lane+1).toString(), (lane+5).toString(), String.fromCharCode(97+lane), String.fromCharCode(101+lane)];
+
+if (cell.includes(char)) {
+    // すでに同じ記号があれば削除（トグル）
+    cell = cell.split(char).join("");
+} else {
+    // 【重要】同じレーンの古い記号だけを消し、他のレーンの記号は残す
+    related.forEach(c => {
+        cell = cell.split(c).join("");
+    });
+    cell += char; // 新しい記号を追加
+}
+
+subContent[subIdx] = cell;
+// ...以下、segments[targetSegIdx] の再構築へ
+        segments[targetSegIdx] = segments[targetSegIdx].includes('(') ? "(" + subContent.join(',') + ")" : subContent[0];
+
+        // 5. 保存
+        data.map.hard[targetInfo.lineIdx] = segments.join(',');
+        editor.value = JSON.stringify(data, null, 4);
+        parseChart();
+        return targetInfo.stepTime;
+    } catch (e) { console.error(e); return null; }
+}
+// --- 修正版: 孤立した終点を削除するロジック ---
+function findAndRemoveOrphanedEnd(data, lane) {
+    const startChar = String.fromCharCode(97 + lane);
+    const endChar = String.fromCharCode(101 + lane);
+    
+    let activeStartPos = null; // 現在開いている始点の位置 {lineIdx, stepIdx}
+
+    for (let i = 0; i < data.map.hard.length; i++) {
+        let item = data.map.hard[i];
+        if (typeof item !== 'string') continue;
+
+        let steps = item.split(',');
+        for (let j = 0; j < steps.length; j++) {
+            // --- 始点が見つかった場合 ---
+            if (steps[j].includes(startChar)) {
+                if (activeStartPos !== null) {
+                    // 【追加】すでに始点があるのに新しい始点が出た場合、前の始点は孤立とみなして削除
+                    const prevSteps = data.map.hard[activeStartPos.lineIdx].split(',');
+                    prevSteps[activeStartPos.stepIdx] = prevSteps[activeStartPos.stepIdx].split(startChar).join("");
+                    data.map.hard[activeStartPos.lineIdx] = prevSteps.join(",");
+                    // ※現在の行(i)が更新された可能性を考慮してstepsを再取得
+                    if (i === activeStartPos.lineIdx) steps = data.map.hard[i].split(',');
+                }
+                activeStartPos = { lineIdx: i, stepIdx: j };
+            }
+
+            // --- 終点が見つかった場合 ---
+            if (steps[j].includes(endChar)) {
+                if (activeStartPos === null) {
+                    // 始点がないのに終点がある：終点を削除
+                    steps[j] = steps[j].split(endChar).join("");
+                } else {
+                    // 正当なペア：状態をクリア
+                    activeStartPos = null;
+                }
+            }
+        }
+        data.map.hard[i] = steps.join(",");
+    }
+
+    // 【追加】最後まで見て始点が残っていたら、その孤立した始点を削除
+    if (activeStartPos !== null) {
+        let finalSteps = data.map.hard[activeStartPos.lineIdx].split(',');
+        finalSteps[activeStartPos.stepIdx] = finalSteps[activeStartPos.stepIdx].split(startChar).join("");
+        data.map.hard[activeStartPos.lineIdx] = finalSteps.join(",");
+    }
+
+    return data;
+}
+// 全レーンのクリーンアップ
+function removeOrphanedEndsAll() {
+    try {
+        let data = JSON.parse(editor.value);
+        for (let l = 0; l < 4; l++) {
+            data = findAndRemoveOrphanedEnd(data, l);
+        }
+        editor.value = JSON.stringify(data, null, 4);
+        parseChart();
+        alert("孤立した終点を削除しました。");
+    } catch(e){ alert("JSON Error during cleanup"); }
+}
+
+function getBpmInfoAtTime(targetTime) {
+    try {
+        const data = JSON.parse(editor.value);
+        let timeScanner = parseFloat(data.startTime) || 0;
+        let currentBpm = data.bpm || 120;
+        let inP = false;
+        let best = { stepTime: timeScanner, lineIdx: 0, stepIdx: 0, minDiff: Infinity };
+
+        for (let i = 0; i < data.map.hard.length; i++) {
+            let item = data.map.hard[i];
+            if (typeof item === 'object') {
+                if (item.bpm !== undefined) currentBpm = parseFloat(item.bpm);
+                continue;
+            }
+
+            let stepInLine = 0;
+            let weightAcc = 0; // 重さを追跡
+
+            for (let j = 0; j < item.length; j++) {
+                if (item[j] === '(') { inP = true; continue; }
+                if (item[j] === ')') { inP = false; continue; }
+                if (item[j] === ',') {
+                    // --- フィルタリング条件 ---
+// --- フィルタリング条件（getBpmInfoAtTime内） ---
+let canSnap = false;
+if (currentDivisor === 4) {
+    canSnap = true; 
+} else if (currentDivisor === 6) {
+    if (stepInLine === 0 || Math.abs(weightAcc % 1) < 0.001) canSnap = true;
+} else if (currentDivisor === 3) {
+    // 12分モード：重さが12の倍数の時（黄色い線の場所）だけスナップ
+    if (stepInLine === 0 || Math.abs(weightAcc % 9) < 0.001) canSnap = true;
+}
+
+if (canSnap) checkBest(timeScanner, i, stepInLine);
+
+                    // --- 時間と重さを進める ---
+                    // 12分モードも24分モードと同じ重さ計算(1 or 1.5)を使用
+                    let currentWeight = (currentDivisor === 6 || currentDivisor === 3) ? (inP ? 1 : 1.5) : (inP ? (2/3) : 1);
+                    
+                    timeScanner += (60000 / currentBpm) * (inP ? (1/6) : (1/4));
+                    weightAcc += currentWeight;
+                    stepInLine++;
+                }
+            }
+            
+            // 行末（小節末）のチェック
+            let canSnapEnd = (currentDivisor === 4) || ((currentDivisor === 6 || currentDivisor === 3) && Math.abs(weightAcc % 3) < 0.001);
+            if (canSnapEnd) checkBest(timeScanner, i, stepInLine);
+            
+            timeScanner += (60000 / currentBpm) * (inP ? (1/6) : (1/4));
+        }
+
+        function checkBest(time, lIdx, sIdx) {
+            const diff = Math.abs(targetTime - time);
+            if (diff < best.minDiff) {
+                best.minDiff = diff; best.stepTime = time; best.lineIdx = lIdx; best.stepIdx = sIdx;
+            }
+        }
+        return best;
+    } catch (e) { return null; }
+}
+// --- 編集ユーティリティ ---
+
+// 1. 指定した小節の内容を取得
+function getMeasureData(index) {
+    try {
+        const data = JSON.parse(editor.value);
+        if (index >= 0 && index < data.map.hard.length) {
+            return data.map.hard[index];
+        }
+    } catch (e) { return null; }
+    return null;
+}
+
+// 2. コピー＆ペースト
+let clipboardData = null;
+
+function copyMeasure() {
+    const best = getBpmInfoAtTime(getExactTime());
+    if (!best) return;
+    clipboardData = getMeasureData(best.lineIdx);
+    if (clipboardData !== null) {
+        console.log(`Measure ${best.lineIdx + 1} copied.`);
+    }
+}
+
+function pasteMeasure() {
+    if (clipboardData === null) return;
+    const best = getBpmInfoAtTime(getExactTime());
+    if (!best) return;
+    
+    saveUndoState(); // 前回の回答で作成したUndo用保存
+    try {
+        let data = JSON.parse(editor.value);
+        data.map.hard[best.lineIdx] = clipboardData;
+        editor.value = JSON.stringify(data, null, 4);
+        parseChart();
+    } catch (e) { alert("Paste Error"); }
+}
+
+// 3. ミラー（左右反転）
+function mirrorMeasure() {
+    const best = getBpmInfoAtTime(getExactTime());
+    if (!best) return;
+
+    saveUndoState();
+    try {
+        let data = JSON.parse(editor.value);
+        let line = data.map.hard[best.lineIdx];
+        if (typeof line !== 'string') return;
+
+        // 文字の置換マップ（1<->4, 2<->3, a<->d, e<->h など）
+        const mirrorMap = {
+            '1':'4', '2':'3', '3':'2', '4':'1',
+            '5':'8', '6':'7', '7':'6', '8':'5',
+            'a':'d', 'b':'c', 'c':'b', 'd':'a',
+            'e':'h', 'f':'g', 'g':'f', 'h':'e'
+        };
+
+        let steps = line.split(',');
+        let mirroredSteps = steps.map(step => {
+            return step.split('').map(char => mirrorMap[char] || char).join('');
+        });
+
+        data.map.hard[best.lineIdx] = mirroredSteps.join(',');
+        editor.value = JSON.stringify(data, null, 4);
+        parseChart();
+    } catch (e) { alert("Mirror Error"); }
+}
+
+// --- ブラインドバーの制御ロジック ---
+const blindBar = document.getElementById('blind-bar');
+const blindHandle = document.getElementById('blind-handle');
+let isDraggingBlind = false;
+
+blindHandle.onmousedown = (e) => {
+    isDraggingBlind = true;
+    document.body.style.cursor = 'ns-resize';
+};
+// グローバル変数として基礎点を保持（updateScoreStatsで計算）
+let cachedUnitScore = 0;
+
+
+window.onmousemove = (e) => {
+    if (!isDraggingBlind) return;
+    
+    const containerRect = document.getElementById('canvas-container').getBoundingClientRect();
+    let newHeight = e.clientY - containerRect.top;
+    
+    // 判定線（VIEW.judge3DY）より下には行かないように制限
+    const maxHeight = VIEW.judge3DY * (containerRect.height / canvas.height);
+    newHeight = Math.max(0, Math.min(newHeight, maxHeight));
+    
+    blindBar.style.height = newHeight + 'px';
+};
+
+window.onmouseup = () => {
+    isDraggingBlind = false;
+    document.body.style.cursor = 'default';
+};
+
+// --- editModeBtn.onclick の修正（VIEWモード時に表示・幅合わせ） ---
+const VIEW = {
+    horizonY: 0,      // 3Dの消失点
+    judge3DY: 550,      // 3Dの判定線位置（2Dより下げて手前に配置）
+    topWidth: 100,
+    bottomWidth: 400
+};
+function get3DPos(lane, timeOffset, scrollSpeed) {
+    const centerX = canvas.width / 2;
+    
+    // 3D専用の判定位置を使用
+    const targetY = VIEW.judge3DY;
+
+    const progress = Math.pow(0.998, timeOffset * (scrollSpeed / 10)); 
+if (progress < 0.00001) return null; 
+
+    // 2Dの JUDGE_LINE_Y は無視し、VIEW.judge3DY に向かってノーツを動かす
+    const y = VIEW.horizonY + (targetY - VIEW.horizonY) * progress;
+    const curWidth = VIEW.topWidth + (VIEW.bottomWidth - VIEW.topWidth) * progress;
+    const x = centerX - (curWidth / 2) + (lane + 0.5) * (curWidth / 4);
+    
+    return { x, y, width: curWidth / 4, scale: progress };
+}
+function renderGridLine(time, lIdx, sIdx, inP, curr) {
+    if (is3DMode) {
+        // --- 3Dグリッド描画 ---
+        
+        // ★ 修正：小節の先頭 (sIdx === 0) 以外は処理を中断して描画しない
+        if (sIdx !== 0) return;
+
+        const pos = get3DPos(0, time - curr, SCROLL_SPEED * 20)
+        // 消失点より上、または位置計算ができない場合は描画しない
+        if (!pos || pos.y < VIEW.horizonY) return;
+
+        // y座標の進捗(0.0〜1.0)を再計算して、その地点のレーン幅を正確に求める
+        const ratio = (pos.y - VIEW.horizonY) / (VIEW.judge3DY - VIEW.horizonY);
+        const curWidth = VIEW.topWidth + (VIEW.bottomWidth - VIEW.topWidth) * ratio;
+        const leftX = (canvas.width / 2) - (curWidth / 2);
+        const rightX = leftX + curWidth;
+
+        // 小節線なので太さと色は白固定
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = "#FFFFFF";
+
+        ctx.beginPath(); 
+        ctx.moveTo(leftX, pos.y); 
+        ctx.lineTo(rightX, pos.y); 
+        ctx.stroke();
+    } else {
+        // --- 2Dグリッド描画 (以前のロジックを維持) ---
+        const y = JUDGE_LINE_Y - (time - curr) * SCROLL_SPEED;
+        if (y > -100 && y < canvas.height + 100) {
+            visibleGridPoints.push({ y, time, lineIdx: lIdx, stepIdx: sIdx });
+            ctx.lineWidth = (sIdx === 0) ? 3 : 1;
+            if (sIdx === 0) ctx.strokeStyle = "#FFFFFF";
+            else if (sIdx === 4) ctx.strokeStyle = "#00FFFF";
+            else if (sIdx === 6) ctx.strokeStyle = "#FFFF00";
+            else ctx.strokeStyle = inP ? "#442222" : "#333333";
+            
+            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(400, y); ctx.stroke();
+            if (sIdx === 0) {
+                ctx.fillStyle = "#FFFFFF";
+                ctx.font = "bold 12px Arial";
+                ctx.fillText(lIdx + 1, 5, y - 5);
+            }
+        }
+    }
+}
+function update() {
+    if (!isPlaying && isSmoothScrolling) {
+        seekOffset += (targetSeekOffset - seekOffset) * 0.15;
+        if (Math.abs(targetSeekOffset - seekOffset) < 0.0001) isSmoothScrolling = false;
+        timeSlider.value = Math.floor(seekOffset * 1000);
+    }
+    const curr = getExactTime();
+    if (isPlaying) timeSlider.value = Math.floor(curr);
+    timeVal.innerText = Math.floor(curr);
+    highlightCurrentJsonLine(); 
+if (is3DMode) {
+        updateRealtimeScore(curr);
+    }
+    // 背景描画
+    ctx.fillStyle = "#000"; 
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    if (is3DMode) {
+        const grad = ctx.createLinearGradient(0, VIEW.horizonY, 0, canvas.height);
+        grad.addColorStop(0, "#000000");
+        grad.addColorStop(1, "#1a1a2a");
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, VIEW.horizonY, canvas.width, canvas.height - VIEW.horizonY);
+    }
+
+    // --- グリッド解析と描画 ---
+    let tempBpmForGrid = chartConfig.bpm;
+    let gridTimeAcc = chartConfig.startTime;
+    let gridInP = false;
+    visibleGridPoints = [];
+
+    try {
+        const chartData = JSON.parse(editor.value);
+        chartData.map.hard.forEach((item, lineIdx) => {
+            if (typeof item === 'object') {
+                if (item.bpm) tempBpmForGrid = parseFloat(item.bpm);
+                return;
+            }
+            let weightAcc = 0; 
+            let stepInLine = 0;
+            const sixteenthMs = (60000 / tempBpmForGrid) / 4;
+
+            for (let j = 0; j < item.length; j++) {
+                if (item[j] === '(') { gridInP = true; continue; }
+                if (item[j] === ')') { gridInP = false; continue; }
+                if (item[j] === ',') {
+                    const isBarLine = (stepInLine === 0);
+                    const isBeatLine = (!isBarLine && Math.abs(weightAcc % 4) < 0.001);
+                    const isYellowLine = (!isBarLine && Math.abs(weightAcc % 6) < 0.001);
+
+                    let shouldRender = false;
+                    if (currentDivisor === 6) shouldRender = gridInP || isBarLine || isBeatLine;
+                    else if (currentDivisor === 3) shouldRender = isBarLine || isYellowLine;
+                    else shouldRender = (Math.abs(weightAcc % 1) < 0.001);
+
+                    if (shouldRender) {
+                        let colorMode = 1; 
+                        if (isBarLine) colorMode = 0; 
+                        else if (isBeatLine) colorMode = 4;
+                        else if (isYellowLine && currentDivisor === 3) colorMode = 6;
+                        renderGridLine(gridTimeAcc, lineIdx, colorMode, gridInP, curr);
+                    }
+                    const currentWeight = gridInP ? (2/3) : 1;
+                    gridTimeAcc += sixteenthMs * currentWeight;
+                    weightAcc += currentWeight;
+                    stepInLine++;
+                }
+            }
+            gridTimeAcc += sixteenthMs * (gridInP ? (2/3) : 1);
+        });
+    } catch(e) {}
+
+    // --- ノーツ描画 ---
+for (let n of notes) {
+    const tOffset = n.time - curr;
+    if (is3DMode) {
+        const pos = get3DPos(n.lane, tOffset, SCROLL_SPEED * 20)
+        if (!pos || pos.y < VIEW.horizonY) continue;
+
+        const w = pos.width * 1.0; // 通常ノーツの描画幅
+        const h = 12 * pos.scale;
+
+        const laneColors = ['#00ffff', '#44ffff', '#00ddff', '#55ccff'];
+        const themeColor = laneColors[n.lane];
+
+        if (n.type === 'attack') {
+            // アタックノーツ（台形描画）
+            ctx.fillStyle = 'rgba(255, 49, 49, 0.9)';
+            const halfH = 15 * pos.scale; 
+            const topW = w * 1.05;    
+            const bottomW = w * 1.1; 
+
+            ctx.beginPath();
+            ctx.moveTo(pos.x - topW / 2, pos.y - halfH);
+            ctx.lineTo(pos.x + topW / 2, pos.y - halfH);
+            ctx.lineTo(pos.x + bottomW / 2, pos.y + halfH);
+            ctx.lineTo(pos.x - bottomW / 2, pos.y + halfH);
+            ctx.closePath();
+            ctx.fill();
+        } else {
+            if (n.type === 'long') {
+                const posEnd = get3DPos(n.lane, n.endTime - curr, SCROLL_SPEED * 20);
+                if (posEnd) {
+                    // ★修正ポイント：胴体幅をノーツ幅(w)に合わせる
+                    const longGrad = ctx.createLinearGradient(0, posEnd.y, 0, pos.y);
+                    longGrad.addColorStop(0, 'rgba(0, 100, 255, 0.1)');
+                    longGrad.addColorStop(1, 'rgba(0, 255, 255, 0.4)');
+                    
+ctx.fillStyle = "rgba(255, 255, 255, 0.4)"; // 0.2は透明度（お好みで0.1〜0.3で調整）
+                    ctx.beginPath();
+                    
+                    // 手前側と奥側の幅を計算（0.95倍でノーツと一致させる）
+                    const currentBodyW = pos.width * 1.0;
+                    const endBodyW = posEnd.width * 1.0;
+
+                    // 四隅を正確に結ぶ
+                    ctx.moveTo(pos.x - currentBodyW / 2, pos.y);
+                    ctx.lineTo(posEnd.x - endBodyW / 2, posEnd.y);
+                    ctx.lineTo(posEnd.x + endBodyW / 2, posEnd.y);
+                    ctx.lineTo(pos.x + currentBodyW / 2, pos.y);
+                    
+                    ctx.fill();
+                    
+                    // 終点のひし形
+                    drawDiamond(posEnd.x, posEnd.y, posEnd.width *  1.0, 10 * posEnd.scale, themeColor);
+                }
+            }
+            // 通常ノーツ
+            drawDiamond(pos.x, pos.y, w, h, themeColor);
+        }
+
+    } else {
+        // --- 2Dモード ---
+        const y = JUDGE_LINE_Y - tOffset * SCROLL_SPEED;
+        const themeColor2D = ['#00ffff', '#33eeff', '#66ddff', '#00cccc'][n.lane];
+        if (n.type === 'long') {
+            const yEnd = JUDGE_LINE_Y - (n.endTime - curr) * SCROLL_SPEED;
+            ctx.fillStyle = "rgba(0, 255, 255, 0.3)";
+            ctx.fillRect(n.lane * 100 + 20, yEnd, 60, y - yEnd);
+            ctx.fillStyle = "#ffffff"; ctx.fillRect(n.lane * 100 + 10, yEnd - 4, 80, 8);
+            ctx.fillStyle = themeColor2D; ctx.fillRect(n.lane * 100 + 5, y - 6, 90, 12);
+        } else {
+            ctx.fillStyle = n.type === 'attack' ? '#ff3366' : themeColor2D;
+            ctx.fillRect(n.lane * 100 + 5, y - 6, 90, 12);
+        }
+    }
+}
+// --- 判定線描画 ---
+if (is3DMode) {
+    // const centerX = canvas.width / 2; // 不要になるので消してもOK
+    ctx.save();
+    ctx.strokeStyle = '#00ffff';
+    ctx.lineWidth = 6;
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = '#00ffff';
+    ctx.beginPath();
+    
+    // ★ 修正：左端(0)から右端(canvas.width)まで引く
+    ctx.moveTo(0, VIEW.judge3DY);
+    ctx.lineTo(canvas.width, VIEW.judge3DY);
+    
+    ctx.stroke();
+    ctx.restore();
+
+    } else {
+        ctx.strokeStyle = '#00ffff'; 
+        ctx.lineWidth = 3;
+        ctx.beginPath(); 
+        ctx.moveTo(0, JUDGE_LINE_Y); 
+        ctx.lineTo(400, JUDGE_LINE_Y); 
+        ctx.stroke();
+    }
+
+    // 再生SE & ゴースト表示
+    if (isPlaying) {
+        const notesToPlay = notes.filter(n => curr >= n.time && curr < n.time + 50 && n.time > lastClapTime);
+        if (notesToPlay.length > 0) {
+            playClap(notesToPlay.length); 
+            lastClapTime = Math.max(...notesToPlay.map(n => n.time));
+        }
+        if (curr < lastClapTime) lastClapTime = curr - 1;
+    }
+
+    if (isEditMode && !isPlaying) {
+        const lane = Math.floor(mouseX / 100);
+        if (lane >= 0 && lane <= 3) {
+            const timeOffset = (JUDGE_LINE_Y - mouseY) / SCROLL_SPEED;
+            const info = getBpmInfoAtTime(curr + timeOffset);
+            if (info) {
+                closestGrid = info;
+                const ghostY = JUDGE_LINE_Y - (info.stepTime - curr) * SCROLL_SPEED;
+                ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
+                ctx.fillRect(lane * 100 + 5, ghostY - 6, 90, 12);
+            }
+        }
+    }
+    requestAnimationFrame(update);
+}
+// ひし形を描画する共通関数
+function drawDiamond(x, y, w, h, color) {
+    const thickH = h * 2.0; // 1.5倍の厚みに調整
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(x, y - thickH);      // 上
+    ctx.lineTo(x + w / 2, y);       // 右
+    ctx.lineTo(x, y + thickH);      // 下
+    ctx.lineTo(x - w / 2, y);       // 左
+    ctx.closePath();
+    ctx.fill();
+}
+
+// 判定線を最前面に描画する関数
+function drawJudgeLineUI(is3D) {
+    if (is3D) {
+        // 3D判定線（レーン全体を横断する太い線）
+        const pL = get3DPos(0, 0, 1.0); 
+        const pR = get3DPos(3, 0, 1.0);
+        if (pL && pR) {
+            ctx.strokeStyle = '#00ffff';
+            ctx.lineWidth = 5;
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = '#00ffff';
+            ctx.beginPath();
+ctx.moveTo(0, VIEW.judge3DY); // VIEW.judgeY から judge3DY に名称を合わせてください
+        ctx.lineTo(canvas.width, VIEW.judge3DY);
+        
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+        }
+    } else {
+        // 2D判定線
+        ctx.strokeStyle = '#00ffff';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(0, JUDGE_LINE_Y);
+        ctx.lineTo(400, JUDGE_LINE_Y);
+        ctx.stroke();
+    }
+}
+function highlightCurrentJsonLine() {
+    const text = editor.value;
+    let data; try { data = JSON.parse(text); } catch (e) { return; }
+    const best = getBpmInfoAtTime(getExactTime());
+    if (!best) return;
+    let targetArrayIdx = best.lineIdx;
+    while (targetArrayIdx < data.map.hard.length) {
+        if (typeof data.map.hard[targetArrayIdx] === 'string') break;
+        targetArrayIdx++;
+    }
+    const mapMatch = text.match(/"hard"\s*:\s*\[/);
+    if (!mapMatch) return;
+    let currentSearchPos = mapMatch.index + mapMatch[0].length;
+    let finalCharStart = -1;
+    for (let j = 0; j <= targetArrayIdx; j++) {
+        const nextRel = text.slice(currentSearchPos).search(/["{]/);
+        if (nextRel === -1) break;
+        const absoluteStart = currentSearchPos + nextRel;
+        if (j === targetArrayIdx) { finalCharStart = absoluteStart; break; }
+        if (text[absoluteStart] === '"') {
+            let p = absoluteStart + 1;
+            while (p < text.length) {
+                if (text[p] === '"' && text[p-1] !== '\\') { currentSearchPos = p + 1; break; }
+                p++;
+            }
+        } else {
+            let b = 0, p = absoluteStart;
+            while (p < text.length) {
+                if (text[p] === '{') b++; if (text[p] === '}') b--;
+                if (b === 0) { currentSearchPos = p + 1; break; }
+                p++;
+            }
+        }
+    }
+    if (finalCharStart !== -1) {
+        const lineNum = text.substring(0, finalCharStart).split('\n').length;
+        const top = (lineNum - 1) * 20 + 15;
+        editor.style.setProperty('--highlight-top', `${top}px`);
+        editor.style.setProperty('--highlight-bottom', `${top + 20}px`);
+        if (isPlaying) editor.scrollTop = top - (editor.clientHeight / 2);
+    }
+}
+// 全体の統計と基礎点を計算する
+function updateScoreStats() {
+    if (!notes || notes.length === 0) return;
+
+    const attackCount = notes.filter(n => n.type === 'attack').length;
+    const longCount = notes.filter(n => n.type === 'long').length;
+    const normalCount = notes.filter(n => n.type === 'normal').length;
+
+    // 1. 総重みを計算
+    const totalWeights = (normalCount * 1) + (longCount * 2) + (attackCount * 2);
+    
+    // 2. 単価を小数点のまま保持（Math.ceilなどは使わない）
+    // これにより、(cachedUnitScore * totalWeights) は常に 1000000 になります
+    cachedUnitScore = 1000000 / totalWeights;
+
+    // 3. 総コンボ数
+    const totalComboCount = normalCount + (longCount * 2) + attackCount;
+
+    // 4. 密度(NPS)
+    const times = notes.map(n => n.time);
+    const duration = (Math.max(...times) - Math.min(...times)) / 1000;
+    const nps = duration > 0 ? (totalComboCount / duration) : 0;
+
+    // --- パネル表示更新 ---
+    document.getElementById('stat-note-count').innerText = totalComboCount;
+    document.getElementById('stat-attack-count').innerText = attackCount;
+    
+    // 単価の表示：見た目上は四捨五入(Math.round)して表示
+    // ※内部計算用の cachedUnitScore は小数のままなので計算はズレません
+    document.getElementById('stat-unit-score').innerText = Math.round(cachedUnitScore).toLocaleString();
+    document.getElementById('stat-attack-unit').innerText = Math.round(cachedUnitScore * 2).toLocaleString();
+    
+    // 理論値スコア（常に1,000,000になるはずです）
+    const maxTheoretical = Math.round(cachedUnitScore * totalWeights);
+    console.log("Total Score Check:", maxTheoretical); // コンソールで1000000になっているか確認できます
+
+    document.getElementById('stat-density').innerText = nps.toFixed(2);
+}
+
+// 再生時間に合わせて現在のスコアを計算する
+function updateRealtimeScore(currentTimeMs) {
+    if (cachedUnitScore === 0) return;
+    let currentScore = 0;
+
+    notes.forEach(note => {
+        if (note.type !== 'long') {
+            if (note.time <= currentTimeMs) {
+                currentScore += (note.type === 'attack') ? (cachedUnitScore * 2) : cachedUnitScore;
+            }
+        } else {
+            if (note.time <= currentTimeMs) currentScore += cachedUnitScore; // 始点
+            if (note.endTime <= currentTimeMs) currentScore += cachedUnitScore; // 終点
+        }
+    });
+
+    const scoreElem = document.getElementById('stat-current-score');
+    if (scoreElem) scoreElem.innerText = Math.floor(currentScore).toLocaleString();
+}
+
+// ユーティリティ
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('collapsed'); }
+function setNoteType(type) {
+    currentNoteType = type;
+    document.getElementById('noteTypeIndicator').innerText = `Type: ${type.toUpperCase()}`;
+    ['btnNormal', 'btnAttack', 'btnLong'].forEach(id => document.getElementById(id).classList.remove('btn-active'));
+    document.getElementById('btn' + type.charAt(0).toUpperCase() + type.slice(1)).classList.add('btn-active');
+}
+
+function clearSavedData() { if (confirm("リセットしますか？")) { localStorage.removeItem('chartEditorData'); location.reload(); } }
+
+function addNewMeasureCustom() {
+    try {
+        let data = JSON.parse(editor.value);
+        const n = parseInt(document.getElementById('beatN').value) || 4;
+        const newMeasure = ",".repeat((n * 4) - 1);
+        if (data.map.hard.length > 0) {
+            let last = data.map.hard.length - 1;
+            if (typeof data.map.hard[last] === 'string' && !data.map.hard[last].endsWith(',')) data.map.hard[last] += ",";
+        }
+        data.map.hard.push(newMeasure);
+        editor.value = JSON.stringify(data, null, 4); parseChart();
+        saveUndoState();
+    } catch (e) { alert("JSON Error"); }
+}
+
+function multiplyCurrentMeasureDensity(factor) {
+    try {
+        let data = JSON.parse(editor.value);
+        const best = getBpmInfoAtTime(getExactTime());
+        if (!best) return;
+        let targetIdx = best.lineIdx;
+        let originalBpm = parseFloat(data.bpm) || 120;
+        for (let i = 0; i < targetIdx; i++) { if (typeof data.map.hard[i] === 'object' && data.map.hard[i].bpm) originalBpm = parseFloat(data.map.hard[i].bpm); }
+        let line = data.map.hard[targetIdx];
+        if (typeof line !== 'string') return;
+        let oldSteps = line.split(','), newSteps = new Array(oldSteps.length * factor).fill(""); 
+        for (let i = 0; i < oldSteps.length; i++) newSteps[i * factor] = oldSteps[i];
+        if (targetIdx > 0 && typeof data.map.hard[targetIdx - 1] === 'object' && data.map.hard[targetIdx - 1].bpm) data.map.hard[targetIdx - 1].bpm = originalBpm * factor;
+        else { data.map.hard.splice(targetIdx, 0, { "bpm": originalBpm * factor }); targetIdx++; }
+        data.map.hard[targetIdx] = newSteps.join(",");
+        if (!(targetIdx + 1 < data.map.hard.length && typeof data.map.hard[targetIdx + 1] === 'object')) data.map.hard.splice(targetIdx + 1, 0, { "bpm": originalBpm });
+        saveUndoState();
+        editor.value = JSON.stringify(data, null, 4); parseChart();
+    } catch (e) {}
+}
+
+function insertBpmChange() {
+    try {
+        let data = JSON.parse(editor.value);
+        const newBpm = parseFloat(document.getElementById('newBpmValue').value);
+        const best = getBpmInfoAtTime(getExactTime());
+        if (best) { data.map.hard.splice(best.lineIdx, 0, { "bpm": newBpm }); editor.value = JSON.stringify(data, null, 4); parseChart(); }
+    } catch (e) {}
+}
+
+function changeAllBpm() {
+    const val = prompt("Global BPM:", chartConfig.bpm);
+    if (val) {
+        try {
+            let data = JSON.parse(editor.value); data.bpm = parseFloat(val);
+            editor.value = JSON.stringify(data, null, 4); parseChart();
+        } catch(e){}
+    }
+}
+
+function removeOrphanedEndsAll() {
+    try {
+        let data = JSON.parse(editor.value);
+        for (let l = 0; l < 4; l++) data = findAndRemoveOrphanedEnd(data, l);
+        editor.value = JSON.stringify(data, null, 4); parseChart();
+    } catch(e){}
+}
+
+// イベント
+canvas.onclick = (e) => {
+    if (!isEditMode || isPlaying) return;
+    const pos = getMousePos(e), lane = Math.floor(pos.x / 100);
+    if (lane < 0 || lane > 3) return;
+    const info = getBpmInfoAtTime(getExactTime() + (JUDGE_LINE_Y - pos.y) / SCROLL_SPEED);
+    if (!info || info.minDiff > 200) return;
+    if (currentNoteType === 'long') {
+        if (longNotePending[lane] === null) {
+            const t = updateJsonSurgically(info, lane, 'longStart');
+            if (t !== null) longNotePending[lane] = t;
+        } else {
+            if (info.stepTime > longNotePending[lane]) { updateJsonSurgically(info, lane, 'longEnd'); longNotePending[lane] = null; }
+        }
+    } else updateJsonSurgically(info, lane, currentNoteType);
+};
+
+canvas.onmousemove = (e) => { const pos = getMousePos(e); mouseX = pos.x; mouseY = pos.y; };
+canvas.onwheel = (e) => {
+    if (isPlaying) return; e.preventDefault();
+    targetSeekOffset = Math.max(0, (targetSeekOffset * 1000 + e.deltaY * 0.5) / 1000);
+    if (audioBuffer) targetSeekOffset = Math.min(targetSeekOffset, audioBuffer.duration);
+    isSmoothScrolling = true;
+};
+
+window.addEventListener('keydown', (e) => { if (e.code === 'Space' && (document.activeElement !== editor || e.ctrlKey)) { e.preventDefault(); togglePlay(); } });
+// キーボードショートカットの追加
+window.addEventListener('keydown', (e) => {
+
+    // エディタ入力中の挙動制御
+    if (document.activeElement === editor) {
+        // Ctrl+C, V, Z などの標準機能を邪魔しないようにする
+        if (e.ctrlKey) {
+            if (e.key.toLowerCase() === 'v' || e.key.toLowerCase() === 'c') return; 
+        } else {
+            // Ctrlなしの単体キー（1, 2, 3, Eなど）は入力中なら無効化
+            return;
+        }
+    }
+
+    switch(e.key.toLowerCase()) {
+        case 'z':
+            if (e.ctrlKey) { e.preventDefault(); undo(); }
+            break;
+        case 's':
+            if (e.ctrlKey) { e.preventDefault(); downloadBtn.click(); }
+            break;
+        case 'e':
+            editModeBtn.click();
+            break;
+        case '1': setNoteType('normal'); break;
+        case '2': setNoteType('attack'); break;
+        case '3': setNoteType('long'); break;
+        
+        // --- 小節単位のコピー＆ペースト ---
+        case 'c': 
+            if(e.ctrlKey) {
+                // エディタにフォーカスがないときだけ独自コピーを実行
+                if (document.activeElement !== editor) copyMeasure(); 
+            }
+            break; 
+        case 'v': 
+            if(e.ctrlKey) {
+                // エディタにフォーカスがないときだけ独自ペーストを実行
+                if (document.activeElement !== editor) pasteMeasure();
+            }
+            break; 
+            
+        case 'm': if(e.ctrlKey) mirrorMeasure(); break;
+        case 'd': if(e.shiftKey) multiplyCurrentMeasureDensity(2); break;
+        case 'arrowup':
+            targetSeekOffset = Math.max(0, targetSeekOffset - -0.05); // 符号を修正
+            isSmoothScrolling = true;
+            break;
+        case 'arrowdown':
+            targetSeekOffset += -0.05; // 符号を修正
+            isSmoothScrolling = true;
+            break;
+    }
+});
+audioInput.onchange = async (e) => {
+    await initAudioContext();
+    const ab = await e.target.files[0].arrayBuffer();
+    audioBuffer = await audioCtx.decodeAudioData(ab);
+    timeSlider.max = Math.floor(audioBuffer.duration * 1000);
+};
+jsonInput.onchange = (e) => {
+    const r = new FileReader(); r.onload = () => { editor.value = r.result; parseChart(); }; r.readAsText(e.target.files[0]);
+};
+// エディタの直接編集もUndo履歴に保存する
+let editTimeout;
+let isFirstEdit = true; // 初回編集フラグ
+
+
+speedSlider.oninput = () => { SCROLL_SPEED = parseFloat(speedSlider.value); speedVal.innerText = SCROLL_SPEED.toFixed(1); };
+timeSlider.oninput = () => { seekOffset = timeSlider.value / 1000; targetSeekOffset = seekOffset; if(isPlaying) togglePlay(); };
+musicVolume.oninput = (e) => { if(musicGainNode) musicGainNode.gain.value = e.target.value; };
+// HTML要素のID「clapVolume」と変数名が被らないように修正
+document.getElementById('clapVolume').oninput = (e) => { 
+    currentClapVolume = parseFloat(e.target.value); 
+};
+downloadBtn.onclick = () => {
+    const blob = new Blob([editor.value], {type: 'application/json'});
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'chart.json'; a.click();
+};
+let is3DMode = false;
+
+// editModeBtn.onclick の中身を以下のように調整
+editModeBtn.onclick = () => {
+    if (isPlaying) togglePlay();
+    isEditMode = !isEditMode;
+    is3DMode = !isEditMode; 
+
+    const editorContainer = document.getElementById('editor-container');
+    const blindBar = document.getElementById('blind-bar');
+    const scorePanel = document.getElementById('score-stats-panel');
+
+    if (isEditMode) {
+        // --- EDIT MODE (2D) ---
+        editModeBtn.innerText = "Mode: EDIT (2D)";
+        if (editorContainer) editorContainer.style.display = "flex";
+        
+        canvas.width = 400; 
+        
+        // 2Dではブラインドとパネルを隠す
+        if (blindBar) blindBar.style.display = "none";
+        if (scorePanel) scorePanel.style.display = "none";
+        
+    } else {
+        // --- VIEW MODE (3D) ---
+        editModeBtn.innerText = "Mode: VIEW (3D)";
+        if (editorContainer) editorContainer.style.display = "none";
+        
+        const sidebar = document.getElementById('sidebar');
+        const sidebarWidth = sidebar.classList.contains('collapsed') ? 0 : 320;
+        const availableWidth = window.innerWidth - sidebarWidth;
+        
+        // 全幅の60%を適用
+        canvas.width = availableWidth * 0.6; 
+        
+        VIEW.bottomWidth = canvas.width;
+        VIEW.judge3DY = canvas.height - 100; 
+
+        // ブラインドバーの表示設定
+        if (blindBar) {
+            blindBar.style.display = "block";
+            // デフォルト高さ 60px を適用（未設定時のみ）
+            if (!blindBar.style.height || blindBar.style.height === "" || blindBar.style.height === "0px") {
+                blindBar.style.height = "80px";
+            }
+            // キャンバスの表示幅に合わせる
+            setTimeout(() => {
+                blindBar.style.width = canvas.offsetWidth + "px";
+            }, 0);
+        }
+
+        // スコアパネルの表示と更新
+        if (scorePanel) {
+            scorePanel.style.display = "block";
+            updateScoreStats(); // 1,000,000点基準で計算
+        }
+    }
+    parseChart();
+};
+playBtn.onclick = togglePlay;
+editor.oninput = parseChart;
+
+update();
+</script>
+</body>
+</html>

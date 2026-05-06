@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <link rel="icon" href="/static/images/favicon.ico">
+<link rel="apple-touch-icon" href="/static/images/logo.png">
+    <meta charset="UTF-8">
+    <title>10秒連打チャレンジ</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; }
+        #game-area { margin-top: 50px; }
+        #click-btn {
+            width: 200px; height: 200px; border-radius: 50%;
+            font-size: 24px; cursor: pointer; background: #ff4757; color: white;
+            border: none; outline: none; box-shadow: 0 5px #ff6b81;
+        }
+        #click-btn:active { transform: translateY(4px); box-shadow: none; }
+        .stat { font-size: 24px; margin: 10px; }
+    </style>
+</head>
+<body>
+    <h1>10秒連打チャレンジ</h1>
+    <div id="game-area">
+        <div class="stat">残り時間: <span id="timer">10</span>s</div>
+        <div class="stat">スコア: <span id="score">0</span></div>
+        <button id="click-btn">START / CLICK!</button>
+    </div>
+    <br>
+    <a href="/mini_game/">戻る</a>
+
+    <script>
+        let score = 0;
+        let timeLeft = 10;
+        let active = false;
+        let timerId = null;
+
+        const btn = document.getElementById('click-btn');
+        const scoreDisp = document.getElementById('score');
+        const timerDisp = document.getElementById('timer');
+
+        btn.onclick = () => {
+            if (!active && timeLeft === 10) {
+                // 初回クリックでスタート
+                active = true;
+                timerId = setInterval(updateTimer, 1000);
+            }
+            if (active) {
+                score++;
+                scoreDisp.innerText = score;
+            }
+        };
+
+        function updateTimer() {
+            timeLeft--;
+            timerDisp.innerText = timeLeft;
+            if (timeLeft <= 0) {
+                active = false;
+                clearInterval(timerId);
+                btn.disabled = true;
+                submitScore(score);
+            }
+        }
+
+        function submitScore(finalScore) {
+            alert('タイムアップ！スコア: ' + finalScore + ' を送信します。');
+            fetch('/mini_game/api/submit_score', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    game_name: 'clicker',
+                    score: finalScore
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === 'success') {
+                    alert('スコアが保存されました！');
+                    location.href = '/mini_game/ranking/clicker';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

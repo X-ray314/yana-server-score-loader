@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}{{ song_name }} - Ranking{% endblock %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700;800&display=swap" rel="stylesheet">
+
+<div class="container-spare">
+    <div class="header-section">
+        <h2 class="title-main">Ranking</h2>
+        <h3 class="song-title-display">{{ song_name }}</h3>
+    </div>
+
+    <table class="song-table">
+        <thead>
+            <tr>
+                <th style="width: 80px;">RANK</th>
+                <th style="text-align: left;">PLAYER</th>
+                <th>SCORE</th>
+            </tr>
+        </thead>
+<tbody>
+            {# 順位計算用の変数を初期化 #}
+            {% set ns = namespace(current_rank=1, last_score=-1, display_rank=1) %}
+            
+            {% for entry in rankings %}
+                {# 前のスコアと違う場合のみ、表示順位をループ回数(loop.index)に更新 #}
+                {% if entry.score_val != ns.last_score %}
+                    {% set ns.display_rank = loop.index %}
+                {% endif %}
+                
+                <tr class="ranking-row {% if entry.user_id == current_user.id %}is-me{% endif %}">
+                    <td class="rank-cell rank-{{ ns.display_rank }}">
+                        {# 1位（同点含む）には王冠を表示 #}
+                        {% if ns.display_rank == 1 %}👑{% endif %}
+                        #{{ ns.display_rank }}
+                    </td>
+                    <td class="player-name">
+                        {{ entry.user.username }}
+                    </td>
+                    <td class="score-cell">
+                        {{ "{:,}".format(entry.score_val) }}
+                    </td>
+                </tr>
+
+                {# 次のループのためにスコアを保存 #}
+                {% set ns.last_score = entry.score_val %}
+            {% else %}
+                <tr>
+                    <td colspan="3" class="no-data-cell">まだスコアが登録されていません</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .container-spare {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 30px;
+        background: #fff;
+        font-family: 'Exo 2', sans-serif;
+    }
+
+    .header-section { text-align: center; margin-bottom: 40px; }
+    .title-main { font-weight: 800; font-size: 2.5rem; color: #333; margin: 0; }
+    
+    .song-title-display {
+        font-size: 1.8rem;
+        font-weight: 800;
+        margin-top: 5px;
+        background: linear-gradient(135deg, #f06292, #9c27b0, #4a00e0);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        display: inline-block;
+    }
+
+    .back-link { text-decoration: none; color: #9c27b0; font-weight: bold; font-size: 0.9rem; }
+
+    .song-table { width: 100%; border-collapse: collapse; }
+    .song-table th { padding: 15px; color: #aaa; font-size: 0.8rem; border-bottom: 2px solid #eee; }
+    .song-table td { padding: 18px 10px; border-bottom: 1px solid #f6f6f6; text-align: center; }
+
+    .rank-cell { font-weight: 800; color: #bbb; }
+    .rank-1 { color: #d4af37; font-size: 1.4rem; }
+    .rank-2 { color: #aaa9ad; font-size: 1.2rem; }
+    .rank-3 { color: #b08d57; font-size: 1.1rem; }
+
+    .player-name { text-align: left !important; font-weight: 600; color: #444; }
+    .score-cell { color: #0275d8; font-weight: 800; }
+
+    .is-me { background-color: #fdf2ff; }
+    .is-me .player-name { color: #9c27b0; }
+
+    .no-data-cell { padding: 60px !important; color: #ccc; }
+</style>
+{% endblock %}

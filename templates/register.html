@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}ユーザー登録{% endblock %}
+
+{% block content %}
+    <h2>ユーザー登録</h2>
+    
+    <div style="background-color: #dea147; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+        <p><strong>【登録手順】</strong></p>
+        <ol>
+            <li>Discordサーバー「やな鯖」に参加する</li>
+            <li>BOTに対して <code>/register</code> を実行</li>
+            <li>表示された<strong>6桁の認証コード</strong>を以下に入力してください</li>
+        </ol>
+        <p><small>※有効期限は5分間です。</small></p>
+    </div>
+
+    <form action="{{ url_for('register') }}" method="POST">
+    <div>
+        <label for="username">サイト内表示名（ログイン用）：</label>
+        <input type="text" id="username" name="username" placeholder="好きな名前" required>
+    </div>
+
+    <div style="background-color: #0b355f; padding: 10px; border-radius: 5px; margin: 10px 0;">
+        <label for="discord_name">Discordユーザー名（照合用）：</label>
+        <input type="text" id="discord_name" name="discord_name" placeholder="BOTに表示された名前" required>
+        <br><small>※BOTでコードを発行したDiscordアカウント名を入力してください</small>
+    </div>
+
+    <div>
+        <label for="auth_code">認証コード：</label>
+        <input type="text" id="auth_code" name="auth_code" placeholder="6桁の英数字" required>
+    </div>
+    
+    <div>
+        <label for="password">パスワード：</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    
+    <button type="submit">認証して登録する</button>
+</form>
+
+    <p><a href="{{ url_for('index') }}">戻る</a></p>
+{% endblock %}

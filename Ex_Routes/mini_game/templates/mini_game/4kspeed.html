@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <link rel="icon" href="/static/images/favicon.ico">
+<link rel="apple-touch-icon" href="/static/images/logo.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4K Speed Up</title>
+    <style>
+        body { background: #1a1a1a; color: white; font-family: sans-serif; text-align: center; margin: 0; overflow: hidden; }
+        #game-info { padding: 10px; background: #333; display: flex; justify-content: center; gap: 20px; align-items: center; font-size: 0.9rem; }
+        #miss-display { color: #ff4757; }
+        #lane-container {
+            display: flex; justify-content: center; width: 320px; height: 600px;
+            margin: 0 auto; background: #222; position: relative; border: 2px solid #444;
+        }
+        .lane { width: 80px; height: 100%; border-right: 1px solid #333; position: relative; }
+        .lane:last-child { border-right: none; }
+        .note {
+            position: absolute; width: 70px; height: 20px; background: #4a90e2;
+            left: 5px; border-radius: 4px;
+        }
+        .note.missed { opacity: 0.2; }
+        .judge-line {
+            position: absolute; bottom: 80px; width: 100%; height: 5px;
+            background: #ff4757; box-shadow: 0 0 10px #ff4757;
+        }
+        .key-guide {
+            position: absolute; bottom: 20px; width: 100%; display: flex;
+            justify-content: space-around; font-weight: bold; color: #888;
+        }
+        #combo-display { position: absolute; top: 100px; width: 100%; font-size: 2rem; color: #fff; pointer-events: none; }
+
+        #settings {
+            width: 320px; margin: 10px auto; background: #2a2a2a;
+            border: 1px solid #444; border-radius: 8px; padding: 12px 20px;
+            display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem;
+        }
+        #settings label { display: flex; justify-content: space-between; align-items: center; }
+        #settings input[type=range] { width: 160px; }
+
+        #result {
+            display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); flex-direction: column;
+            justify-content: center; align-items: center; gap: 16px; font-size: 1.2rem;
+        }
+        #result.show { display: flex; }
+        #result button {
+            margin-top: 8px; padding: 10px 24px; background: #4a90e2;
+            border: none; border-radius: 6px; color: white; font-size: 1rem; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-info">
+        BPM: <span id="bpm-display">100</span>
+        | Score: <span id="score">0</span>
+        | Miss: <span id="miss-display">0 / 5</span>
+        <a href="/mini_game/" style="color: #4a90e2;">戻る</a>
+    </div>
+
+    <div id="settings">
+        <label>
+            スクロール速度: <span id="speed-val">0.5</span> px/ms
+            <input type="range" id="speed-slider" min="0.2" max="1.5" step="0.1" value="0.5">
+        </label>
+        <div style="color:#888; font-size:0.8rem;">スペースキーでスタート（ゲーム中は変更不可）</div>
+    </div>
+
+    <div id="lane-container">
+        <div id="lane-0" class="lane"></div>
+        <div id="lane-1" class="lane"></div>
+        <div id="lane-2" class="lane"></div>
+        <div id="lane-3" class="lane"></div>
+        <div class="judge-line"></div>
+        <div class="key-guide"><span>D</span><span>F</span><span>J</span><span>K</span></div>
+        <div id="combo-display">PRESS SPACE</div>
+        <div id="result">
+            <div>GAME OVER</div>
+            <div>Score: <span id="final-score">0</span></div>
+            <div>Max BPM: <span id="final-bpm">0</span></div>
+            <button onclick="resetGame()">もう一度</button>
+        </div>
+    </div>
+
+    <script>
+        const keys = ['d', 'f', 'j', 'k'];
+        // D=0, K=3, F=1, J=2 → dkfjdkfj...
+        const loopPattern = [0, 3, 1, 2];
+
+        const MAX_MISS = 5;
+        const LANE_HEIGHT = 600;
+        const JUDGE_BOTTOM = 80;
+        const judgeY = LANE_HEIGHT - JUDGE_BOTTOM; // 520px
+
+        let score = 0;
+        let missCount = 0;
+        let bpm = 100;
+        let isPlaying = false;
+        let nextNoteTime = 0;
+        let patternIdx = 0;
+        let activeNotes = [];
+        let scrollSpeed = 0.5;
+        let comboTimer = null;
+
+        const speedSlider = document.getElementById('speed-slider');
+        const speedVal = document.getElementById('speed-val');
+        speedSlider.addEventListener('input', () => {
+            speedVal.innerText = parseFloat(speedSlider.value).toFixed(1);
+            if (!isPlaying) scrollSpeed = parseFloat(speedSlider.value);
+        });
+
+        function startGame() {
+            score = 0;
+            missCount = 0;
+            bpm = 100;
+            isPlaying = true;
+            patternIdx = 0;
+            activeNotes = [];
+            scrollSpeed = parseFloat(speedSlider.value);
+            speedSlider.disabled = true;
+
+            for (let i = 0; i < 4; i++) document.getElementById(`lane-${i}`).innerHTML = '';
+            document.getElementById('result').classList.remove('show');
+            document.getElementById('combo-display').innerText = '';
+            document.getElementById('score').innerText = 0;
+            document.getElementById('miss-display').innerText = `0 / ${MAX_MISS}`;
+            document.getElementById('bpm-display').innerText = 100;
+
+            nextNoteTime = performance.now() + 1000;
+            requestAnimationFrame(update);
+        }
+
+        function resetGame() {
+            document.getElementById('result').classList.remove('show');
+            document.getElementById('combo-display').innerText = 'PRESS SPACE';
+            speedSlider.disabled = false;
+        }
+
+        function update(now) {
+            if (!isPlaying) return;
+
+            // BPM上昇: 1秒で+5 → 1msで+0.005
+            bpm += 0.1;
+            document.getElementById('bpm-display').innerText = Math.floor(bpm);
+
+            // ノーツ生成（16分音符間隔）
+            const interval = 60000 / bpm / 4;
+            while (now > nextNoteTime) {
+                createNote(loopPattern[patternIdx % 4], nextNoteTime);
+                nextNoteTime += interval;
+                patternIdx++;
+            }
+
+            // ノーツ移動
+            activeNotes.forEach(note => {
+                const elapsed = now - note.spawnTime;
+                const y = elapsed * scrollSpeed - 100;
+                note.element.style.top = y + 'px';
+
+                // 判定ラインを60px過ぎたらmiss確定
+                if (!note.missed && y > judgeY + 60) {
+                    note.missed = true;
+                    note.element.classList.add('missed');
+                    addMiss();
+                }
+            });
+
+            // 画面外に出たノーツを除去
+            activeNotes = activeNotes.filter(note => {
+                if (note.missed && parseFloat(note.element.style.top) > LANE_HEIGHT) {
+                    note.element.remove();
+                    return false;
+                }
+                return true;
+            });
+
+            requestAnimationFrame(update);
+        }
+
+        function createNote(laneIdx, spawnTime) {
+            const el = document.createElement('div');
+            el.className = 'note';
+            document.getElementById(`lane-${laneIdx}`).appendChild(el);
+
+            // scrollSpeedはゲーム開始時に固定されるのでtravelTimeも固定
+            const travelTime = (judgeY + 100) / scrollSpeed;
+            activeNotes.push({
+                lane: laneIdx,
+                spawnTime,
+                element: el,
+                targetTime: spawnTime + travelTime,
+                missed: false
+            });
+        }
+
+        function addMiss() {
+            missCount++;
+            document.getElementById('miss-display').innerText = `${missCount} / ${MAX_MISS}`;
+            if (missCount >= MAX_MISS) gameOver();
+        }
+
+        function showJudge(text, color) {
+            const el = document.getElementById('combo-display');
+            el.innerText = text;
+            el.style.color = color;
+            if (comboTimer) clearTimeout(comboTimer);
+            comboTimer = setTimeout(() => { el.innerText = ''; }, 200);
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                if (!isPlaying) startGame();
+                return;
+            }
+
+            const keyIdx = keys.indexOf(e.key.toLowerCase());
+            if (keyIdx === -1 || !isPlaying) return;
+
+            const now = performance.now();
+            const noteIdx = activeNotes.findIndex(n => n.lane === keyIdx && !n.missed);
+
+            if (noteIdx !== -1) {
+                const note = activeNotes[noteIdx];
+                const diff = Math.abs(now - note.targetTime);
+
+                if (diff <= 120) {
+                    score++;
+                    document.getElementById('score').innerText = score;
+                    note.element.remove();
+                    activeNotes.splice(noteIdx, 1);
+                    showJudge(diff < 50 ? 'PERFECT' : 'GOOD', diff < 50 ? '#ffd700' : '#00e676');
+                }
+                // タイミングが外れていても無視
+            }
+            // 空打ちも無視
+        });
+
+        function gameOver() {
+            isPlaying = false;
+            speedSlider.disabled = false;
+
+            document.getElementById('final-score').innerText = score;
+            document.getElementById('final-bpm').innerText = Math.floor(bpm);
+            document.getElementById('result').classList.add('show');
+
+            // スコア登録はゲームオーバー時のみ
+            fetch('/mini_game/api/submit_score', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ game_name: '4kspeed', score: score })
+            });
+        }
+    </script>
+</body>
+</html>

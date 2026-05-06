@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>さんぼカオス</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            font-family: 'Hiragino Kaku Gothic Pro', 'Meiryo', sans-serif;
+        }
+
+        .sanbo {
+            position: absolute;
+            white-space: nowrap;
+            user-select: none;
+            cursor: default;
+            font-weight: bold;
+        }
+
+        /* アニメーションパターン1: 脈動する発光 */
+        @keyframes pulse-glow {
+            0%, 100% { filter: drop-shadow(0 0 5px currentColor); opacity: 0.8; }
+            50% { filter: drop-shadow(0 0 30px currentColor); opacity: 1; }
+        }
+
+        /* アニメーションパターン2: 高速点滅（グリッチ風） */
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+            20%, 24%, 55% { opacity: 0; }
+        }
+
+        /* アニメーションパターン3: 色相回転 */
+        @keyframes hue-rotate {
+            from { filter: hue-rotate(0deg) blur(2px); }
+            to { filter: hue-rotate(360deg) blur(2px); }
+        }
+
+        /* アニメーションパターン4: 拡大縮小 */
+        @keyframes zoom {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.5) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+    </style>
+</head>
+<body>
+
+<script>
+    const count = 150; // 「さんぼ」の数
+    const body = document.body;
+    const animations = ['pulse-glow', 'flicker', 'hue-rotate', 'zoom'];
+    const colors = [
+        '#FF0000', '#00FF00', '#0000FF', '#FFFF00', 
+        '#FF00FF', '#00FFFF', '#FFA500', '#FFFFFF',
+        '#FF69B4', '#7FFF00'
+    ];
+
+    for (let i = 0; i < count; i++) {
+        const span = document.createElement('div');
+        span.className = 'sanbo';
+        span.innerText = 'さんぼ';
+
+        // ランダムなサイズ
+        const fontSize = Math.floor(Math.random() * 80) + 10;
+        span.style.fontSize = `${fontSize}px`;
+
+        // ランダムな位置
+        span.style.left = `${Math.random() * 100}vw`;
+        span.style.top = `${Math.random() * 100}vh`;
+
+        // ランダムな色
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        span.style.color = color;
+
+        // ランダムなアニメーションの割り当て
+        const anim = animations[Math.floor(Math.random() * animations.length)];
+        const duration = (Math.random() * 3 + 0.5) + 's';
+        const delay = (Math.random() * 5) + 's';
+        
+        span.style.animation = `${anim} ${duration} infinite linear ${delay}`;
+
+        // Z軸（重なり）もランダムに
+        span.style.zIndex = Math.floor(Math.random() * 100);
+
+        // 傾き
+        span.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+        body.appendChild(span);
+    }
+
+    // クリックするとさらに増えるギミック
+    window.addEventListener('click', (e) => {
+        for(let i=0; i<5; i++) {
+            const extra = document.createElement('div');
+            extra.className = 'sanbo';
+            extra.innerText = 'さんぼ';
+            extra.style.fontSize = '100px';
+            extra.style.left = e.clientX + 'px';
+            extra.style.top = e.clientY + 'px';
+            extra.style.color = '#fff';
+            extra.style.animation = 'flicker 0.1s infinite';
+            body.appendChild(extra);
+        }
+    });
+</script>
+</body>
+</html>

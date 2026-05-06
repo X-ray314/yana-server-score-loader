@@ -1,0 +1,318 @@
+{% extends "base.html" %}
+
+{% block title %}ホーム{% endblock %}
+
+{% block content %}
+<div class="home-outer">
+    <div class="hero-card">
+        <h2 class="welcome-title">スコアローダーへようこそ</h2>
+
+        <div class="user-status-card">
+    {% if current_user.is_authenticated %}
+        <div class="status-online">
+            <span class="pulse-dot"></span>
+            <p class="status-text">✅ ログイン中: <strong class="user-highlight">{{ current_user.username }}</strong> さん</p>
+        </div>
+        <div class="action-links" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; margin-top: 15px;">
+            <a href="{{ url_for('mypage') }}" class="btn-primary">マイページへ</a>
+            
+            <a href="/statistics" class="btn-statistics" style="text-decoration: none;">
+                <span style="background: rgba(0, 212, 255, 0.1); border: 1px solid #00d4ff; color: #00d4ff; padding: 10px 20px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; transition: 0.3s; display: inline-block;">
+                    📊 統計
+                </span>
+            </a>
+
+            <a href="{{ url_for('logout') }}" class="btn-logout">ログアウト</a>
+        </div>
+    {% else %}
+        <p class="status-offline">❌ ログインしていません</p>
+        <div class="action-links" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center;">
+            <a href="{{ url_for('login') }}" class="btn-primary">ログイン</a>
+            <span class="divider">|</span>
+            
+            <a href="/statistics" class="btn-statistics" style="text-decoration: none;">
+                <span style="background: rgba(0, 212, 255, 0.1); border: 1px solid #00d4ff; color: #00d4ff; padding: 10px 20px; border-radius: 8px; font-weight: bold; font-size: 0.9rem; transition: 0.3s; display: inline-block;">
+                    📊 統計
+                </span>
+            </a>
+
+            <span class="divider">|</span>
+            <a href="{{ url_for('register') }}" class="btn-secondary">新規登録</a>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    /* 統計ボタンのホバーエフェクト */
+    .btn-statistics span:hover {
+        background: rgba(0, 212, 255, 0.2) !important;
+        box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+        transform: translateY(-2px);
+    }
+</style>
+
+        
+
+        <hr class="cyber-hr">
+
+        <div class="recommend-widget">
+            <h3 class="recommend-title">今の気分におすすめの楽曲</h3>
+            {% if recommended_song %}
+                <p class="recommend-name">
+                    {% if recommended_song_level %}
+                        <a class="recommend-song-link" href="{{ url_for('song_list', level=recommended_song_level) }}#song-{{ recommended_song.song_id }}">
+                            ♪ {{ recommended_song.name }}
+                        </a>
+                    {% else %}
+                        ♪ {{ recommended_song.name }}
+                    {% endif %}
+                    <span class="recommend-meta">[{{ recommended_song.difficulty }} / {{ recommended_song.star }}]</span>
+                </p>
+                <p class="recommend-creator">譜面制作者: {{ recommended_song.creator or "不明" }}</p>
+                {% if recommended_song.youtube_url %}
+                    <a href="{{ recommended_song.youtube_url }}" target="_blank" rel="noopener noreferrer" class="recommend-link">
+                        YouTubeで聴く
+                    </a>
+                {% endif %}
+            {% else %}
+                <p class="recommend-empty">おすすめ楽曲データが見つかりませんでした。</p>
+            {% endif %}
+        </div>
+
+        {% include 'includes/recent_song_updates.html' %}
+
+        <hr class="cyber-hr">
+    </div>
+</div>
+
+<style>
+    /* 全体コンテナ */
+    .home-outer {
+        display: flex;
+        justify-content: center;
+        align-items: center; /* 中央寄せ */
+        min-height: 70vh;    /* 背景を活かすため少し高さを確保 */
+        padding: 40px 20px;
+        color: #fff;
+        font-family: 'Exo 2', sans-serif;
+    }
+
+    /* メインカード：半透明・ガラスモーフィズム */
+    .hero-card {
+        max-width: 700px;
+        width: 100%;
+        /* グラデーションを維持しつつ、透明度を調整 */
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(255, 0, 255, 0.1) 100%), 
+                    rgba(15, 15, 15, 0.8); /* 不透明度を0.9から0.7に下げて透明感をアップ */
+        padding: 50px 40px;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.15); /* 枠線を少し明るくして際立たせる */
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        
+        /* 背後の画像をぼかす効果 */
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .welcome-title {
+        text-align: center;
+        font-size: 2.2rem;
+        font-weight: 900;
+        margin-bottom: 40px;
+        color: #fff;
+        letter-spacing: 2px;
+        text-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+    }
+
+    /* ユーザーステータスカードも半透明に */
+    .user-status-card {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 30px;
+        border-radius: 16px;
+        text-align: center;
+        margin-bottom: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .status-online {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 25px;
+    }
+
+    .pulse-dot {
+        width: 10px;
+        height: 10px;
+        background: #00ff00;
+        border-radius: 50%;
+        box-shadow: 0 0 15px #00ff00;
+        animation: pulse 2s infinite;
+    }
+
+    .user-highlight {
+        color: #00d4ff;
+        font-size: 1.4rem;
+        font-weight: 800;
+    }
+
+    /* ボタン類 */
+    .action-links {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .btn-primary, .btn-secondary, .btn-logout {
+        text-decoration: none;
+        padding: 12px 28px;
+        border-radius: 10px;
+        font-weight: 800;
+        transition: 0.3s all ease;
+        letter-spacing: 1px;
+    }
+
+    .btn-primary { 
+        background: #00d4ff; 
+        color: #000; 
+        box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+    }
+    .btn-primary:hover { 
+        background: #fff; 
+        box-shadow: 0 0 25px rgba(0, 212, 255, 0.6);
+        transform: translateY(-2px);
+    }
+
+    .btn-secondary { 
+        color: #00d4ff; 
+        border: 2px solid rgba(0, 212, 255, 0.5); 
+    }
+    .btn-secondary:hover {
+        border-color: #00d4ff;
+        background: rgba(0, 212, 255, 0.1);
+    }
+
+    .btn-logout { 
+        color: #ff66cc; 
+        font-size: 0.9rem; 
+        opacity: 0.8;
+    }
+    .btn-logout:hover { opacity: 1; text-shadow: 0 0 10px #ff66cc; }
+
+    /* デバッグセクション */
+    .cyber-hr {
+        border: none;
+        height: 1px;
+        background: linear-gradient(to right, transparent, rgba(0, 212, 255, 0.4), transparent);
+        margin: 40px 0;
+    }
+
+    .recommend-widget {
+    background: rgba(0, 212, 255, 0.08);
+    border: 1px solid rgba(0, 212, 255, 0.35);
+    border-radius: 14px;
+    padding: 22px;
+    text-align: center;
+    margin-bottom: 30px; /* ★ここを追加：下の要素との間隔を空ける */
+}
+
+    .recommend-title {
+        margin: 0 0 12px;
+        font-size: 1rem;
+        letter-spacing: 1px;
+        color: #9befff;
+    }
+
+    .recommend-name {
+        margin: 0;
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: #fff;
+    }
+
+    .recommend-song-link {
+        color: #fff;
+        text-decoration: none;
+        border-bottom: 1px dashed rgba(0, 212, 255, 0.5);
+        transition: 0.2s;
+    }
+
+    .recommend-song-link:hover {
+        color: #00d4ff;
+        text-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
+        border-bottom-color: #00d4ff;
+    }
+
+    .recommend-meta {
+        color: #9befff;
+        font-size: 0.95rem;
+    }
+
+    .recommend-creator,
+    .recommend-empty {
+        margin: 10px 0 0;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 0.9rem;
+    }
+
+    .recommend-link {
+        display: inline-block;
+        margin-top: 14px;
+        color: #00d4ff;
+        text-decoration: none;
+        font-weight: 800;
+    }
+
+    .recommend-link:hover {
+        text-shadow: 0 0 10px rgba(0, 212, 255, 0.8);
+    }
+
+    .debug-title {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.9rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        text-align: center;
+        letter-spacing: 2px;
+    }
+
+    .debug-list {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 12px;
+    }
+
+    .debug-item {
+        background: rgba(255, 255, 255, 0.02);
+        padding: 12px 15px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        display: flex;
+        justify-content: space-between;
+        transition: 0.2s;
+    }
+    .debug-item:hover {
+        background: rgba(0, 212, 255, 0.05);
+        border-color: rgba(0, 212, 255, 0.2);
+    }
+
+    .debug-id { color: #00d4ff; font-weight: bold; font-family: monospace; }
+    .debug-name { color: #ddd; }
+
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.4); opacity: 0.5; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    @media (max-width: 600px) {
+        .action-links { flex-direction: column; width: 100%; }
+        .btn-primary, .btn-secondary { width: 100%; text-align: center; }
+    }
+</style>
+{% endblock %}

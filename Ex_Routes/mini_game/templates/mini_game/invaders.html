@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Invaders Custom - Touhou Style</title>
+    <style>
+        body { background: #111; color: #fff; font-family: 'Helvetica Neue', Arial, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; overflow: hidden; }
+        .ui { margin-bottom: 10px; font-size: 1.1rem; text-shadow: 0 0 5px #4a90e2; display: flex; gap: 20px; }
+        canvas { background: #000; border: 3px solid #4a90e2; box-shadow: 0 0 20px rgba(74, 144, 226, 0.5); }
+        .back-link { margin-top: 15px; text-decoration: none; color: #4a90e2; font-weight: bold; transition: 0.3s; }
+        .back-link:hover { color: #fff; text-shadow: 0 0 8px #4a90e2; }
+        .controls { margin-top: 10px; font-size: 0.8rem; color: #888; }
+    </style>
+</head>
+<body>
+    <div class="ui">
+        <div>SCORE: <span id="score">0</span></div>
+        <div>WAVE: <span id="wave">1</span></div>
+        <div>LIFE: <span id="lives">★★★</span></div>
+        <div>BOMB: <span id="bombs">XX</span></div>
+    </div>
+    <canvas id="game" width="600" height="700"></canvas>
+    <div class="controls">[Arrow] Move | [Space] Shoot | [Shift] Slow Move | [X] Bomb</div>
+    <a href="/mini_game/" class="back-link">← ミニゲーム一覧へ戻る</a>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+// ゲーム設定
+let score = 0, wave = 1, lives = 3, bombs = 2, gameActive = true;
+let isBossWave = false;
+const player = { x: 285, y: 600, w: 30, h: 30, hitW: 6, hitH: 6, speed: 6 };
+let bullets = [], enemies = [], enemyBullets = [], particles = [], stars = [];
+let keys = {};
+
+// 星背景の初期化
+for(let i=0; i<100; i++) stars.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*2+1});
+
+function initEnemies() {
+    enemies = [];
+    if (wave % 5 === 0) {
+        isBossWave = true;
+        enemies.push({ x: 250, y: -100, w: 100, h: 60, hp: 50 + (wave * 10), isBoss: true, targetX: 250, moveTimer: 0 });
+    } else {
+        isBossWave = false;
+        for(let r=0; r<4; r++) {
+            for(let c=0; c<10; c++) {
+                enemies.push({ x: 60 + c*50, y: 40 + r*40, w: 30, h: 25, hp: 1 });
+            }
+        }
+    }
+}
+
+// 入力検知
+document.addEventListener("keydown", e => keys[e.code] = true);
+document.addEventListener("keyup", e => keys[e.code] = false);
+
+function spawnParticle(x, y, color) {
+    for(let i=0; i<8; i++) particles.push({x, y, vx: (Math.random()-0.5)*10, vy: (Math.random()-0.5)*10, life: 20, color});
+}
+
+function useBomb() {
+    if (bombs > 0) {
+        bombs--;
+        updateUI();
+        enemyBullets = [];
+        spawnParticle(player.x, player.y, "#fff");
+        enemies.forEach(en => { if(en.isBoss) en.hp -= 20; else en.hp = 0; });
+    }
+}
+
+function updateUI() {
+    document.getElementById("score").innerText = score;
+    document.getElementById("wave").innerText = wave;
+    document.getElementById("lives").innerText = "★".repeat(lives);
+    document.getElementById("bombs").innerText = "X".repeat(bombs);
+}
+
+function update() {
+    if(!gameActive) return;
+
+    // 自機移動 (Shiftで低速)
+    let curSpeed = keys['ShiftLeft'] || keys['ShiftRight'] ? player.speed / 2.5 : player.speed;
+    if(keys['ArrowLeft'] && player.x > 0) player.x -= curSpeed;
+    if(keys['ArrowRight'] && player.x < canvas.width - player.w) player.x += curSpeed;
+    if(keys['ArrowUp'] && player.y > 0) player.y -= curSpeed;
+    if(keys['ArrowDown'] && player.y < canvas.height - player.h) player.y += curSpeed;
+    if(keys['KeyX']) { useBomb(); keys['KeyX'] = false; }
+
+    // ショット
+    if(keys['Space'] && Date.now() % 5 === 0) {
+        bullets.push({ x: player.x + player.w/2 - 2, y: player.y, w: 4, h: 15, color: "#4a90e2" });
+    }
+
+    // 背景移動
+    stars.forEach(s => { s.y += s.s; if(s.y > canvas.height) s.y = 0; });
+
+    // 自機弾更新
+    bullets.forEach((b, i) => {
+        b.y -= 12;
+        if(b.y < 0) bullets.splice(i, 1);
+        enemies.forEach((en, j) => {
+            if(b.x < en.x + en.w && b.x + b.w > en.x && b.y < en.y + en.h && b.y + b.h > en.y) {
+                en.hp--;
+                bullets.splice(i, 1);
+                if(en.hp <= 0) {
+                    spawnParticle(en.x + en.w/2, en.y + en.h/2, "#f44");
+                    enemies.splice(j, 1);
+                    score += en.isBoss ? 1000 : 10;
+                    updateUI();
+                }
+            }
+        });
+    });
+
+    // 敵更新
+    enemies.forEach(en => {
+        if(en.isBoss) {
+            if(en.y < 80) en.y += 2;
+            en.moveTimer++;
+            if(en.moveTimer % 60 === 0) en.targetX = Math.random() * (canvas.width - en.w);
+            en.x += (en.targetX - en.x) * 0.05;
+            
+            // ボス弾幕
+            if(Date.now() % 20 === 0) {
+                for(let i=0; i<8; i++) {
+                    let angle = (Date.now()/500) + (i * Math.PI/4);
+                    enemyBullets.push({ x: en.x + en.w/2, y: en.y + en.h/2, vx: Math.cos(angle)*4, vy: Math.sin(angle)*4, w: 8, h: 8, c: "#ff00ff" });
+                }
+            }
+        } else {
+            en.x += Math.sin(Date.now()/1000 + en.y) * 2;
+            if(Math.random() < 0.005 * wave) enemyBullets.push({ x: en.x + en.w/2, y: en.y + en.h, vx: 0, vy: 4, w: 6, h: 12, c: "#ff0" });
+        }
+    });
+
+    // 敵弾更新
+    enemyBullets.forEach((eb, i) => {
+        eb.x += eb.vx || 0;
+        eb.y += eb.vy || 4;
+        if(eb.y > canvas.height || eb.y < -50 || eb.x < -50 || eb.x > canvas.width + 50) enemyBullets.splice(i, 1);
+        
+        // 当たり判定 (東方風に小さく)
+        let px = player.x + player.w/2 - player.hitW/2;
+        let py = player.y + player.h/2 - player.hitH/2;
+        if(eb.x < px + player.hitW && eb.x + eb.w > px && eb.y < py + player.hitH && eb.y + eb.h > py) {
+            enemyBullets.splice(i, 1);
+            playerHit();
+        }
+    });
+
+    // パーティクル
+    particles.forEach((p, i) => { p.x += p.vx; p.y += p.vy; p.life--; if(p.life <= 0) particles.splice(i, 1); });
+
+    if(enemies.length === 0) { wave++; initEnemies(); updateUI(); bombs = Math.min(bombs + 1, 5); }
+    
+    draw();
+    requestAnimationFrame(update);
+}
+
+function playerHit() {
+    lives--;
+    updateUI();
+    spawnParticle(player.x, player.y, "#fff");
+    player.x = 285; player.y = 600;
+    enemyBullets = [];
+    if(lives <= 0) gameOver();
+}
+
+function draw() {
+    ctx.fillStyle = "#000"; ctx.fillRect(0,0,canvas.width,canvas.height);
+    
+    // 背景
+    ctx.fillStyle = "#fff";
+    stars.forEach(s => ctx.fillRect(s.x, s.y, s.s, s.s));
+
+    // 敵
+    enemies.forEach(en => {
+        ctx.fillStyle = en.isBoss ? "#f0f" : "#f44";
+        ctx.shadowBlur = 10; ctx.shadowColor = ctx.fillStyle;
+        ctx.fillRect(en.x, en.y, en.w, en.h);
+        if(en.isBoss) { // ボスHPゲージ
+            ctx.fillStyle = "#fff"; ctx.fillRect(100, 20, (en.hp / (50+wave*10)) * 400, 5);
+        }
+    });
+    ctx.shadowBlur = 0;
+
+    // 弾
+    bullets.forEach(b => { ctx.fillStyle = b.color; ctx.fillRect(b.x, b.y, b.w, b.h); });
+    enemyBullets.forEach(eb => { ctx.fillStyle = eb.c; ctx.beginPath(); ctx.arc(eb.x, eb.y, eb.w/2, 0, Math.PI*2); ctx.fill(); });
+
+    // 自機
+    ctx.fillStyle = "#4a90e2"; ctx.fillRect(player.x, player.y, player.w, player.h);
+    // 当たり判定の視認化 (低速移動中のみ)
+    if(keys['ShiftLeft'] || keys['ShiftRight']) {
+        ctx.fillStyle = "#fff"; ctx.fillRect(player.x+player.w/2-3, player.y+player.h/2-3, 6, 6);
+        ctx.strokeStyle = "#fff"; ctx.strokeRect(player.x+player.w/2-player.hitW/2, player.y+player.h/2-player.hitH/2, player.hitW, player.hitH);
+    }
+
+    // パーティクル
+    particles.forEach(p => { ctx.fillStyle = p.color; ctx.globalAlpha = p.life/20; ctx.fillRect(p.x, p.y, 4, 4); });
+    ctx.globalAlpha = 1.0;
+}
+
+function gameOver() {
+    gameActive = false;
+    alert("Game Over! Score: " + score);
+    // スコア送信ロジックを維持
+    fetch('/mini_game/api/submit_score', {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ game_name: 'invaders', score: score })
+    }).then(() => location.reload());
+}
+
+initEnemies();
+updateUI();
+update();
+</script>
+</body>
+</html>

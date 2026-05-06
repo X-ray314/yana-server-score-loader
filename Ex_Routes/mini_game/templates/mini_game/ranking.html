@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <link rel="icon" href="/static/images/favicon.ico">
+<link rel="apple-touch-icon" href="/static/images/logo.png">
+    <meta charset="UTF-8">
+    <title>ランキング - {{ game_name }}</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background: #f0f2f5; }
+        table { margin: 20px auto; border-collapse: collapse; width: 80%; max-width: 500px; background: white; }
+        th, td { border: 1px solid #ddd; padding: 12px; }
+        th { background-color: #007bff; color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .top1 { color: #d4af37; font-weight: bold; } /* 金色 */
+    </style>
+</head>
+<body>
+    <h1>🏆 {{ game_name }} ランキング</h1>
+    {% if game_name.startswith('hanoi_') %}
+<div style="margin-bottom: 20px;">
+    <label for="hanoi-select" style="font-size: 0.9rem; color: #666;">ランキングを切り替え：</label>
+    <select id="hanoi-select" onchange="location.href='/mini_game/ranking/hanoi_' + this.value" style="padding: 5px; border-radius: 5px;">
+        {% for n in range(3, 8) %}
+            <option value="{{ n }}_time" {% if game_name == 'hanoi_'~n~'_time' %}selected{% endif %}>ハノイの塔 ({{ n }}枚) - タイム</option>
+            <option value="{{ n }}_moves" {% if game_name == 'hanoi_'~n~'_moves' %}selected{% endif %}>ハノイの塔 ({{ n }}枚) - 手数</option>
+        {% endfor %}
+    </select>
+</div>
+{% endif %}
+    <table>
+        <thead>
+            <tr>
+                <th>順位</th>
+                <th>ユーザー</th>
+                <th>スコア</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in scores %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ s.username }}</td>
+                <td>
+                    {% if game_name in ['clicker', 'aim', '4kspeed', 'typesambo', 'memory', 'invaders', 'falling'] %}
+                        {{ s.score | int }} 回
+                    {% elif game_name == 'platformer' %}
+                        {{ s.score | int }} m
+                    {% elif game_name == '2048_score' %}
+                        {{ s.score | int }} 点
+                    {% elif game_name.endswith('_moves') %}
+                        {{ s.score | int }} 手
+                    {% elif game_name == 'circledraw' %}
+                        {{ "%.3f"|format(s.score) }} %
+                    {% elif game_name in ['stopwatch', 'reaction', 'avoiding', 'lightsout'] or game_name.startswith('puzzle_') or '_time' in game_name %}
+                        {{ "%.3f"|format(s.score) }} s
+                    {% else %}
+                        {{ s.score }}
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="3">まだスコアがありません。</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="/mini_game/">トップへ戻る</a>
+</body>
+</html>

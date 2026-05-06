@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ライツアウト - Mini Game</title>
+    <style>
+        :root {
+            --primary: #4a90e2;
+            --bg: #f8f9fa;
+            --light-on: #ffeb3b;
+            --light-off: #343a40;
+        }
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg);
+            display: flex; flex-direction: column; align-items: center;
+            padding: 20px; margin: 0;
+        }
+        .header { text-align: center; margin-bottom: 20px; }
+        .stats {
+            display: flex; gap: 20px; margin-bottom: 20px;
+            font-weight: bold; color: #555;
+        }
+        #game-board {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            background: #adb5bd;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        .cell {
+            width: 60px; height: 60px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .cell.on {
+            background-color: var(--light-on);
+            box-shadow: 0 0 15px var(--light-on);
+        }
+        .cell.off {
+            background-color: var(--light-off);
+        }
+        .cell:active { transform: scale(0.95); }
+        .controls { margin-top: 30px; }
+        .btn {
+            background: var(--primary); color: white; border: none;
+            padding: 10px 25px; border-radius: 25px; cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>ライツアウト</h1>
+    <a href="/mini_game/" style="text-decoration: none; color: var(--primary);">← 戻る</a>
+</div>
+
+<div class="stats">
+    <div>手数: <span id="move-count">0</span></div>
+    <div>タイム: <span id="timer">0.00</span>s</div>
+</div>
+
+<div id="game-board"></div>
+
+<div class="controls">
+    <button class="btn" onclick="initGame()">リセット / 新規ゲーム</button>
+</div>
+
+<script>
+    const size = 5;
+    let grid = [];
+    let moves = 0;
+    let startTime = null;
+    let timerInterval = null;
+    let isCleared = false;
+
+    function initGame() {
+        clearInterval(timerInterval);
+        moves = 0;
+        startTime = null;
+        isCleared = false;
+        document.getElementById('move-count').innerText = "0";
+        document.getElementById('timer').innerText = "0.00";
+
+        // 全てOFFの盤面を作成
+        grid = Array.from({length: size}, () => Array(size).fill(false));
+        
+        // クリア可能な盤面を生成（ランダムな位置を擬似的にクリックしていく）
+        const shuffleSteps = 15 + Math.floor(Math.random() * 10);
+        for (let i = 0; i < shuffleSteps; i++) {
+            const r = Math.floor(Math.random() * size);
+            const c = Math.floor(Math.random() * size);
+            toggle(r, c, true); // 初期生成時は手数をカウントしない
+        }
+        
+        render();
+    }
+
+    function toggle(r, c, silent = false) {
+        const deltas = [[0,0], [0,1], [0,-1], [1,0], [-1,0]];
+        deltas.forEach(([dr, dc]) => {
+            const nr = r + dr, nc = c + dc;
+            if (nr >= 0 && nr < size && nc >= 0 && nc < size) {
+                grid[nr][nc] = !grid[nr][nc];
+            }
+        });
+        if (!silent) {
+            moves++;
+            document.getElementById('move-count').innerText = moves;
+            if (!startTime) startTimer();
+            checkWin();
+        }
+    }
+
+    function render() {
+        const board = document.getElementById('game-board');
+        board.innerHTML = '';
+        for (let r = 0; r < size; r++) {
+            for (let c = 0; c < size; c++) {
+                const cell = document.createElement('div');
+                cell.className = `cell ${grid[r][c] ? 'on' : 'off'}`;
+                cell.onclick = () => { if(!isCleared) { toggle(r, c); render(); } };
+                board.appendChild(cell);
+            }
+        }
+    }
+
+    function startTimer() {
+        startTime = Date.now();
+        timerInterval = setInterval(() => {
+            const elapsed = (Date.now() - startTime) / 1000;
+            document.getElementById('timer').innerText = elapsed.toFixed(2);
+        }, 10);
+    }
+
+    function checkWin() {
+        const hasOn = grid.some(row => row.some(cell => cell === true));
+        if (!hasOn && moves > 0) {
+            isCleared = true;
+            clearInterval(timerInterval);
+            const finalTime = parseFloat(document.getElementById('timer').innerText);
+            alert(`クリア！ タイム: ${finalTime}秒`);
+            submitScore(finalTime);
+        }
+    }
+
+    async function submitScore(time) {
+        try {
+            const response = await fetch('/mini_game/api/submit_score', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ game_name: 'lightsout', score: time })
+            });
+            const result = await response.json();
+            console.log(result.message);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    initGame();
+</script>
+</body>
+</html>

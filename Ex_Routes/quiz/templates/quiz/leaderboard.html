@@ -1,0 +1,89 @@
+{% extends "quiz/base.html" %}
+{% block title %}ランキング - {{ form.title }}{% endblock %}
+
+{% block content %}
+<style>
+    .lb-wrap { max-width: 700px; margin: 0 auto; }
+    .lb-header { margin-bottom: 24px; }
+    .lb-header h1 { font-size: 1.4rem; font-weight: 700; color: var(--text-main); margin: 0 0 4px; }
+    .lb-header p  { font-size: 0.84rem; color: var(--text-sub); margin: 0; }
+    .lb-table { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 24px; box-shadow: var(--shadow-sm); }
+    .lb-row { display: grid; grid-template-columns: 56px 1fr 110px 90px 110px; align-items: center; padding: 13px 18px; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+    .lb-row:last-child { border-bottom: none; }
+    .lb-row:hover { background: var(--surface2); }
+    .lb-head { background: var(--surface2); font-size: 0.7rem; font-weight: 700; color: var(--text-hint); text-transform: uppercase; letter-spacing: 1px; }
+    .lb-head:hover { background: var(--surface2); }
+    .lb-rank     { font-size: 1.2rem; text-align: center; }
+    .lb-rank.num { font-size: 0.88rem; font-weight: 700; color: var(--text-hint); }
+    .lb-name     { font-size: 0.88rem; font-weight: 700; color: var(--text-main); }
+    .lb-score    { font-size: 0.95rem; font-weight: 700; color: var(--accent); text-align: center; }
+    .lb-score span { font-size: 0.76rem; color: var(--text-hint); font-weight: 400; }
+    .lb-time     { font-size: 0.82rem; color: var(--text-sub); text-align: center; font-family: monospace; }
+    .lb-date     { font-size: 0.76rem; color: var(--text-hint); text-align: right; }
+    .empty-lb    { padding: 44px; text-align: center; color: var(--text-hint); font-size: 0.88rem; }
+    .btn-row     { display: flex; gap: 12px; }
+    .btn-play {
+        flex: 1; display: block; text-align: center; padding: 13px;
+        background: var(--accent); color: white; border-radius: 10px;
+        text-decoration: none; font-weight: 700; font-size: 0.92rem;
+        box-shadow: 0 2px 8px rgba(79,70,229,0.25); transition: 0.15s;
+    }
+    .btn-play:hover { background: var(--accent-dk); }
+    .btn-back {
+        display: block; text-align: center; padding: 13px 22px;
+        background: var(--surface2); color: var(--text-sub);
+        border: 1px solid var(--border); border-radius: 10px;
+        text-decoration: none; font-weight: 700; font-size: 0.92rem; transition: 0.15s;
+    }
+    .btn-back:hover { background: var(--border); color: var(--text-main); }
+</style>
+
+<div class="lb-wrap">
+    <div class="lb-header">
+        <h1>🏆 {{ form.title }}</h1>
+        <p>成績ランキング（スコア降順・タイム昇順）</p>
+    </div>
+
+    <div class="lb-table">
+        <div class="lb-row lb-head">
+            <div>順位</div>
+            <div>ユーザー</div>
+            <div style="text-align:center;">スコア</div>
+            <div style="text-align:center;">タイム</div>
+            <div style="text-align:right;">日時</div>
+        </div>
+
+        {% if results %}
+            {% for res in results %}
+            <div class="lb-row">
+                <div class="lb-rank {% if loop.index > 3 %}num{% endif %}">
+                    {% if loop.index == 1 %}🥇
+                    {% elif loop.index == 2 %}🥈
+                    {% elif loop.index == 3 %}🥉
+                    {% else %}{{ loop.index }}
+                    {% endif %}
+                </div>
+                <div class="lb-name">{{ res.user_name }}</div>
+                <div class="lb-score">
+                    {{ res.score }} <span>/ {{ res.total }}</span>
+                </div>
+                <div class="lb-time">
+                    {% if res.time_taken %}{{ res.time_taken }}秒{% else %}--{% endif %}
+                </div>
+                <div class="lb-date">
+                    {{ res.taken_at.strftime('%m/%d %H:%M') }}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-lb">まだ記録がありません。最初の挑戦者になりましょう！</div>
+        {% endif %}
+    </div>
+
+    <div class="btn-row">
+        <a href="{{ url_for('quiz.take_test', form_id=form.id) }}" class="btn-play">挑戦する</a>
+        <a href="{{ url_for('quiz.index') }}" class="btn-back">一覧に戻る</a>
+    </div>
+</div>
+
+{% endblock %}
