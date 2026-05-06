@@ -18,7 +18,7 @@ from datetime import datetime, timedelta
 app = Flask(__name__)
 socketio = SocketIO(app)
 
-app.config['SECRET_KEY'] = 'your-secret-key'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'develop-key-temporary')
  
 basedir = os.path.abspath(os.path.dirname(__file__))
 instance_path = os.path.join(basedir, 'instance') 
