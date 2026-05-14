@@ -228,7 +228,7 @@
         "song_id": "song_026",
         "name": "Final Hope",
         "difficulty": "E",
-        "star": "★2",
+        "star": "★3",
         "youtube_url": "https://www.youtube.com/watch?v=GOZIV3KH2ZE",
         "chart_file": "Final Hope.json",
         "creator": "yanaaaaaaa"
@@ -750,7 +750,7 @@
         "song_id": "song_084",
         "name": "Final Hope",
         "difficulty": "N",
-        "star": "★5",
+        "star": "★6",
         "youtube_url": "https://www.youtube.com/watch?v=GOZIV3KH2ZE",
         "chart_file": "Final Hope.json",
         "creator": "yanaaaaaaa"
@@ -1821,7 +1821,7 @@
         "song_id": "song_203",
         "name": "Final Hope",
         "difficulty": "H",
-        "star": "★9",
+        "star": "★10",
         "youtube_url": "https://www.youtube.com/watch?v=GOZIV3KH2ZE",
         "chart_file": "Final Hope.json",
         "creator": "yanaaaaaaa"
@@ -5025,7 +5025,7 @@
         "song_id": "song_1145",
         "name": "Phantom Crisis",
         "difficulty": "H",
-        "star": "★16",
+        "star": "★15",
         "youtube_url": "https://www.youtube.com/watch?v=UDRPNwAYusw",
         "chart_file": "Phantom Crisis_H.json",
         "creator": "yanaaaaaaa"
@@ -5038,5 +5038,32 @@
         "youtube_url": "https://www.youtube.com/watch?v=NFT6GMPeYJI",
         "chart_file": "ヤミナベ!!!! 弱体化 _H.json",
         "creator": "kakuteru"
+    },
+    {
+        "song_id": "song_1147",
+        "name": "花蟷螂",
+        "difficulty": "H",
+        "star": "★10",
+        "youtube_url": "https://www.youtube.com/watch?v=9DkI0U1DxW8&t=56s",
+        "chart_file": "花蟷螂_H.json",
+        "creator": "SenKa"
+    },
+    {
+        "song_id": "song_1148",
+        "name": "Split EX[fusion]",
+        "difficulty": "H",
+        "star": "★12",
+        "youtube_url": "https://www.youtube.com/watch?v=-85fxpbSBuI",
+        "chart_file": "Split EX[fusion]_H.json",
+        "creator": "とある牛丼マスター"
+    },
+    {
+        "song_id": "song_1149",
+        "name": "Xroniàl Xéro",
+        "difficulty": "H",
+        "star": "★🪦",
+        "youtube_url": "https://www.youtube.com/watch?v=WZfMAnII78Y",
+        "chart_file": "Xroniàl Xéro_H.json",
+        "creator": "GokuLLLLL"
     }
 ]

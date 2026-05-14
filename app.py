@@ -18,7 +18,7 @@ from datetime import datetime, timedelta
 app = Flask(__name__)
 socketio = SocketIO(app)
 
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'develop-key-temporary')
+app.config['SECRET_KEY'] = 'your-secret-key'
  
 basedir = os.path.abspath(os.path.dirname(__file__))
 instance_path = os.path.join(basedir, 'instance') 
@@ -1133,7 +1133,7 @@ def sambo():
 def cube():
     return render_template("cube.html")
 # app.py の末尾付近に追加
-ADMIN_BROADCAST_ALLOWED = ["X-ray", "yanaaaaaaa","SenKa"]
+ADMIN_BROADCAST_ALLOWED = ["X-ray", "yanaaaaaaa","SenKa","pentatonic"]
 @socketio.on('join')
 def on_join():
     if current_user.is_authenticated:
